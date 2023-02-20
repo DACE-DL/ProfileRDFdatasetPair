@@ -1,0 +1,254 @@
+[2022-12-12 09:40:05] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.1_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.2_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.3_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.4_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.5_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.6_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.1.7_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.1_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.2_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.3_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.4_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.5_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.6_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.2.7_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.1_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.2_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.3_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.4_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.5_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.6_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2015_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2015_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2015_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2015_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2015_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2015_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2016_plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2016_plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2016_plot-area-%28m²%29_Measure> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2016_plot-area-%28m²%29_Measure> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2016_plot-area-%28m²%29_Time> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/af6.mmjj.3.7_Obs_2016_plot-area-%28m²%29_Time> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/plot-area-%28m²%29> Code: 47/NOT_NFKC in PATH: The IRI is not in Unicode Normal Form KC.
+[2022-12-12 09:40:06] [WARN ] riot:95 - Bad IRI: <http://www.afy.fr/AF6_Soil_Crop/plot-area-%28m²%29> Code: 56/COMPATIBILITY_CHARACTER in PATH: TODO

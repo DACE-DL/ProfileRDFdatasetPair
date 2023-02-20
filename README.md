@@ -1,2 +1,3 @@
-# ProfileRDFdatasetPair
-Profiling a pair of rdf datasets for the determination of LPTs
+# AobraWebService
+Projet Aobra
+Couche applicative pour raisonner sur des ontologies.
