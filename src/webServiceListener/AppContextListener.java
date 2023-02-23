@@ -5,7 +5,7 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 
-import queriesForWebService.AobraQueryInit;
+import queriesForWebService.ProfilingQueryInit;
 
 @WebListener
 public class AppContextListener implements ServletContextListener {
@@ -20,7 +20,7 @@ public class AppContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		//ServletContext ctx = servletContextEvent.getServletContext();
 		try {
-			AobraQueryInit.init();
+			ProfilingQueryInit.init();
 		} catch (Exception e) {
 			System.out.println("InfModel not initialized for Web Service !");
 			//e.printStackTrace();

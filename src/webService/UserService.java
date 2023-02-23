@@ -37,6 +37,6 @@ public class UserService {
 	}  
 
 		// Pour tester
-		// http://localhost:8085/AobraWebService/api/users/1
+		// http://localhost:8085/ProfilingWebService/api/users/1
 
-	}
+}

@@ -4,7 +4,7 @@
     
     
     
-    <wb-module deploy-name="AobraWebService-0.0.1-SNAPSHOT">
+    <wb-module deploy-name="ProfilingWebService-0.0.1-SNAPSHOT">
                                                 
         
         
@@ -35,7 +35,7 @@
         
         <property name="java-output-path" value="/AgroforestryWebService/build/classes"/>
                 
-        <property name="context-root" value="AobraWebService"/>
+        <property name="context-root" value="ProfilingWebService"/>
                                             
     
     
