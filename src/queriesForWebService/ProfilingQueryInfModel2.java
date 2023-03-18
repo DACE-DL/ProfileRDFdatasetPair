@@ -25,7 +25,7 @@ public class ProfilingQueryInfModel2 {
 		// Initialisation de la configuration
 		// Chemin d'accès, noms fichiers...
 		new ProfilingConf();
-		String afv = ProfilingConf.afv;
+		String afv = ProfilingConf.dsp;
 		
 		////////////////////////////////
 		// Recupèration du model      //
@@ -69,7 +69,7 @@ public class ProfilingQueryInfModel2 {
 		// Initialisation de la configuration
 		// Chemin d'accès, noms fichiers...
 		new ProfilingConf();
-		String afy = ProfilingConf.afy;
+		String afy = ProfilingConf.dsp;
 
 		List<Resource> listElements = new ArrayList<Resource>();
 		Resource stucturalElementClass = m.getResource( afy + "StructuralElement" );
@@ -92,7 +92,7 @@ public class ProfilingQueryInfModel2 {
 	public static List<Resource> listTermsWithLabel(InfModel m, String label) {
 		List<Resource> listTerms = new ArrayList<Resource>() ;
 		new ProfilingConf();
-		String afy = ProfilingConf.afy;
+		String afy = ProfilingConf.dsp;
 		String skos = ProfilingConf.skos;
 		Resource TermClass = m.getResource( afy + "Term" );
 		StmtIterator i = m.listStatements( null, RDF.type, TermClass );

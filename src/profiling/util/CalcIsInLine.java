@@ -45,7 +45,7 @@ public class CalcIsInLine extends BaseBuiltin {
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
 		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
-		String res = ProfilingConf.res;
+		String dsp = ProfilingConf.dsp;
 		String dcterms = ProfilingConf.dcterms;
 		String bfo = ProfilingConf.bfo;
 		// Check we received the correct number of parameters
@@ -62,8 +62,8 @@ public class CalcIsInLine extends BaseBuiltin {
 			Query query = QueryFactory.create(prefix + 
 					"SELECT ?treeN ?line" +
 					" WHERE { " +
-					"<" + node2.getURI() + ">" + " res:hasCloseNeighbor*|^res:hasCloseNeighbor* ?treeN ." +
-					"?treeN res:isInLine ?line ." +
+					"<" + node2.getURI() + ">" + " dsp:hasCloseNeighbor*|^dsp:hasCloseNeighbor* ?treeN ." +
+					"?treeN dsp:isInLine ?line ." +
 					" }  ORDER BY ?line ?treeN  LIMIT 1" );			
 			QueryExecution qe = QueryExecutionFactory.create(query, model);		
 			ResultSet result = qe.execSelect();
@@ -82,7 +82,7 @@ public class CalcIsInLine extends BaseBuiltin {
 				Integer numberTemp = 0;
 				RDFDatatype dt = XSDDatatype.XSDinteger;
 				Node s = NodeFactory.createURI(node1.getURI() + "CounterLine");
-				Node p = NodeFactory.createURI(res + "hasCounterValue");
+				Node p = NodeFactory.createURI(dsp + "hasCounterValue");
 				Iterator<Triple> itCompteur = context.find(s, p, (Node) null);
 				Node o = null;
 				if (itCompteur.hasNext()) {

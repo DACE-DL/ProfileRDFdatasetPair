@@ -29,8 +29,8 @@ import profiling.util.ProfilingQueryOutputObject;
 
 public class QueryInferedModel {
 	
-	// On passe par les fichiers du serveur en fournissant une liste de noms de fichier
-	public static ArrayList<ProfilingQueryOutputObject> queryInferedModel(ArrayList<String> listQueriesFileName, InfModel infModel) throws JsonParseException, JsonMappingException, IOException {
+	// On passe par les fichiers du serveur en fournissant une liste de noms de fichiers contenant des requettes
+	public static ArrayList<ProfilingQueryOutputObject> queryInferedModel(ArrayList<String> listQueriesFileName, InfModel infModel, String consoleOutput) throws JsonParseException, JsonMappingException, IOException {
 
 		System.out.println("Model size before inference:" + infModel.size());
 
@@ -55,6 +55,23 @@ public class QueryInferedModel {
 			// Sauvegarde résultat
 			ProfilingQueryOutputObject QueryOutput = new ProfilingQueryOutputObject(null, "{}");
 			QueryOutput.setQuery(objectQuery);
+
+			// Affichage des titres query uniquement si sortie sur la console demandée.
+			if (consoleOutput.equalsIgnoreCase("true")) {
+				if (objectQuery.getTitleQuery().length() > 0) {
+					System.out.println();
+					for (int c = 0; c < objectQuery.getTitleQuery().length() + 6; c++)
+						System.out.print("=");
+					System.out.println();
+					System.out.println("|  " + objectQuery.getTitleQuery() + "  |");
+					for (int c = 0; c < objectQuery.getTitleQuery().length() + 6; c++)
+						System.out.print("=");
+					System.out.println();
+				} else {
+					System.out.println();
+				}
+		    }
+
 			
 			if (!(objectQuery.getStringQuery().equals(""))) {
 				if (objectQuery.getTypeQuery().equalsIgnoreCase("INSERT")) {
@@ -65,8 +82,11 @@ public class QueryInferedModel {
 					Query query = QueryFactory.create(objectQuery.getStringQuery());
 					QueryExecution qe = QueryExecutionFactory.create(query, infModel);		
 					ResultSet results = qe.execSelect();
-					 
-					ResultSetFormatter.out(System.out, results);
+				
+					// Affichage uniquement si sortie sur la console demandée.
+					if (consoleOutput.equalsIgnoreCase("true")) {
+						ResultSetFormatter.out(System.out, results);
+					}
 
 					ByteArrayOutputStream os = new ByteArrayOutputStream();
 		   			ResultSetFormatter.outputAsJSON(os, results);
@@ -106,21 +126,14 @@ public class QueryInferedModel {
     		//System.out.println(stringQuery);
     		if (!(objectQuery.getStringQuery() == "")) {
     			if (objectQuery.getTypeQuery() == "INSERT") {
-    				Query query = QueryFactory.create(objectQuery.getStringQuery());
-    				QueryExecution qe = QueryExecutionFactory.create(query, infModel);		
-    				ResultSet results = qe.execSelect();
-    				ResultSetFormatter.out(System.out, results);
+    				UpdateRequest update = UpdateFactory.create(objectQuery.getStringQuery());
+					UpdateAction.execute(update, infModel);
     			}
     			if (objectQuery.getTypeQuery() == "SELECT") {
     				Query query = QueryFactory.create(objectQuery.getStringQuery());
     				QueryExecution qe = QueryExecutionFactory.create(query, infModel);		
     				ResultSet results = qe.execSelect();
     				ResultSetFormatter.out(System.out, results);
-    			}
-    			if (objectQuery.getTypeQuery() == "UPDATE") {
-
-    				UpdateRequest update = UpdateFactory.create(objectQuery.getStringQuery());
-    				UpdateAction.execute(update, infModel);
     			}
     		}
     	}
@@ -130,6 +143,11 @@ public class QueryInferedModel {
     	return null;	
     
     }
+
+
+	public static void queryInferedModel(InfModel infModel, ArrayList<ProfilingQueryObject> listQueries,
+			String consoleOutput) {
+	}
 
 	
 	

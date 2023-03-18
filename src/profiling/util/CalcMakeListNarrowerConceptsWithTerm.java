@@ -33,7 +33,7 @@ public class CalcMakeListNarrowerConceptsWithTerm extends BaseBuiltin {
 
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
 		new ProfilingConf();
-		String res = ProfilingConf.res;
+		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
@@ -48,9 +48,9 @@ public class CalcMakeListNarrowerConceptsWithTerm extends BaseBuiltin {
 			//System.out.println(term);
 			ArrayList<String> ListResources = new ArrayList<String>();
 			Integer n = 0;
-			Node s = NodeFactory.createURI(res + "sujet");
-			Node p = NodeFactory.createURI(res + "predicat");
-			Node o = NodeFactory.createURI(res + "objet");
+			Node s = NodeFactory.createURI(dsp + "sujet");
+			Node p = NodeFactory.createURI(dsp + "predicat");
+			Node o = NodeFactory.createURI(dsp + "objet");
 
 			
 			try {
@@ -60,26 +60,26 @@ public class CalcMakeListNarrowerConceptsWithTerm extends BaseBuiltin {
 			}
 			for (String resource : ListResources) {
 				if (n==0){
-					s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term);
+					s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term);
 					p = NodeFactory.createURI(rdf + "first");
 					o = NodeFactory.createURI(resource);		
 					context.add(Triple.create(s, p, o));
 					n = n+1;
 				} else {
-					s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + n);
+					s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + n);
 					p = NodeFactory.createURI(rdf + "first");
 					o = NodeFactory.createURI(resource);		
 					context.add(Triple.create(s, p, o));
 					if (n==1){
-						s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term);
+						s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term);
 						p = NodeFactory.createURI(rdf + "rest");
-						o = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + n);		
+						o = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + n);		
 						context.add(Triple.create(s, p, o));
 						n = n+1;
 					} else {
-						s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + (n-1));
+						s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + (n-1));
 						p = NodeFactory.createURI(rdf + "rest");
-						o = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + n);		
+						o = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + n);		
 						context.add(Triple.create(s, p, o));
 						n = n+1;
 					}
@@ -93,26 +93,26 @@ public class CalcMakeListNarrowerConceptsWithTerm extends BaseBuiltin {
 			}
 			for (String resource : ListResources) {
 				if (n==0){
-					s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term);
+					s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term);
 					p = NodeFactory.createURI(rdf + "first");
 					o = NodeFactory.createURI(resource);		
 					context.add(Triple.create(s, p, o));
 					n = n+1;
 				} else {
-					s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + n);
+					s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + n);
 					p = NodeFactory.createURI(rdf + "first");
 					o = NodeFactory.createURI(resource);		
 					context.add(Triple.create(s, p, o));
 					if (n==1){
-						s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term);
+						s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term);
 						p = NodeFactory.createURI(rdf + "rest");
-						o = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + n);		
+						o = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + n);		
 						context.add(Triple.create(s, p, o));
 						n = n+1;
 					} else {
-						s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + (n-1));
+						s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + (n-1));
 						p = NodeFactory.createURI(rdf + "rest");
-						o = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + n);		
+						o = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + n);		
 						context.add(Triple.create(s, p, o));
 						n = n+1;
 					}
@@ -122,17 +122,17 @@ public class CalcMakeListNarrowerConceptsWithTerm extends BaseBuiltin {
 			if (n>0){
 				
 				if (n==1) {
-					s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term);
+					s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term);
 					p = NodeFactory.createURI(rdf + "rest");
 					o = NodeFactory.createURI(rdf + "nil");		
 					context.add(Triple.create(s, p, o));
 				} else {
-					s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term + (n-1));
+					s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term + (n-1));
 					p = NodeFactory.createURI(rdf + "rest");
 					o = NodeFactory.createURI(rdf + "nil");		
 					context.add(Triple.create(s, p, o));
 				}		
-				s = NodeFactory.createURI(res + "listNarrowerConceptsOf" + term);
+				s = NodeFactory.createURI(dsp + "listNarrowerConceptsOf" + term);
 				p = NodeFactory.createURI(rdf + "type");
 				o = NodeFactory.createURI(rdf + "List");		
 				context.add(Triple.create(s, p, o));

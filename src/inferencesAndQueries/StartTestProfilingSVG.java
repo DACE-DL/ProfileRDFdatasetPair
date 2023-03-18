@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingQueryObject;
 
-public class QueryTreesAndCropsStatistics {
+public class StartTestProfilingSVG {
 
 	public static void main(String[] args) throws Exception {
 
@@ -20,7 +20,7 @@ public class QueryTreesAndCropsStatistics {
 		String typeQuery = "";
 		String stringQuery = "";
 		ArrayList<String> listRules = new ArrayList<String>();
-		ArrayList<String> listOntologies = new ArrayList<String>();
+		ArrayList<String> listDatasets = new ArrayList<String>();
 		String topSpatial = "";
 		ArrayList<ProfilingQueryObject> listQuery = new ArrayList<ProfilingQueryObject>();
 
@@ -548,33 +548,17 @@ public class QueryTreesAndCropsStatistics {
 				"} ORDER BY ?plot";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 		
-		/*
-		 * titleQuery = "Test "; typeQuery = "SELECT"; stringQuery = prefix +
-		 * "SELECT DISTINCT ?observation ?result" + " WHERE {" +
-		 * "?observation sosa:hasFeatureOfInterest <http://www.afy.fr/Restinclieres/PB17AFL05A05>."
-		 * + "?observation sosa:hasResult ?result." + "}  ORDER by ?observation ";
-		 * listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery,
-		 * stringQuery));
-		 * 
-		 * titleQuery = "Test "; typeQuery = "SELECT"; stringQuery = prefix +
-		 * "SELECT DISTINCT ?observation ?result" + " WHERE {" +
-		 * "?observation sosa:hasFeatureOfInterest <http://www.afy.fr/Restinclieres/PA3AFL05A05>."
-		 * + "?observation sosa:hasResult ?result." + "}  ORDER by ?observation ";
-		 * listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery,
-		 * stringQuery));
-		 * 
-		 */
 		
-		//Object to JSON in file
-	//	ObjectMapper objectMapper = new ObjectMapper();
-	//	objectMapper.writeValue(new File("D:\\var\\www\\Profiling\\queries\\queryForTreesAndCropsStatistics.json"), listQuery);
+		// Sauvegarde des queries dans un fichier json
+		//	ObjectMapper objectMapper = new ObjectMapper();
+	    //	objectMapper.writeValue(new File("D:\\var\\www\\Profiling\\queries\\queryForTreesAndCropsStatistics.json"), listQuery);
 		
 		Instant start0 = Instant.now();
 		
-		listRules.add("agroforestryTreesAndCropsStatistics.rules");
+		listRules.add("profiling.rules");
 		topSpatial = "true";
 		
-		CreateInferredModelAndRunQueries.InferencesAndQuery(listOntologies, listRules, topSpatial, listQuery);
+		CreateInferredModelAndRunQueries.InferencesAndQuery(listDatasets, listRules, topSpatial, listQuery);
 		
 		Instant end0 = Instant.now();
 		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");

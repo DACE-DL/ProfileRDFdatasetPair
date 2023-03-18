@@ -54,11 +54,14 @@ public class CreateInferredModelAndRunQueries {
 		// Récupération du top spatial
 		String topSpatial = ProfilingUtil.extractParameter(pathOfTheParameters.toString(), "topSpatial"); 	
 		//System.out.println("topSpatial : " + topSpatial);
-		
+		String consoleOutput = ProfilingUtil.extractParameter(pathOfTheParameters.toString(), "consoleOutput");
+		//System.out.println("console output : " + consoleOutput); 
+		//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 		// Création du model inféré
 		InfModel infModel = CreateInferedModel.createInferedModel(listSourceDatasetsFileName, listRulesFileName, topSpatial);
 		// Execution des requêtes sur le modèle inféré
-		listQueriesOutputs = QueryInferedModel.queryInferedModel(listQueriesFileName, infModel);
+		listQueriesOutputs = QueryInferedModel.queryInferedModel(listQueriesFileName, infModel, consoleOutput);
+		//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 	    
 		// Sauvegarde des résultats dans fichier JSON	
 		Path pathOfTheResultsFile = Paths.get(ProfilingConf.folderForResults, fileNameResults);
@@ -67,8 +70,8 @@ public class CreateInferredModelAndRunQueries {
 		
 	}
 	
-	public static void InferencesAndQuery(ArrayList<String> listOntologies, ArrayList<String> listRules, String topSpatial, ArrayList<ProfilingQueryObject> listQueries) throws Exception {
-	    InfModel infModel = CreateInferedModel.createInferedModel(listOntologies, listRules, topSpatial);
+	public static void InferencesAndQuery(ArrayList<String> listDatasets, ArrayList<String> listRules, String topSpatial, ArrayList<ProfilingQueryObject> listQueries) throws Exception {
+	    InfModel infModel = CreateInferedModel.createInferedModel(listDatasets, listRules, topSpatial);
 	    QueryInferedModel.queryInferedModel(infModel, listQueries);
 	}
 

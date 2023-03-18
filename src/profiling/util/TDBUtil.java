@@ -68,7 +68,7 @@ public class TDBUtil {
         catch (IOException e) {System.out.println("IO problem");}
 	}
 	
-	public static void InputInputStreamContentToTDB(String serializationType, InputStream inputStream, String graphURI) throws Exception {
+	public static void InputInputStreamContentToTDB(String base, InputStream inputStream, String graphURI) throws Exception {
 		try {   
 			Dataset dataset = CreateTDBDataset();
 			dataset.begin(ReadWrite.WRITE);
@@ -76,7 +76,7 @@ public class TDBUtil {
 			// Read JSON File and put it in temporary model
 			Model modelTemp = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);    
 			// read the RDF/JSON files in temporary model
-			modelTemp.read(inputStream, serializationType );
+			modelTemp.read(inputStream, base );
 			// Add temporary model to model
 			model.add(modelTemp);
 			dataset.commit();    
@@ -241,6 +241,7 @@ public class TDBUtil {
 			outStream.close();   
 			model.close();
 		}
+		catch (Exception e) {System.out.println("problem with the conversion: " + e );}
 		finally { 
 			dataset.end() ; 
 		}
@@ -308,16 +309,17 @@ public class TDBUtil {
 	}
 	
 	public static void DeleteTDBContent(String graphURI) throws Exception {
-		Dataset dataset = CreateTDBDataset();
-		// Create transaction for writing
-		dataset.begin(ReadWrite.WRITE);
-		try { 
-			Model model = dataset.getNamedModel(graphURI);
-			model.removeAll();
-			model.clearNsPrefixMap();
+		try {
+			Dataset dataset = CreateTDBDataset();
+		    // Create transaction for writing
+		    dataset.begin(ReadWrite.WRITE);
+			dataset.removeNamedModel(graphURI);
 			dataset.commit();
+			dataset.close();	
 		}
-		finally {dataset.end();
+		catch (FileNotFoundException e) {System.out.println("File not found");}
+        catch (IOException e) {System.out.println("IO problem");}
+		catch (Exception e) {System.out.println("problem with DeleteTDBContent " + e );
 		}
 	}
 	

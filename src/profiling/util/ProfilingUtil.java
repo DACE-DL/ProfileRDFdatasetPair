@@ -73,8 +73,8 @@ public class ProfilingUtil {
 			//on récupère le contenu du fichier
 			String jsonString = ProfilingUtil.readFileAsString(nameJsonFile);
 			ObjectMapper mapper = new ObjectMapper();
-			JsonNode jsonNode = mapper.readTree(jsonString );
-			valueParameter = jsonNode.get(keyParameter).toString();
+			JsonNode jsonNode = mapper.readTree(jsonString);
+			valueParameter = jsonNode.get(keyParameter).textValue();
 			
 		} else {
 			System.out.println("Le fichier " + nameJsonFile +  " est inexistant !"); 

@@ -7,8 +7,6 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
-import org.apache.logging.log4j.Logger;
-import org.apache.logging.log4j.LogManager;
 
 public final class ProfilingConf { 
 	
@@ -26,7 +24,9 @@ public final class ProfilingConf {
 	public static String mainFolderProfiling = null;
 	
 	public static String fileNameListDatasetsForInitTDB = null;
+	public static String fileNameListDatasetsForJSONLDconversion = null;
 	public static String fileNameListSourceDatasets = null;
+	public static String fileNameListTargetDatasets = null;
 	public static String fileNameListRules = null;
 	public static String fileNameListQueries = null;
 	public static String fileNameParameters = null;
@@ -43,9 +43,7 @@ public final class ProfilingConf {
 	public static String fileNameTDBdatabase = null;
 	
 	//query prefix
-	public static String afy = null;
-	public static String afo = null;
-	public static String res = null;
+	public static String dsp = null;
 	public static String skos = null;
 	public static String skosXL = null;
 	public static String vs = null;
@@ -63,8 +61,6 @@ public final class ProfilingConf {
 	public static String ssn = null;
 	public static String bfo = null;
 	public static String om = null;
-	public static String agrov = null;
-	public static String afv = null;
 	public static String wpo = null;
 	public static String ncbi = null;
 	public static String time = null;
@@ -73,22 +69,21 @@ public final class ProfilingConf {
 	public static String wgs = null;
 	public static String sio = null;
 	public static String uom = null;
+	public static String vid = null;
 	
 	public static String queryPrefix = null;
 	
-	public static Logger agroforestry_logger;
-
 	/**
 	 * Constructor
 	*/
 	public ProfilingConf() {
-		agroforestry_logger = LogManager.getLogger(getClass());
+		
 		Properties prop = new Properties();
 		InputStream input = null;
 		try {
 			input = getClass().getClassLoader().getResourceAsStream(ProfilingConf.filename);
 			if (input == null) {
-				agroforestry_logger.error("No file " + ProfilingConf.filename);
+				
 			}
 			prop.load(input);
 			
@@ -123,7 +118,9 @@ public final class ProfilingConf {
 			}
 			
 			fileNameListDatasetsForInitTDB = prop.getProperty("fileNameListDatasetsForInitTDB");	
+			fileNameListDatasetsForJSONLDconversion = prop.getProperty("fileNameListDatasetsForJSONLDconversion");	
 			fileNameListSourceDatasets = prop.getProperty("fileNameListSourceDatasets");
+			fileNameListTargetDatasets = prop.getProperty("fileNameListTargetDatasets");
 			fileNameListRules = prop.getProperty("fileNameListRules");
 			fileNameListQueries = prop.getProperty("fileNameListQueries");
 			fileNameParameters = prop.getProperty("fileNameParameters");
@@ -156,9 +153,7 @@ public final class ProfilingConf {
 			folderForTDB = pathfolderForTDB.toString();
 			fileNameTDBdatabase = prop.getProperty("fileNameTDBdatabase");
 			
-			afy = prop.getProperty("afy");
-			afo = prop.getProperty("afo");
-			res = prop.getProperty("res");
+			dsp = prop.getProperty("dsp");
 			skos = prop.getProperty("skos");
 			skosXL = prop.getProperty("skosXL");
 			vs = prop.getProperty("vs");
@@ -176,8 +171,6 @@ public final class ProfilingConf {
 			ssn = prop.getProperty("ssn");
 			bfo = prop.getProperty("bfo");
 			om = prop.getProperty("om");
-			agrov = prop.getProperty("agrov");
-			afv = prop.getProperty("afv");
 			wpo = prop.getProperty("wpo");
 			ncbi = prop.getProperty("ncbi");
 			time = prop.getProperty("time");
@@ -186,14 +179,12 @@ public final class ProfilingConf {
 			wgs = prop.getProperty("wgs");
 			sio = prop.getProperty("sio");
 			uom = prop.getProperty("uom");
+			vid = prop.getProperty("void");
 			
 			// Prefix pour les query
 			
-			queryPrefix =  
-					"prefix afy: <" + afy + ">\n" +
-					"prefix afo: <" + afo + ">\n" +	
-					"prefix afv: <" + afv + ">\n" +			
-					"prefix res: <" + res + ">\n" +
+			queryPrefix =  	
+					"prefix dsp: <" + dsp + ">\n" +
 					"prefix skos: <" + skos + ">\n" +
 					"prefix skosXL: <" + skosXL + ">\n" +
 					"prefix vs: <" + vs + ">\n" +
@@ -216,7 +207,8 @@ public final class ProfilingConf {
 					"prefix wgs: <" + wgs + ">\n" +
 					"prefix sio: <" + sio + ">\n" +
 					"prefix uom: <" + uom + ">\n" +
-					"prefix bfo: <" + bfo + ">\n" ;
+					"prefix bfo: <" + bfo + ">\n" +
+					"prefix void: <" + vid + ">\n" ;
 							
 			ProfilingConf.prop = prop;
 			input.close();
