@@ -17,11 +17,11 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListDatatypes extends BaseBuiltin {
+public class CalcMakeListLanguages extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcMakeListDatatypes";
+		return "calcMakeListLanguages";
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
-		String nameOfList = dsp + "listOfDatatypes";
+		String nameOfList = dsp + "listOfLanguages";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -82,12 +82,12 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
         });
 
 		// Duplicate checking
-		List<String> listDistinctDatatypes = new ArrayList<>();
+		List<String> listDistinctLanguages = new ArrayList<>();
 		listObject.forEach((object) -> {
 			if (object.isLiteral()) {
-				if (object.asLiteral().getDatatype() != null) {
-					if (!listDistinctDatatypes.contains(object.asLiteral().getDatatype().toString())) { 
-						listDistinctDatatypes.add(object.asLiteral().getDatatype().toString());
+				if (object.asLiteral().getLanguage() != "") {
+					if (!listDistinctLanguages.contains(object.asLiteral().getLanguage().toString())) { 
+						listDistinctLanguages.add(object.asLiteral().getLanguage().toString());
 					}
 				}			
 			} 
@@ -95,7 +95,7 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
 
 		// System.out.println("OK liste");
 
-		for (String datatype : listDistinctDatatypes) {
+		for (String datatype : listDistinctLanguages) {
 			if (n == 0) {
 				s = NodeFactory.createURI(nameOfList);
 				p = NodeFactory.createURI(rdf + "first");

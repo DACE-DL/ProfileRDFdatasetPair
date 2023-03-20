@@ -245,6 +245,70 @@ public class StartTestProfiling {
 		stringQuery = prefix + "SELECT (?element AS ?Datatype) WHERE { dsp:listOfDatatypes rdf:rest*/rdf:first ?element }";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
+		titleQuery = "Languages";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?element AS ?Language) WHERE { dsp:listOfLanguages rdf:rest*/rdf:first ?element }";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Typed string length";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Average_length) WHERE {dsp:thisOntology dsp:typedStringLength ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Untyped string length";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Average_length) WHERE {dsp:thisOntology dsp:untypedStringLength ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Typed subjects";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_typed_subjects) WHERE {dsp:thisOntology dsp:typedSubjects ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Labeled subjects";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_labeled_subjects) WHERE {dsp:thisOntology dsp:labeledSubjects ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Same As";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_same_as) WHERE {dsp:thisOntology dsp:sameAs ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Links";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_links) WHERE {dsp:thisOntology dsp:links ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Max per property";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?max) WHERE { dsp:listOfMaxPerProperty rdf:rest*/rdf:first ?element ." +
+							" ?element dsp:asURI ?uri ." +
+							" ?element dsp:asValue ?val ." +
+							" }";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		
+		titleQuery = "Number of subject vocabularies";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_subject_vocabularies) WHERE {dsp:thisOntology dsp:numberOfSubjectVocabularies ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Subject vocabularies";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfSubjectVocabularies rdf:rest*/rdf:first ?element }";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		
+		titleQuery = "Number of object vocabularies";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_object_vocabularies) WHERE {dsp:thisOntology dsp:numberOfObjectVocabularies ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Object vocabularies";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfObjectVocabularies rdf:rest*/rdf:first ?element }";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
 		
 		// Sauvegarde des queries dans un fichier json
 		//ObjectMapper objectMapper = new ObjectMapper();

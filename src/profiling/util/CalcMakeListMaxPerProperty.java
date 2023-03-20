@@ -6,22 +6,28 @@ import java.util.List;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Selector;
 import org.apache.jena.rdf.model.SimpleSelector;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
+import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListDatatypes extends BaseBuiltin {
+public class CalcMakeListMaxPerProperty extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcMakeListDatatypes";
+		return "calcMakeListMaxPerProperty";
 	}
 
 	@Override
@@ -43,7 +49,15 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
-		String nameOfList = dsp + "listOfDatatypes";
+		String prefix = ProfilingConf.queryPrefix;
+		String nameOfList = dsp + "listOfMaxPerProperty";
+		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
+		Node b = NodeFactory.createBlankNode();
+		Node u = NodeFactory.createURI(dsp + "uri");
+		Node v = Util.makeIntNode(0);
+		Node pu = NodeFactory.createURI(dsp + "asURI");
+		Node pv = NodeFactory.createURI(dsp + "asValue");
+
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -59,7 +73,6 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
 		Property p1 = null;
 		Resource o1 = null;
 		List<Resource> listProperty = new ArrayList<>();
-		List<RDFNode> listObject = new ArrayList<>();
 	
 		p1 = model.createProperty(rdf ,"type");
 		o1 = model.createResource(rdf + "Property");
@@ -72,41 +85,50 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
         });
 
 		listProperty.forEach((property) -> {
-			Resource s2 = null;
-			Resource o2 = null;
-			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2) ;
-			StmtIterator stmtIte1 = model.listStatements(selector1);
-			stmtIte1.forEach((stmObj) -> {
-				listObject.add(stmObj.getObject());
-			});
+			System.out.println("Property : " + property.getURI());
+			Query query = QueryFactory.create(prefix +
+					"SELECT (MAX(?o) AS ?usage) " +
+					" WHERE { " +
+					" ?s <" + property.getURI() + "> ?o ." +
+					" FILTER ( datatype(?o) = xsd:integer ) " +
+					" } ");
+			QueryExecution qe = QueryExecutionFactory.create(query, model);
+			ResultSet result = qe.execSelect();
+			if (result.hasNext()) {
+				while (result.hasNext()) {
+					QuerySolution querySolution = result.next();
+					System.out.println("usage : " + querySolution.getLiteral("usage"));
+					ListResources.add(new UriAndNumber(property.getURI().toString(), querySolution.getLiteral("usage").getInt()));
+				}
+			}
         });
-
-		// Duplicate checking
-		List<String> listDistinctDatatypes = new ArrayList<>();
-		listObject.forEach((object) -> {
-			if (object.isLiteral()) {
-				if (object.asLiteral().getDatatype() != null) {
-					if (!listDistinctDatatypes.contains(object.asLiteral().getDatatype().toString())) { 
-						listDistinctDatatypes.add(object.asLiteral().getDatatype().toString());
-					}
-				}			
-			} 
-		});
 
 		// System.out.println("OK liste");
 
-		for (String datatype : listDistinctDatatypes) {
+		for (UriAndNumber resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(datatype);
-				context.add(Triple.create(s, p, o));
+				
+				b = NodeFactory.createBlankNode();
+				u = NodeFactory.createURI(resource.getUri());
+				v = Util.makeIntNode(resource.getNumber());
+				context.add(Triple.create(b, pu, u));
+				context.add(Triple.create(b, pv, v));
+
+				context.add(Triple.create(s, p, b));
 				n = n + 1;
 			} else {
 				s = NodeFactory.createURI(nameOfList + n);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(datatype);
-				context.add(Triple.create(s, p, o));
+				
+				b = NodeFactory.createBlankNode();
+				u = NodeFactory.createURI(resource.getUri());
+				v = Util.makeIntNode(resource.getNumber());
+				context.add(Triple.create(b, pu, u));
+				context.add(Triple.create(b, pv, v));
+
+				context.add(Triple.create(s, p, b));
 				if (n == 1) {
 					s = NodeFactory.createURI(nameOfList);
 					p = NodeFactory.createURI(rdf + "rest");

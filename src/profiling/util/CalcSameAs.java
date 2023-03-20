@@ -1,8 +1,5 @@
 package profiling.util;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.apache.commons.collections4.IteratorUtils;
 import org.apache.jena.graph.Node;
 import org.apache.jena.rdf.model.Model;
@@ -12,18 +9,20 @@ import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Selector;
 import org.apache.jena.rdf.model.SimpleSelector;
 import org.apache.jena.rdf.model.StmtIterator;
-import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.BindingEnvironment;
 import org.apache.jena.reasoner.rulesys.RuleContext;
+import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcEntitiesMentioned extends BaseBuiltin {
+public class CalcSameAs extends BaseBuiltin {
 
 	double nNumber = 0;
+	double l = 0;
+	Integer n = 0;
 
 	@Override
 	public String getName() {
-		return "calcEntitiesMentioned";
+		return "calcSameAs";
 	}
 
 	@Override
@@ -42,49 +41,31 @@ public class CalcEntitiesMentioned extends BaseBuiltin {
 	}
 
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
-		
+		new ProfilingConf();
+		String owl = ProfilingConf.owl;
+		Node number = null;
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
 		boolean success = false;
 
-		new ProfilingConf();
-		String rdf = ProfilingConf.rdf;
-		Node number = null;
-		
-		
-
 		Model model = ModelFactory.createModelForGraph(context.getGraph());
-		Resource s = null;
-		Property p = null;
-		Resource o = null;
-		List<Resource> listProperty = new ArrayList<>();
+		Resource s1 = null;
+		Property p1 = null;
+		Resource o1 = null;
 	
-		p = model.createProperty(rdf ,"type");
-		o = model.createResource(rdf + "Property");
-
-		Selector selector = new SimpleSelector(s, p, o) ;
+		p1 = model.createProperty(owl ,"sameAs");
+		
+		Selector selector = new SimpleSelector(s1, p1, o1) ;
 		StmtIterator stmtIte= model.listStatements(selector);
 		
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
-
+		nNumber = IteratorUtils.size(stmtIte);
 		
-		listProperty.forEach((property) -> {
-			Resource s1 = null;
-			Resource o1 = null;
-			Selector selector1 = new SimpleSelector(s1, model.createProperty(property.getURI()), o1) ;
-			StmtIterator stmtIteSubj = model.listStatements(selector1);
-			nNumber = nNumber + IteratorUtils.size(stmtIteSubj);
-        });
-
 		// Creating a node for the output parameter
 		number = Util.makeIntNode((int) nNumber);
 		// Binding the output parameter to the node
 		BindingEnvironment env = context.getEnv();
 		success = env.bind(args[0], number);
-
 		return success;
 	}
 }

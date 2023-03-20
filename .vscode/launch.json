@@ -1,0 +1,119 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Current File",
+            "request": "launch",
+            "mainClass": "${file}"
+        },
+        {
+            "type": "java",
+            "name": "ConvertXMLfileToJSONLD",
+            "request": "launch",
+            "mainClass": "databaseManagement.ConvertXMLfileToJSONLD",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "TDBInitialisation",
+            "request": "launch",
+            "mainClass": "databaseManagement.TDBInitialisation",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "StartProfiling",
+            "request": "launch",
+            "mainClass": "inferencesAndQueries.StartProfiling",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "StartTestProfiling",
+            "request": "launch",
+            "mainClass": "inferencesAndQueries.StartTestProfiling",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "StartTestProfilingSVG",
+            "request": "launch",
+            "mainClass": "inferencesAndQueries.StartTestProfilingSVG",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "inferencesAndQueries.Test",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "AgroportalApiUtil",
+            "request": "launch",
+            "mainClass": "profiling.util.AgroportalApiUtil",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "AgrovocApiUtil",
+            "request": "launch",
+            "mainClass": "profiling.util.AgrovocApiUtil",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "MeteoFranceApiUtil",
+            "request": "launch",
+            "mainClass": "profiling.util.MeteoFranceApiUtil",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "NcboApiUtil",
+            "request": "launch",
+            "mainClass": "profiling.util.NcboApiUtil",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "ProfilingQueryInfModel",
+            "request": "launch",
+            "mainClass": "queriesForWebService.ProfilingQueryInfModel",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "ProfilingQueryInfModel2",
+            "request": "launch",
+            "mainClass": "queriesForWebService.ProfilingQueryInfModel2",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "ProfilingQueryMain",
+            "request": "launch",
+            "mainClass": "queriesForWebService.ProfilingQueryMain",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "ProfilingQueryPlots",
+            "request": "launch",
+            "mainClass": "queriesForWebService.ProfilingQueryPlots",
+            "projectName": "AobraWebService"
+        },
+        {
+            "type": "java",
+            "name": "ProfilingQueryPlots2",
+            "request": "launch",
+            "mainClass": "queriesForWebService.ProfilingQueryPlots2",
+            "projectName": "AobraWebService"
+        }
+    ]
+}

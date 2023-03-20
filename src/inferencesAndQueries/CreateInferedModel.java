@@ -158,9 +158,19 @@ public class CreateInferedModel {
 		// BuiltinRegistry.theRegistry.register(new CalcNumberOfLiterals());
 		// BuiltinRegistry.theRegistry.register(new CalcNumberBlanksAsSubj());
 		// BuiltinRegistry.theRegistry.register(new CalcNumberBlanksAsObj());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListDatatypes());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListDatatypes());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListLanguages());
+		// BuiltinRegistry.theRegistry.register(new CalcTypedStringLength());
+		// BuiltinRegistry.theRegistry.register(new CalcUntypedStringLength());
+		// BuiltinRegistry.theRegistry.register(new CalcTypedSubjects());
+		// BuiltinRegistry.theRegistry.register(new CalcLabeledSubjects());
+		// BuiltinRegistry.theRegistry.register(new CalcSameAs());
+		// BuiltinRegistry.theRegistry.register(new CalcLinks());
+		BuiltinRegistry.theRegistry.register(new CalcMakeListMaxPerProperty());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListSubjectVocabularies());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListPredicatVocabularies());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListObjectVocabularies());
 		
-
 
 		//String test = "C:/Users/conde/Documents/GitHub/ProfileRDFdatasetPair/src/profiling/util/CalcPropertyUsage.java";
 		//Builtin impl = BuiltinRegistry.theRegistry.getImplementationByURI(test);

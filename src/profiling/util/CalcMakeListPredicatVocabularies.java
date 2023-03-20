@@ -9,7 +9,6 @@ import org.apache.jena.graph.Triple;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Selector;
 import org.apache.jena.rdf.model.SimpleSelector;
@@ -17,11 +16,11 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListDatatypes extends BaseBuiltin {
+public class CalcMakeListPredicatVocabularies extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcMakeListDatatypes";
+		return "calcMakeListPredicatVocabularies";
 	}
 
 	@Override
@@ -43,7 +42,7 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
-		String nameOfList = dsp + "listOfDatatypes";
+		String nameOfList = dsp + "listOfPredicatVocabularies";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -58,54 +57,37 @@ public class CalcMakeListDatatypes extends BaseBuiltin {
 		Resource s1 = null;
 		Property p1 = null;
 		Resource o1 = null;
-		List<Resource> listProperty = new ArrayList<>();
-		List<RDFNode> listObject = new ArrayList<>();
+		List<String> listDistinctSubjectVocabularies = new ArrayList<>();
 	
 		p1 = model.createProperty(rdf ,"type");
 		o1 = model.createResource(rdf + "Property");
 
 		Selector selector = new SimpleSelector(s1, p1, o1) ;
 		StmtIterator stmtIte= model.listStatements(selector);
-		
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
 
-		listProperty.forEach((property) -> {
-			Resource s2 = null;
-			Resource o2 = null;
-			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2) ;
-			StmtIterator stmtIte1 = model.listStatements(selector1);
-			stmtIte1.forEach((stmObj) -> {
-				listObject.add(stmObj.getObject());
-			});
-        });
-
-		// Duplicate checking
-		List<String> listDistinctDatatypes = new ArrayList<>();
-		listObject.forEach((object) -> {
-			if (object.isLiteral()) {
-				if (object.asLiteral().getDatatype() != null) {
-					if (!listDistinctDatatypes.contains(object.asLiteral().getDatatype().toString())) { 
-						listDistinctDatatypes.add(object.asLiteral().getDatatype().toString());
+		stmtIte.forEach((stm) -> {
+			System.out.println("NS : " + stm.getSubject().getNameSpace());
+			if (stm.getSubject().isResource()) {
+				if (!stm.getSubject().isAnon()) {
+					// Duplicate checking
+					if (!listDistinctSubjectVocabularies.contains(stm.getSubject().getNameSpace())) {
+						listDistinctSubjectVocabularies.add(stm.getSubject().getNameSpace());
 					}
-				}			
-			} 
-		});
+				}
+			}
+        });
 
-		// System.out.println("OK liste");
-
-		for (String datatype : listDistinctDatatypes) {
+		for (String vocabulary : listDistinctSubjectVocabularies) {
 			if (n == 0) {
 				s = NodeFactory.createURI(nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(datatype);
+				o = NodeFactory.createLiteral(vocabulary);
 				context.add(Triple.create(s, p, o));
 				n = n + 1;
 			} else {
 				s = NodeFactory.createURI(nameOfList + n);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(datatype);
+				o = NodeFactory.createLiteral(vocabulary);
 				context.add(Triple.create(s, p, o));
 				if (n == 1) {
 					s = NodeFactory.createURI(nameOfList);
