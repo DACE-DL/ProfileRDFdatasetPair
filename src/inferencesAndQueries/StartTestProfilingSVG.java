@@ -22,6 +22,7 @@ public class StartTestProfilingSVG {
 		ArrayList<String> listRules = new ArrayList<String>();
 		ArrayList<String> listDatasets = new ArrayList<String>();
 		String topSpatial = "";
+		String consoleOutput = "";
 		ArrayList<ProfilingQueryObject> listQuery = new ArrayList<ProfilingQueryObject>();
 
 
@@ -557,8 +558,10 @@ public class StartTestProfilingSVG {
 		
 		listRules.add("profiling.rules");
 		topSpatial = "true";
-		
-		CreateInferredModelAndRunQueries.InferencesAndQuery(listDatasets, listRules, topSpatial, listQuery);
+		consoleOutput = "true";
+		String fileNameTestResult = "Result_Test_profiling";
+
+		CreateInferredModelAndRunQueries.InferencesAndQuery(listDatasets, listRules, topSpatial, listQuery, consoleOutput, fileNameTestResult);
 		
 		Instant end0 = Instant.now();
 		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");

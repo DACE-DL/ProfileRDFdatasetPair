@@ -61,6 +61,12 @@ public class CalcMakeListClassDefined extends BaseBuiltin {
 				" ?s rdf:type ?o ." +
 				" FILTER isIRI(?o) ." +
 				" FILTER (?o=rdfs:Class||?o=owl:Class) ." +
+				" FILTER (?s != <http://www.w3.org/2002/07/owl#Class>) " +
+				" FILTER (?s != <http://www.w3.org/2000/01/rdf-schema#Class>) " +
+				" FILTER (?s != <http://www.w3.org/2004/02/skos/core#Concept>) " +
+				" FILTER (?s != <http://www.w3.org/2002/07/owl#Thing>) " +
+				" FILTER (?s != <http://www.w3.org/2002/07/owl#Nothing>) " +
+				" FILTER (?s != <http://www.w3.org/1999/02/22-rdf-syntax-ns#List>) " +  
 				" } " );			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();

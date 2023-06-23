@@ -6,6 +6,12 @@ import java.util.List;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -16,11 +22,11 @@ import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListSubjectVocabularies extends BaseBuiltin {
+public class CalcMakeListProperty extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcMakeListSubjectVocabularies";
+		return "calcMakeListProperty";
 	}
 
 	@Override
@@ -42,7 +48,7 @@ public class CalcMakeListSubjectVocabularies extends BaseBuiltin {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
-		String nameOfList = dsp + "listOfSubjectVocabularies";
+		String nameOfList = "listURIofProperty";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -52,71 +58,48 @@ public class CalcMakeListSubjectVocabularies extends BaseBuiltin {
 		Node s = NodeFactory.createURI(dsp + "sujet");
 		Node p = NodeFactory.createURI(dsp + "predicat");
 		Node o = NodeFactory.createURI(dsp + "objet");
-
-		Model model = ModelFactory.createModelForGraph(context.getGraph());
 		Resource s1 = null;
 		Property p1 = null;
 		Resource o1 = null;
-		List<Resource> listProperty = new ArrayList<>();
-		List<String> listDistinctSubjectVocabularies = new ArrayList<>();
-	
+		List<String> listProperty = new ArrayList<>();
+
+		Model model = ModelFactory.createModelForGraph(context.getGraph());
 		p1 = model.createProperty(rdf ,"type");
 		o1 = model.createResource(rdf + "Property");
 
 		Selector selector = new SimpleSelector(s1, p1, o1) ;
 		StmtIterator stmtIte= model.listStatements(selector);
-		
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
 
-		listProperty.forEach((property) -> {
-			Resource s2 = null;
-			Resource o2 = null;
-			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2) ;
-			StmtIterator stmtIte1 = model.listStatements(selector1);
-			stmtIte1.forEach((stm) -> {
-				if (stm.getSubject().isResource()) {
-					if (!stm.getSubject().isAnon()) {
-						// System.out.println("NS : " + stm.getSubject().getNameSpace());
-						// Duplicate checking
-						if (!listDistinctSubjectVocabularies.contains(stm.getSubject().getNameSpace())) { 
-							listDistinctSubjectVocabularies.add(stm.getSubject().getNameSpace());
-						}
-					}			
-				} 	
-			});
+		stmtIte.forEach((statement) -> {
+            listProperty.add(statement.getSubject().getURI());
         });
 
 		// System.out.println("OK liste");
 
-		for (String vocabulary : listDistinctSubjectVocabularies) {
+		for (String resource : listProperty) {
 			if (n == 0) {
-				s = NodeFactory.createURI(nameOfList);
+				s = NodeFactory.createURI(dsp + nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(vocabulary);
+				o = NodeFactory.createURI(resource);
 				context.add(Triple.create(s, p, o));
 				n = n + 1;
 			} else {
-				s = NodeFactory.createURI(nameOfList + n);
+				s = NodeFactory.createURI(dsp + nameOfList + n);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(vocabulary);
+				o = NodeFactory.createURI(resource);
 				context.add(Triple.create(s, p, o));
 				if (n == 1) {
-					s = NodeFactory.createURI(nameOfList);
+					s = NodeFactory.createURI(dsp + nameOfList);
 					p = NodeFactory.createURI(rdf + "rest");
-					o = NodeFactory.createURI(nameOfList + n);
+					o = NodeFactory.createURI(dsp + nameOfList + n);
 					context.add(Triple.create(s, p, o));
 					n = n + 1;
 				} else {
-					s = NodeFactory.createURI(nameOfList + (n - 1));
+					s = NodeFactory.createURI(dsp + nameOfList + (n - 1));
 					p = NodeFactory.createURI(rdf + "rest");
-					o = NodeFactory.createURI(nameOfList + n);
+					o = NodeFactory.createURI(dsp + nameOfList + n);
 					context.add(Triple.create(s, p, o));
 					n = n + 1;
-				}
-				if (n > 500){
-					break;
 				}
 			}
 		}
@@ -124,17 +107,17 @@ public class CalcMakeListSubjectVocabularies extends BaseBuiltin {
 		if (n > 0) {
 
 			if (n == 1) {
-				s = NodeFactory.createURI(nameOfList);
+				s = NodeFactory.createURI(dsp + nameOfList);
 				p = NodeFactory.createURI(rdf + "rest");
 				o = NodeFactory.createURI(rdf + "nil");
 				context.add(Triple.create(s, p, o));
 			} else {
-				s = NodeFactory.createURI(nameOfList + (n - 1));
+				s = NodeFactory.createURI(dsp + nameOfList + (n - 1));
 				p = NodeFactory.createURI(rdf + "rest");
 				o = NodeFactory.createURI(rdf + "nil");
 				context.add(Triple.create(s, p, o));
 			}
-			s = NodeFactory.createURI(nameOfList);
+			s = NodeFactory.createURI(dsp + nameOfList);
 			p = NodeFactory.createURI(rdf + "type");
 			o = NodeFactory.createURI(rdf + "List");
 			context.add(Triple.create(s, p, o));

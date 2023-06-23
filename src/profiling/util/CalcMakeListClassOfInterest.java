@@ -12,15 +12,14 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcPropertyPerSubj extends BaseBuiltin {
+public class CalcMakeListClassOfInterest extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcPropertyPerSubj";
+		return "calcMakeListClassOfInterest";
 	}
 
 	@Override
@@ -43,52 +42,55 @@ public class CalcPropertyPerSubj extends BaseBuiltin {
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
-		String nameOfList = "listPropertyPerSubj";
+		String nameOfList = "listURIofClassOfInterest";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
 		boolean success = false;
 
-		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
-	
+		ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
 		Integer n = 0;
 		Node s = NodeFactory.createURI(dsp + "sujet");
 		Node p = NodeFactory.createURI(dsp + "predicat");
 		Node o = NodeFactory.createURI(dsp + "objet");
 		Node b = NodeFactory.createBlankNode();
-		Node u = NodeFactory.createURI(dsp + "uri");
-		Node v = Util.makeIntNode(0);
-		Node pu = NodeFactory.createURI(dsp + "asURI");
-		Node pv = NodeFactory.createURI(dsp + "asValue");
+		Node u1 = NodeFactory.createURI(dsp + "class1");
+		Node u2 = NodeFactory.createURI(dsp + "class2");
+		Node pu1 = NodeFactory.createURI(dsp + "asClass1");
+		Node pu2 = NodeFactory.createURI(dsp + "asClass2");
 
 		Model model = ModelFactory.createModelForGraph(context.getGraph());
 		Query query = QueryFactory.create(prefix + 
-			"SELECT (?p AS ?property) (COUNT(?s)/COUNT(DISTINCT ?s) AS ?usage) " +
-			" WHERE { " +
-			" ?p rdf:type <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ." +
-			" ?s ?p ?o ." +
-			" FILTER isIRI(?p) " +
-			" } GROUP BY ?p ORDER BY DESC(?usage) "
-		);			
+				"SELECT DISTINCT (?elementClass1 AS ?class1) (?elementClass2 AS ?class2)" +
+				" WHERE { " +
+				"dsp:listURIofClassDefined rdf:rest*/rdf:first ?elementClass1 ." +
+				"dsp:listURIofClassDefined rdf:rest*/rdf:first ?elementClass2 ." +
+				"FILTER EXISTS {?s1 rdf:type ?elementClass1 .?s2 rdf:type ?elementClass2 .?s1 ?p ?s2 } " +
+				"FILTER  (?elementClass1 = <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/armor> || ?elementClass2 = <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/armor>) " +
+				" } GROUP BY ?elementClass1 ?elementClass2" );	
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				ListResources.add(new UriAndNumber(querySolution.getResource("property").toString(), querySolution.getLiteral("usage").getInt())) ;
+				// System.out.println(querySolution.getResource("class1").toString());
+				// System.out.println(querySolution.getResource("class2").toString());
+				ListResources.add(new UriAndUri(querySolution.getResource("class1").toString(), querySolution.getResource("class2").toString())) ;
 			}
 		}
 
-		for (UriAndNumber resource : ListResources) {
+		// System.out.println("OK liste");
+
+		for (UriAndUri resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(dsp + nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
 				
 				b = NodeFactory.createBlankNode();
-				u = NodeFactory.createURI(resource.getUri());
-				v = Util.makeIntNode(resource.getNumber());
-				context.add(Triple.create(b, pu, u));
-				context.add(Triple.create(b, pv, v));
+				u1 = NodeFactory.createURI(resource.getUri1());
+				u2 = NodeFactory.createURI(resource.getUri2());
+				context.add(Triple.create(b, pu1, u1));
+				context.add(Triple.create(b, pu2, u2));
 
 				context.add(Triple.create(s, p, b));
 				n = n + 1;
@@ -97,10 +99,10 @@ public class CalcPropertyPerSubj extends BaseBuiltin {
 				p = NodeFactory.createURI(rdf + "first");
 				
 				b = NodeFactory.createBlankNode();
-				u = NodeFactory.createURI(resource.getUri());
-				v = Util.makeIntNode(resource.getNumber());
-				context.add(Triple.create(b, pu, u));
-				context.add(Triple.create(b, pv, v));
+				u1 = NodeFactory.createURI(resource.getUri1());
+				u2 = NodeFactory.createURI(resource.getUri2());
+				context.add(Triple.create(b, pu1, u1));
+				context.add(Triple.create(b, pu2, u2));
 
 				context.add(Triple.create(s, p, b));
 				if (n == 1) {

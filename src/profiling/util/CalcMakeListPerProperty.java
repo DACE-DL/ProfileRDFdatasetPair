@@ -6,6 +6,12 @@ import java.util.List;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.rdf.model.Property;
@@ -14,13 +20,16 @@ import org.apache.jena.rdf.model.Selector;
 import org.apache.jena.rdf.model.SimpleSelector;
 import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
+import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListObjectVocabularies extends BaseBuiltin {
+public class CalcMakeListPerProperty extends BaseBuiltin {
+
+	double np = 0; 
 
 	@Override
 	public String getName() {
-		return "calcMakeListObjectVocabularies";
+		return "calcMakeListPerProperty";
 	}
 
 	@Override
@@ -41,8 +50,19 @@ public class CalcMakeListObjectVocabularies extends BaseBuiltin {
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
+		String xsd = ProfilingConf.xsd;
 		String rdf = ProfilingConf.rdf;
-		String nameOfList = dsp + "listOfObjectVocabularies";
+		String prefix = ProfilingConf.queryPrefix;
+		String nameOfList = dsp + "listOfPerProperty";
+		ArrayList<UriAndStringAndBigNumber> ListResources = new ArrayList<UriAndStringAndBigNumber>();
+		Node b = NodeFactory.createBlankNode();
+		Node u = NodeFactory.createURI(dsp + "uri");
+		Node st = NodeFactory.createLiteral("str");
+		Node v = Util.makeIntNode(0);
+		Node pu = NodeFactory.createURI(dsp + "asURI");
+		Node ps = NodeFactory.createURI(dsp + "asStr");
+		Node pv = NodeFactory.createURI(dsp + "asValue");
+
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -58,7 +78,6 @@ public class CalcMakeListObjectVocabularies extends BaseBuiltin {
 		Property p1 = null;
 		Resource o1 = null;
 		List<Resource> listProperty = new ArrayList<>();
-		List<String> listDistinctObjectVocabularies = new ArrayList<>();
 	
 		p1 = model.createProperty(rdf ,"type");
 		o1 = model.createResource(rdf + "Property");
@@ -70,41 +89,63 @@ public class CalcMakeListObjectVocabularies extends BaseBuiltin {
             listProperty.add(statement.getSubject());
         });
 
-		listProperty.forEach((property) -> {
-			Resource s2 = null;
-			Resource o2 = null;
-			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2) ;
-			StmtIterator stmtIte1 = model.listStatements(selector1);
-			stmtIte1.forEach((stm) -> {
-				if (stm.getObject().isResource()) {
-					if (!stm.getObject().isAnon()) {
-						// System.out.println("NS : " + stm.getObject().getNameSpace());
-						// Duplicate checking
-						if (!listDistinctObjectVocabularies.contains(stm.getObject().asResource().getNameSpace())) { 
-							listDistinctObjectVocabularies.add(stm.getObject().asResource().getNameSpace());
-						}
-					}			
-				} 
-			});
-			//System.out.println("property : " + property.getURI() );	
-			//System.out.println("liste : " + listDistinctObjectVocabularies.size() );	
+		
 
+		listProperty.forEach((property) -> {
+			//System.out.println("Property : " + property.getURI());
+			Query query = QueryFactory.create(prefix +
+					"SELECT ?datatype (AVG(?o) AS ?usage) " +
+					" WHERE { " +
+					" ?s <" + property.getURI() + "> ?o ." +
+					" FILTER ( datatype(?o) = xsd:integer || datatype(?o) = xsd:float || datatype(?o) = xsd:double || datatype(?o) = xsd:decimal || datatype(?o) = xsd:dateTime ) " +
+					" } GROUP BY (datatype(?o) AS ?datatype) ORDER BY DESC (?usage) ");
+			QueryExecution qe = QueryExecutionFactory.create(query, model);
+			ResultSet result = qe.execSelect();
+			if (result.hasNext()) {
+				np ++;
+				while (result.hasNext()) {
+					QuerySolution querySolution = result.next();
+					//System.out.println("datatype : " + querySolution.get("datatype"));
+					//System.out.println("usage : " + querySolution.getLiteral("usage"));
+					if (querySolution.getLiteral("usage") != null) {
+						ListResources.add(new UriAndStringAndBigNumber(property.getURI().toString(), querySolution.get("datatype").toString(), querySolution.getLiteral("usage").getLong()));
+					}
+				}
+			}
         });
 
 		// System.out.println("OK liste");
 
-		for (String vocabulary : listDistinctObjectVocabularies) {
+		for (UriAndStringAndBigNumber resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(vocabulary);
-				context.add(Triple.create(s, p, o));
+				
+				b = NodeFactory.createBlankNode();
+				u = NodeFactory.createURI(resource.getUri());
+				st = NodeFactory.createLiteral(resource.getStr());
+				v = Util.makeDoubleNode(resource.getNumber()/np);
+				
+				context.add(Triple.create(b, pu, u));
+				context.add(Triple.create(b, ps, st));
+				context.add(Triple.create(b, pv, v));
+
+				context.add(Triple.create(s, p, b));
 				n = n + 1;
 			} else {
 				s = NodeFactory.createURI(nameOfList + n);
 				p = NodeFactory.createURI(rdf + "first");
-				o = NodeFactory.createLiteral(vocabulary);
-				context.add(Triple.create(s, p, o));
+				
+				b = NodeFactory.createBlankNode();
+				u = NodeFactory.createURI(resource.getUri());
+				st = NodeFactory.createLiteral(resource.getStr());
+				v = Util.makeDoubleNode(resource.getNumber()/np);
+				
+				context.add(Triple.create(b, pu, u));
+				context.add(Triple.create(b, ps, st));
+				context.add(Triple.create(b, pv, v));
+
+				context.add(Triple.create(s, p, b));
 				if (n == 1) {
 					s = NodeFactory.createURI(nameOfList);
 					p = NodeFactory.createURI(rdf + "rest");
@@ -119,10 +160,6 @@ public class CalcMakeListObjectVocabularies extends BaseBuiltin {
 					n = n + 1;
 				}
 			}
-			if (n > 500){
-				break;
-			}
-
 		}
 
 		if (n > 0) {

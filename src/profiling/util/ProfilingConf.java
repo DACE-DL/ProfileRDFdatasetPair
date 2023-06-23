@@ -30,7 +30,8 @@ public final class ProfilingConf {
 	public static String fileNameListRules = null;
 	public static String fileNameListQueries = null;
 	public static String fileNameParameters = null;
-	public static String fileNameResultsQueries = null;
+	public static String fileNameSourceResultsQueries = null;
+	public static String fileNameTargetResultsQueries = null;
 	
 	public static String folderForDatasets = null;
 	public static String folderForRules = null;
@@ -124,7 +125,8 @@ public final class ProfilingConf {
 			fileNameListRules = prop.getProperty("fileNameListRules");
 			fileNameListQueries = prop.getProperty("fileNameListQueries");
 			fileNameParameters = prop.getProperty("fileNameParameters");
-			fileNameResultsQueries = prop.getProperty("fileNameResultsQueries");
+			fileNameSourceResultsQueries = prop.getProperty("fileNameSourceResultsQueries");
+			fileNameTargetResultsQueries = prop.getProperty("fileNameTargetResultsQueries");
 			
 			folderForDatasets = prop.getProperty("folderForDatasets");
 			Path pathfolderForDatasets = Paths.get(mainFolderProfiling + folderForDatasets);

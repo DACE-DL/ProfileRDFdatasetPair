@@ -12,15 +12,14 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcPropertyPerObj extends BaseBuiltin {
+public class CalcMakeListClassNotDefined extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcPropertyPerObj";
+		return "calcMakeListClassNotDefined";
 	}
 
 	@Override
@@ -43,66 +42,51 @@ public class CalcPropertyPerObj extends BaseBuiltin {
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
-		String nameOfList = "listPropertyPerObj";
+		String nameOfList = "listURIofClassNotDefined";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
 		boolean success = false;
 
-		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
-	
+		ArrayList<String> ListResources = new ArrayList<String>();
 		Integer n = 0;
 		Node s = NodeFactory.createURI(dsp + "sujet");
 		Node p = NodeFactory.createURI(dsp + "predicat");
 		Node o = NodeFactory.createURI(dsp + "objet");
-		Node b = NodeFactory.createBlankNode();
-		Node u = NodeFactory.createURI(dsp + "uri");
-		Node v = Util.makeIntNode(0);
-		Node pu = NodeFactory.createURI(dsp + "asURI");
-		Node pv = NodeFactory.createURI(dsp + "asValue");
 
 		Model model = ModelFactory.createModelForGraph(context.getGraph());
 		Query query = QueryFactory.create(prefix + 
-				"SELECT DISTINCT (?p AS ?property) (COUNT(?s)/COUNT(DISTINCT ?s) AS ?usage) " +
+				"SELECT DISTINCT (?elementClass AS ?class) " +
 				" WHERE { " +
-				" ?p rdf:type <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ." +
-				" ?s ?p ?o ." +
-				" FILTER isIRI(?p) " +
-				" } GROUP BY ?p  ORDER BY DESC (?usage)"
-		);			
+				"dsp:listURIofClass rdf:rest*/rdf:first ?elementClass ." +
+				" FILTER NOT EXISTS { " +
+				"dsp:listURIofClassDefined rdf:rest*/rdf:first ?elementClass ." +
+				" } " +
+				" } " );			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				ListResources.add(new UriAndNumber(querySolution.getResource("property").toString(), querySolution.getLiteral("usage").getInt())) ;
+				// System.out.println(querySolution.getResource("class").toString());
+				ListResources.add(querySolution.getResource("class").toString()) ;
 			}
 		}
 
-		for (UriAndNumber resource : ListResources) {
+		// System.out.println("OK liste");
+
+		for (String resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(dsp + nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
-				
-				b = NodeFactory.createBlankNode();
-				u = NodeFactory.createURI(resource.getUri());
-				v = Util.makeIntNode(resource.getNumber());
-				context.add(Triple.create(b, pu, u));
-				context.add(Triple.create(b, pv, v));
-
-				context.add(Triple.create(s, p, b));
+				o = NodeFactory.createURI(resource);
+				context.add(Triple.create(s, p, o));
 				n = n + 1;
 			} else {
 				s = NodeFactory.createURI(dsp + nameOfList + n);
 				p = NodeFactory.createURI(rdf + "first");
-				
-				b = NodeFactory.createBlankNode();
-				u = NodeFactory.createURI(resource.getUri());
-				v = Util.makeIntNode(resource.getNumber());
-				context.add(Triple.create(b, pu, u));
-				context.add(Triple.create(b, pv, v));
-
-				context.add(Triple.create(s, p, b));
+				o = NodeFactory.createURI(resource);
+				context.add(Triple.create(s, p, o));
 				if (n == 1) {
 					s = NodeFactory.createURI(dsp + nameOfList);
 					p = NodeFactory.createURI(rdf + "rest");

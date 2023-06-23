@@ -4,8 +4,11 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingQueryObject;
+
 
 public class StartTestProfiling {
 
@@ -21,7 +24,9 @@ public class StartTestProfiling {
 		String stringQuery = "";
 		ArrayList<String> listRules = new ArrayList<String>();
 		ArrayList<String> listDatasets = new ArrayList<String>();
+		String fileNameTestResult = "";
 		String topSpatial = "";
+		String consoleOutput = "";
 		ArrayList<ProfilingQueryObject> listQuery = new ArrayList<ProfilingQueryObject>();
 
 
@@ -54,7 +59,12 @@ public class StartTestProfiling {
 		typeQuery = "SELECT";
 		stringQuery = prefix + "SELECT (?number AS ?Triples) WHERE {dsp:thisOntology dsp:numberOfTriples ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
-		
+
+		titleQuery = "CLASS";
+		typeQuery = "";
+		stringQuery = "";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
 		titleQuery = "Number of class";
 		typeQuery = "SELECT";
 		stringQuery = prefix + "SELECT (?number AS ?Number_of_class) WHERE {dsp:thisOntology dsp:numberOfClass ?number.}";
@@ -62,7 +72,7 @@ public class StartTestProfiling {
 
 		titleQuery = "List of class";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?element AS ?Class) WHERE { dsp:listURIofClass rdf:rest*/rdf:first ?element }";
+		stringQuery = prefix + "SELECT (?element AS ?Class) WHERE { dsp:listURIofClass rdf:rest*/rdf:first ?element } LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Class usage count";
@@ -70,7 +80,7 @@ public class StartTestProfiling {
 		stringQuery = prefix + "SELECT (?uri AS ?Class) (?val AS ?usage) WHERE { dsp:listClassUsageCount rdf:rest*/rdf:first ?element ." +
 							" ?element dsp:asURI ?uri ." +
 							" ?element dsp:asValue ?val ." +
-							" }";
+							" } LIMIT 50";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Number of class defined";
@@ -80,8 +90,72 @@ public class StartTestProfiling {
 
 		titleQuery = "List of class Defined";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?element AS ?Class_defined) WHERE { dsp:listURIofClassDefined rdf:rest*/rdf:first ?element }";
+		stringQuery = prefix + "SELECT (?element AS ?Class_defined) WHERE { dsp:listURIofClassDefined rdf:rest*/rdf:first ?element } LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		
+		titleQuery = "Number of class not defined";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_not_defined_class) WHERE {dsp:thisOntology dsp:numberOfClassNotDefined ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "List of class Not Defined";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?element AS ?Class_not_defined) WHERE { dsp:listURIofClassNotDefined rdf:rest*/rdf:first ?element } ";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Number of class of interest";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_class_of_interest) WHERE {dsp:thisOntology dsp:numberOfClassOfInterest ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "List of class of interest";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?URI1 AS ?Class1) (?URI2 AS ?Class2) WHERE { dsp:listURIofClassOfInterest rdf:rest*/rdf:first ?element ." +
+		" ?element dsp:asClass1 ?URI1 ." +
+		" ?element dsp:asClass2 ?URI2 ." +
+		" } LIMIT 100";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Number of distinct property";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_distinct_property) WHERE {dsp:thisOntology dsp:numberOfDistinctProperty ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "List of property";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?element AS ?Property) WHERE { dsp:listURIofProperty rdf:rest*/rdf:first ?element } LIMIT 20";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Number of property of interest";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_property_of_interest) WHERE {dsp:thisOntology dsp:numberOfPropertyOfInterest ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "List of property of interest";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?URI1 AS ?Class1) (?URI3 AS ?Property) (?URI2 AS ?Class2) WHERE { dsp:listURIofPropertyOfInterest rdf:rest*/rdf:first ?element ." +
+		" ?element dsp:asClass1 ?URI1 ." +
+		" ?element dsp:asClass2 ?URI2 ." +
+		" ?element dsp:asProperty ?URI3 ." +
+		" } LIMIT 100";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Test";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (SUM(?val)/COUNT(?uri) AS ?usage) WHERE { dsp:listClassUsageCount rdf:rest*/rdf:first ?element ." +
+							" ?element dsp:asURI ?uri ." +
+							" ?element dsp:asValue ?val ." +
+							" } ";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		
+		titleQuery = "Test 2";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT DISTINCT (?p AS ?property) (COUNT(?p) AS ?count) WHERE { " +
+							" ?s rdf:type <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/actor> ." +
+							" ?s ?p ?o ." +
+							" } GROUP BY ?p";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		
 		
 		titleQuery = "Number of class and subclass";
 		typeQuery = "SELECT";
@@ -93,7 +167,7 @@ public class StartTestProfiling {
 		stringQuery = prefix + "SELECT (?URI1 AS ?Class) (?URI2 AS ?Subclass) WHERE { dsp:listURIsOfClassAndSubclass rdf:rest*/rdf:first ?element ." +
 		" ?element dsp:asClass ?URI1 ." +
 		" ?element dsp:asSubclass ?URI2 ." +
-		" }";
+		" } LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Class hierarchy deep";
@@ -112,69 +186,55 @@ public class StartTestProfiling {
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		
-		titleQuery = "Number of property";
+
+		titleQuery = "Number of distinct subject of properties";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_property) WHERE {dsp:thisOntology dsp:numberOfPropertyUsage ?number.}";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_subject) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubject ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Property usage count";
+		titleQuery = "Number of Property usage distinct per subject";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listPropertyUsage rdf:rest*/rdf:first ?element ." +
-							" ?element dsp:asURI ?uri ." +
-							" ?element dsp:asValue ?val ." +
-							" }";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_property_usage_distinct_per_subject) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectSum ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Number of property usage per subject";
+		titleQuery = "Mean of Property usage distinct per subject";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_property) WHERE {dsp:thisOntology dsp:numberOfPropertyUsagePerSubj ?number.}";
-		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
-
-		titleQuery = "Property usage per subject";
-		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listPropertyUsagePerSubj rdf:rest*/rdf:first ?element ." +
-							" ?element dsp:asURI ?uri ." +
-							" ?element dsp:asValue ?val ." +
-							" }";
+		stringQuery = prefix + "SELECT (?number AS ?Mean_of_property_usage_distinct_per_subject) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectMean ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 		
-		titleQuery = "Number of property usage per object";
+		titleQuery = "Minimun of Property usage distinct per subject";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_property) WHERE {dsp:thisOntology dsp:numberOfPropertyUsagePerObj ?number.}";
+		stringQuery = prefix + "SELECT (?number AS ?Min_of_property_usage_distinct_per_subject) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectMin ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		
+		titleQuery = "Maximun of Property usage distinct per subject";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Max_of_property_usage_distinct_per_subject) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectMax ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Property usage per object";
+		titleQuery = "Number of distinct object of properties";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listPropertyUsagePerObj rdf:rest*/rdf:first ?element ." +
-							" ?element dsp:asURI ?uri ." +
-							" ?element dsp:asValue ?val ." +
-							" }";
-		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));	
-
-		titleQuery = "Number of property per subject";
-		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_property) WHERE {dsp:thisOntology dsp:numberOfPropertyPerSubj ?number.}";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_object) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubject ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Property per subject";
+		titleQuery = "Number of Property usage distinct per object";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listPropertyPerSubj rdf:rest*/rdf:first ?element ." +
-							" ?element dsp:asURI ?uri ." +
-							" ?element dsp:asValue ?val ." +
-							" }";
+		stringQuery = prefix + "SELECT (?number AS ?Number_of_property_usage_distinct_per_object) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectSum ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Number of property per object";
+		titleQuery = "Mean of Property usage distinct per object";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_property) WHERE {dsp:thisOntology dsp:numberOfPropertyPerObj ?number.}";
+		stringQuery = prefix + "SELECT (?number AS ?Mean_of_property_usage_distinct_per_object) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectMean ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
-
-		titleQuery = "Property per object";
+		
+		titleQuery = "Minimun of Property usage distinct per object";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listPropertyPerObj rdf:rest*/rdf:first ?element ." +
-							" ?element dsp:asURI ?uri ." +
-							" ?element dsp:asValue ?val ." +
-							" }";
+		stringQuery = prefix + "SELECT (?number AS ?Min_of_property_usage_distinct_per_object) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectMin ?number.}";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		
+		titleQuery = "Maximun of Property usage distinct per object";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?number AS ?Max_of_property_usage_distinct_per_object) WHERE {dsp:thisOntology dsp:numberOfPropertyUsageDistinctPerSubjectMax ?number.}";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Out degree";
@@ -192,7 +252,7 @@ public class StartTestProfiling {
 		stringQuery = prefix + "SELECT (?URI1 AS ?Property) (?URI2 AS ?Subproperty) WHERE { dsp:listURIsOfPropertyAndSubproperty rdf:rest*/rdf:first ?element ." +
 		" ?element dsp:asProperty ?URI1 ." +
 		" ?element dsp:asSubproperty ?URI2 ." +
-		" }";
+		" } LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Property hierarchy deep";
@@ -217,7 +277,7 @@ public class StartTestProfiling {
 		
 		titleQuery = "Distinct entities";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number) WHERE {dsp:thisOntology dsp:distinctEntities ?number.}";
+		stringQuery = prefix + "SELECT (?number AS ?Number) WHERE {dsp:thisOntology dsp:distinctEntities ?number.} LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Number of literals";
@@ -242,7 +302,7 @@ public class StartTestProfiling {
 
 		titleQuery = "Datatypes";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?element AS ?Datatype) WHERE { dsp:listOfDatatypes rdf:rest*/rdf:first ?element }";
+		stringQuery = prefix + "SELECT (?element AS ?Datatype) WHERE { dsp:listOfDatatypes rdf:rest*/rdf:first ?element } LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		titleQuery = "Languages";
@@ -282,45 +342,68 @@ public class StartTestProfiling {
 
 		titleQuery = "Max per property";
 		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?max) WHERE { dsp:listOfMaxPerProperty rdf:rest*/rdf:first ?element ." +
+		stringQuery = prefix + "SELECT (?uri AS ?Property) (?datatype AS ?Datatype) (?val AS ?Max) WHERE { dsp:listOfMaxPerProperty rdf:rest*/rdf:first ?element ." +
 							" ?element dsp:asURI ?uri ." +
+							" ?element dsp:asStr ?datatype ." +
 							" ?element dsp:asValue ?val ." +
-							" }";
+							" } ORDER BY DESC (?val) LIMIT 20";
+		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		titleQuery = "Average per property";
+		typeQuery = "SELECT";
+		stringQuery = prefix + "SELECT (?uri AS ?Property) (?datatype AS ?Datatype) (?val AS ?Average) WHERE { dsp:listOfPerProperty rdf:rest*/rdf:first ?element ." +
+							" ?element dsp:asURI ?uri ." +
+							" ?element dsp:asStr ?datatype ." +
+							" ?element dsp:asValue ?val ." +
+							" }ORDER BY DESC (?val) LIMIT 20";
 		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
 		
-		titleQuery = "Number of subject vocabularies";
-		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_subject_vocabularies) WHERE {dsp:thisOntology dsp:numberOfSubjectVocabularies ?number.}";
-		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		 titleQuery = "Number of subject vocabularies";
+		 typeQuery = "SELECT";
+		 stringQuery = prefix + "SELECT (?number AS ?Number_of_subject_vocabularies) WHERE {dsp:thisOntology dsp:numberOfSubjectVocabularies ?number.}";
+		 listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Subject vocabularies";
-		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfSubjectVocabularies rdf:rest*/rdf:first ?element }";
-		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
-		
-		titleQuery = "Number of object vocabularies";
-		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?number AS ?Number_of_object_vocabularies) WHERE {dsp:thisOntology dsp:numberOfObjectVocabularies ?number.}";
-		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		 titleQuery = "Subject vocabularies";
+		 typeQuery = "SELECT";
+		 stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfSubjectVocabularies rdf:rest*/rdf:first ?element } LIMIT 20";
+		 listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		titleQuery = "Object vocabularies";
-		typeQuery = "SELECT";
-		stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfObjectVocabularies rdf:rest*/rdf:first ?element }";
-		listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+		 titleQuery = "Number of predicat vocabularies";
+		 typeQuery = "SELECT";
+		 stringQuery = prefix + "SELECT (?number AS ?Number_of_predicat_vocabularies) WHERE {dsp:thisOntology dsp:numberOfPredicatVocabularies ?number.}";
+		 listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
 
-		
-		// Sauvegarde des queries dans un fichier json
+		 titleQuery = "Predicat vocabularies";
+		 typeQuery = "SELECT";
+		 stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfPredicatVocabularies rdf:rest*/rdf:first ?element } LIMIT 20";
+		 listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		 titleQuery = "Number of object vocabularies";
+		 typeQuery = "SELECT";
+		 stringQuery = prefix + "SELECT (?number AS ?Number_of_object_vocabularies) WHERE {dsp:thisOntology dsp:numberOfObjectVocabularies ?number.}";
+		 listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		 titleQuery = "Object vocabularies";
+		 typeQuery = "SELECT";
+		 stringQuery = prefix + "SELECT (?element AS ?Vocabulary) WHERE { dsp:listOfObjectVocabularies rdf:rest*/rdf:first ?element } LIMIT 20";
+		 listQuery.add(new ProfilingQueryObject(titleQuery, typeQuery, stringQuery));
+
+		 
+
+		//Sauvegarde des queries dans un fichier json
 		//ObjectMapper objectMapper = new ObjectMapper();
-	    //objectMapper.writeValue(new File("C:\\var\\www\\profiling\\queries\\testQuery.json"), listQuery);
+	    //objectMapper.writeValue(new File("C:\\var\\www\\profiling\\queries\\queryProfiling.json"), listQuery);
 		
 		Instant start0 = Instant.now();
 		
 		listRules.add("profiling.rules");
 		listDatasets.add("source.json");
+		fileNameTestResult = "Result_Test_profiling.json";
 		topSpatial = "false";
+		consoleOutput = "true";
 		
-		CreateInferredModelAndRunQueries.InferencesAndQuery(listDatasets, listRules, topSpatial, listQuery);
+		CreateInferredModelAndRunQueries.InferencesAndQuery(listDatasets, listRules, topSpatial, listQuery, consoleOutput, fileNameTestResult);
 		
 		Instant end0 = Instant.now();
 		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");

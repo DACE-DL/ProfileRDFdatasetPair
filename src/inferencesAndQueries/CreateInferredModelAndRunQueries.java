@@ -26,11 +26,18 @@ public class CreateInferredModelAndRunQueries {
 		//System.out.println("mainFolderProfiling : " + ProfilingConf.mainFolderProfiling);
 		//System.out.println("fileNameListSourceDatasets : " + ProfilingConf.fileNameListSourceDatasets);
 
-		// Récupération du nom du fichier contenant la liste des ontologies à traiter.
+		// Récupération du nom du fichier contenant la liste des ontologies à traiter pour le jeux de données source.
 		Path pathOfTheListDatasets = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameListSourceDatasets);					
 		// Récupération du nom des fichiers d'ontologies dans listSourceDatasetsFileName
 		ArrayList<String> listSourceDatasetsFileName = new ArrayList<String>();	
 		listSourceDatasetsFileName = ProfilingUtil.makeListFileName(pathOfTheListDatasets.toString()); 
+
+		// Récupération du nom du fichier contenant la liste des ontologies à traiter pour le jeux de données target.
+		pathOfTheListDatasets = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameListTargetDatasets);					
+		// Récupération du nom des fichiers d'ontologies dans listSourceDatasetsFileName
+		ArrayList<String> listTargetDatasetsFileName = new ArrayList<String>();	
+		listTargetDatasetsFileName = ProfilingUtil.makeListFileName(pathOfTheListDatasets.toString()); 
+
 
 		// Récupération du nom du fichier contenant la liste des règles à traiter.
 		Path pathOfTheListRules = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameListRules);
@@ -44,10 +51,16 @@ public class CreateInferredModelAndRunQueries {
 		ArrayList<String> listQueriesFileName = new ArrayList<String>();	
 		listQueriesFileName = ProfilingUtil.makeListFileName(pathOfTheListQueries.toString());
 		
-		// Récupération du nom du fichier pour les résultat.
-		Path pathOfTheFileResults = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameResultsQueries);
-		// Récupération du nom du fichier des résultat dans fileNameResults
-		String fileNameResults = ProfilingUtil.makeFileName(pathOfTheFileResults.toString()); 
+		// Récupération du nom du fichier pour les résultat du jeux de données source.
+		//System.out.println("ProfilingConf.fileNameSourceResultsQueries : " + ProfilingConf.fileNameSourceResultsQueries);
+		Path pathOfTheFileResults = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameSourceResultsQueries);
+		// Récupération du nom du fichier des résultat dans fileNameSourceResults
+		String fileNameSourceResults = ProfilingUtil.makeFileName(pathOfTheFileResults.toString()); 
+
+		// Récupération du nom du fichier pour les résultat du jeux de données target.
+		pathOfTheFileResults = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameTargetResultsQueries);
+		// Récupération du nom du fichier des résultat dans fileNameSourceResults
+		String fileNameTargetResults = ProfilingUtil.makeFileName(pathOfTheFileResults.toString());
 		
 		// Récupération du nom du fichier contenant les paramètres.
 		Path pathOfTheParameters = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameParameters);
@@ -57,22 +70,42 @@ public class CreateInferredModelAndRunQueries {
 		String consoleOutput = ProfilingUtil.extractParameter(pathOfTheParameters.toString(), "consoleOutput");
 		//System.out.println("console output : " + consoleOutput); 
 		//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+		// Pour le jeux de données Source 
+		System.out.println("Processing the Source dataset");
 		// Création du model inféré
 		InfModel infModel = CreateInferedModel.createInferedModel(listSourceDatasetsFileName, listRulesFileName, topSpatial);
 		// Execution des requêtes sur le modèle inféré
 		listQueriesOutputs = QueryInferedModel.queryInferedModel(listQueriesFileName, infModel, consoleOutput);
-		//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-	    
 		// Sauvegarde des résultats dans fichier JSON	
-		Path pathOfTheResultsFile = Paths.get(ProfilingConf.folderForResults, fileNameResults);
+		Path pathOfTheResultsFile = Paths.get(ProfilingConf.folderForResults, fileNameSourceResults);
 		ObjectMapper objectMapper = new ObjectMapper();
 		objectMapper.writeValue(new File(pathOfTheResultsFile.toString()), listQueriesOutputs);
 		
+		// Pour le jeux de données Target
+		System.out.println("Processing the Target dataset");
+		infModel = CreateInferedModel.createInferedModel(listTargetDatasetsFileName, listRulesFileName, topSpatial);
+		// Execution des requêtes sur le modèle inféré
+		listQueriesOutputs = QueryInferedModel.queryInferedModel(listQueriesFileName, infModel, consoleOutput);
+		// Sauvegarde des résultats dans fichier JSON	
+		pathOfTheResultsFile = Paths.get(ProfilingConf.folderForResults, fileNameTargetResults);
+		objectMapper.writeValue(new File(pathOfTheResultsFile.toString()), listQueriesOutputs);
+		//:::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
+
 	}
 	
-	public static void InferencesAndQuery(ArrayList<String> listDatasets, ArrayList<String> listRules, String topSpatial, ArrayList<ProfilingQueryObject> listQueries) throws Exception {
+	public static void InferencesAndQuery(ArrayList<String> listDatasets, ArrayList<String> listRules,
+	 String topSpatial, ArrayList<ProfilingQueryObject> listQueries, String consoleOutput, String fileNameResult) throws Exception {
+
+		ArrayList<ProfilingQueryOutputObject> listQueriesOutputs = new ArrayList<ProfilingQueryOutputObject>();
+
 	    InfModel infModel = CreateInferedModel.createInferedModel(listDatasets, listRules, topSpatial);
-	    QueryInferedModel.queryInferedModel(infModel, listQueries);
+	    listQueriesOutputs = QueryInferedModel.queryInferedModel(infModel, listQueries, consoleOutput);
+		
+		// Récupération du nom du fichier pour les résultat du jeux de données target.
+		Path pathOfTheResultsFile = Paths.get(ProfilingConf.folderForResults, fileNameResult);
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.writeValue(new File(pathOfTheResultsFile.toString()), listQueriesOutputs);
+		
 	}
 
 }

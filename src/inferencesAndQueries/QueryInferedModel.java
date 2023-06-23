@@ -3,6 +3,7 @@ package inferencesAndQueries;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -86,11 +87,11 @@ public class QueryInferedModel {
 					// Affichage uniquement si sortie sur la console demandée.
 					if (consoleOutput.equalsIgnoreCase("true")) {
 						ResultSetFormatter.out(System.out, results);
+					} else {
+						ByteArrayOutputStream os = new ByteArrayOutputStream();
+						ResultSetFormatter.outputAsJSON(os, results);
+						QueryOutput.setQueryResponse(os.toString("UTF-8"));		
 					}
-
-					ByteArrayOutputStream os = new ByteArrayOutputStream();
-		   			ResultSetFormatter.outputAsJSON(os, results);
-					QueryOutput.setQueryResponse(os.toString("UTF-8"));		
 				}
 			}
 			listQueriesOutputs.add(QueryOutput);
@@ -104,53 +105,60 @@ public class QueryInferedModel {
 
 	
 	// Ici on injecte un liste de requêtes en entrée
-    public static ArrayList<ProfilingQueryOutputObject> queryInferedModel(InfModel infModel, ArrayList<ProfilingQueryObject> listQueries) {
+    public static ArrayList<ProfilingQueryOutputObject> queryInferedModel(InfModel infModel, ArrayList<ProfilingQueryObject> listQueries, String consoleOutput) throws UnsupportedEncodingException {
     	
-    	System.out.println("Model size before inference:" + infModel.size());
+		ArrayList<ProfilingQueryOutputObject> listQueriesOutputs = new ArrayList<ProfilingQueryOutputObject>();
+		System.out.println("Model size before inference:" + infModel.size());
     	
     	for(ProfilingQueryObject objectQuery: listQueries){
-    		
-    		if (objectQuery.getTitleQuery().length()>0) {
-    			System.out.println();
-    			for (int c = 0; c < objectQuery.getTitleQuery().length()+6; c++)
-    				System.out.print("=");
-    			System.out.println();
-    			System.out.println("|  " + objectQuery.getTitleQuery() + "  |");
-    			for (int c = 0; c < objectQuery.getTitleQuery().length()+6; c++)
-    				System.out.print("=");
-    			System.out.println();
-    		}	else {
-    			System.out.println();
-    		}
-    			
-    		//System.out.println(stringQuery);
-    		if (!(objectQuery.getStringQuery() == "")) {
-    			if (objectQuery.getTypeQuery() == "INSERT") {
-    				UpdateRequest update = UpdateFactory.create(objectQuery.getStringQuery());
+
+			// Sauvegarde résultat
+			ProfilingQueryOutputObject QueryOutput = new ProfilingQueryOutputObject(null, "{}");
+			QueryOutput.setQuery(objectQuery);
+
+			// Affichage des titres query uniquement si sortie sur la console demandée.
+			if (consoleOutput.equalsIgnoreCase("true")) {
+				if (objectQuery.getTitleQuery().length() > 0) {
+					System.out.println();
+					for (int c = 0; c < objectQuery.getTitleQuery().length() + 6; c++)
+						System.out.print("=");
+					System.out.println();
+					System.out.println("|  " + objectQuery.getTitleQuery() + "  |");
+					for (int c = 0; c < objectQuery.getTitleQuery().length() + 6; c++)
+						System.out.print("=");
+					System.out.println();
+				} else {
+					System.out.println();
+				}
+		    }
+
+			
+			if (!(objectQuery.getStringQuery().equals(""))) {
+				if (objectQuery.getTypeQuery().equalsIgnoreCase("INSERT")) {
+					UpdateRequest update = UpdateFactory.create(objectQuery.getStringQuery());
 					UpdateAction.execute(update, infModel);
-    			}
-    			if (objectQuery.getTypeQuery() == "SELECT") {
-    				Query query = QueryFactory.create(objectQuery.getStringQuery());
-    				QueryExecution qe = QueryExecutionFactory.create(query, infModel);		
-    				ResultSet results = qe.execSelect();
-    				ResultSetFormatter.out(System.out, results);
-    			}
-    		}
+				}
+				if (objectQuery.getTypeQuery().equalsIgnoreCase("SELECT")) {	
+					Query query = QueryFactory.create(objectQuery.getStringQuery());
+					QueryExecution qe = QueryExecutionFactory.create(query, infModel);		
+					ResultSet results = qe.execSelect();
+				
+					// Affichage uniquement si sortie sur la console demandée.
+					if (consoleOutput.equalsIgnoreCase("true")) {
+						ResultSetFormatter.out(System.out, results);
+					} else {
+						ByteArrayOutputStream os = new ByteArrayOutputStream();
+						ResultSetFormatter.outputAsJSON(os, results);
+						QueryOutput.setQueryResponse(os.toString("UTF-8"));		
+					}
+				}
+			}
+			listQueriesOutputs.add(QueryOutput);
     	}
         
     	System.out.println("Model size after inference:" + infModel.size());
 		
-    	return null;	
+    	return listQueriesOutputs;	
     
     }
-
-
-	public static void queryInferedModel(InfModel infModel, ArrayList<ProfilingQueryObject> listQueries,
-			String consoleOutput) {
-	}
-
-	
-	
-
-
 }

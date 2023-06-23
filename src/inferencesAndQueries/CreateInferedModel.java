@@ -94,60 +94,21 @@ public class CreateInferedModel {
 		
 		// Register custom primitive
 		
-		// BuiltinRegistry.theRegistry.register(new CalcRSumVector());
-		// BuiltinRegistry.theRegistry.register(new CalcRMeanVector());
-		// BuiltinRegistry.theRegistry.register(new CalcRMedianVector());
-		// BuiltinRegistry.theRegistry.register(new CalcRSdVector());
-		// BuiltinRegistry.theRegistry.register(new CalcRVarVector());
-		// BuiltinRegistry.theRegistry.register(new CalcRatio());
-		// BuiltinRegistry.theRegistry.register(new CalcPercent());
-		// BuiltinRegistry.theRegistry.register(new CalcRQuantile());
-		// BuiltinRegistry.theRegistry.register(new CalcRShapiro());
-		// BuiltinRegistry.theRegistry.register(new CalcRKolmogorov());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeVector());
-		// BuiltinRegistry.theRegistry.register(new CalcTotalTreesBiomass());
-		// BuiltinRegistry.theRegistry.register(new CalcRWilcoxon());
-		// BuiltinRegistry.theRegistry.register(new CalcRAreaWKTPolygone());
-		// BuiltinRegistry.theRegistry.register(new CalcTreeBasalArea());
-		// BuiltinRegistry.theRegistry.register(new CalcTotalTreesBasalArea());
-		// BuiltinRegistry.theRegistry.register(new CalcTestSPARQL());
-		// BuiltinRegistry.theRegistry.register(new CalcDistanceBetween2Elements());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListConceptsWithTerm());
-		// BuiltinRegistry.theRegistry.register(new CalcNearestNeighbor());
-		// BuiltinRegistry.theRegistry.register(new CalcNeighborOfNeighbors());
-		// BuiltinRegistry.theRegistry.register(new CalcIsInLine());
-		// BuiltinRegistry.theRegistry.register(new CalcNumberTreesInPlot());
-		// BuiltinRegistry.theRegistry.register(new CalcOkTreatmentNeighbors());
-		// BuiltinRegistry.theRegistry.register(new CalcGeomLine());
-		// BuiltinRegistry.theRegistry.register(new CalcDistanceBetweenLines());
-		// BuiltinRegistry.theRegistry.register(new CalcDistanceBetweenTrees());
-		// BuiltinRegistry.theRegistry.register(new CalcAzimutLine());
-		// BuiltinRegistry.theRegistry.register(new CalcPlotLinesDirection());
-		// BuiltinRegistry.theRegistry.register(new CalcDistanceBetweenTreesOfLine());
-		// BuiltinRegistry.theRegistry.register(new CalcTreeDensity());
-		// BuiltinRegistry.theRegistry.register(new CalcCultivatedLaneOpennessIndex());
-		// BuiltinRegistry.theRegistry.register(new CalcTreeDensityIndex());
-		// BuiltinRegistry.theRegistry.register(new CalcCumulativeCrownLengthIndex());
-		// BuiltinRegistry.theRegistry.register(new CalcRatioDiff());
-		// BuiltinRegistry.theRegistry.register(new CalcScore());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListNarrowerConceptsWithTerm());
-		// BuiltinRegistry.theRegistry.register(new CalcGiveLabelOfRessource());
-		
-		
-		
-		
-		// BuiltinRegistry.theRegistry.register(new CalcNumberOfTriples());
 		// BuiltinRegistry.theRegistry.register(new CalcTest());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListClass());
-		// BuiltinRegistry.theRegistry.register(new CalcClassUsageCount());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListClassDefined());
+		
+		BuiltinRegistry.theRegistry.register(new CalcNumberOfTriples());
+		BuiltinRegistry.theRegistry.register(new CalcMakeListProperty());
+		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsageDistinctPerSubject());
+		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsageDistinctPerObject());
+		BuiltinRegistry.theRegistry.register(new CalcMakeListClass());
+		BuiltinRegistry.theRegistry.register(new CalcClassUsageCount());
+		BuiltinRegistry.theRegistry.register(new CalcMakeListClassDefined());
+		BuiltinRegistry.theRegistry.register(new CalcMakeListClassNotDefined());
+		BuiltinRegistry.theRegistry.register(new CalcMakeListClassOfInterest());
+		//BuiltinRegistry.theRegistry.register(new CalcMakeListPropertyOfInterest());
 		// BuiltinRegistry.theRegistry.register(new CalcMakeListClassAndSubClass());
 		// BuiltinRegistry.theRegistry.register(new CalcClassHierarchyDeep());
 		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsage());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsagePerSubj());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsagePerObj());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyPerSubj());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyPerObj());
 		// BuiltinRegistry.theRegistry.register(new CalcOutDegree());
 		// BuiltinRegistry.theRegistry.register(new CalcInDegree());
 		// BuiltinRegistry.theRegistry.register(new CalcMakeListPropertyAndSubproperty());
@@ -166,10 +127,9 @@ public class CreateInferedModel {
 		// BuiltinRegistry.theRegistry.register(new CalcLabeledSubjects());
 		// BuiltinRegistry.theRegistry.register(new CalcSameAs());
 		// BuiltinRegistry.theRegistry.register(new CalcLinks());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListMaxPerProperty());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListSubjectVocabularies());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListPredicatVocabularies());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListObjectVocabularies());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListMaxPerProperty());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListPerProperty());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeListSPOvocabularies());
 		
 
 		//String test = "C:/Users/conde/Documents/GitHub/ProfileRDFdatasetPair/src/profiling/util/CalcPropertyUsage.java";

@@ -25,6 +25,8 @@ public class TDBInitialisation {
 		// Chemin d'accès, noms fichiers...
 		new ProfilingConf(); 
 
+		//System.out.println(ProfilingConf.mainFolderProfiling);
+		//System.out.println(ProfilingConf.fileNameListDatasetsForInitTDB);
 		// Récupération du nom du fichier contenant la liste des datasets à traiter.
 		Path pathOfTheListDatasets = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameListDatasetsForInitTDB);
 			

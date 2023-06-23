@@ -176,7 +176,28 @@ public class ProfilingUtil {
 		} 
         return strUTF8;
 
-}
-	
+	}
+	public static String controlNameSpace(String uri){
+		String str = "";
+		String lastLetterURI = uri.substring(uri.length()-1);
+			if	(lastLetterURI.equals("/") || lastLetterURI.equals("#")) {
+				str = uri;
+			}	else {
+				//System.out.println("NS : " + uri);
+				int indexSlach = uri.lastIndexOf("/");
+				int indexDiese = uri.lastIndexOf("#");
+				if(indexDiese > indexSlach) {
+					//Il y a un dièse (#) aprés un slach (/)
+					str = uri.substring(0,indexDiese + 1);
+				} else {
+					if (indexSlach > -1) { 
+						str = uri.substring(0,indexSlach + 1);
+					}
+				}
+				//System.out.println("NS2 : " + str);
+			}
+		return str;
+
+	}
 
 }

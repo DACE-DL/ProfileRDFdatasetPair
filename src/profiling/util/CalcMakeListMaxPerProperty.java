@@ -48,14 +48,17 @@ public class CalcMakeListMaxPerProperty extends BaseBuiltin {
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
+		String xsd = ProfilingConf.xsd;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
 		String nameOfList = dsp + "listOfMaxPerProperty";
-		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
+		ArrayList<UriAndStringAndBigNumber> ListResources = new ArrayList<UriAndStringAndBigNumber>();
 		Node b = NodeFactory.createBlankNode();
 		Node u = NodeFactory.createURI(dsp + "uri");
+		Node st = NodeFactory.createLiteral("str");
 		Node v = Util.makeIntNode(0);
 		Node pu = NodeFactory.createURI(dsp + "asURI");
+		Node ps = NodeFactory.createURI(dsp + "asStr");
 		Node pv = NodeFactory.createURI(dsp + "asValue");
 
 		// Check we received the correct number of parameters
@@ -85,35 +88,41 @@ public class CalcMakeListMaxPerProperty extends BaseBuiltin {
         });
 
 		listProperty.forEach((property) -> {
-			System.out.println("Property : " + property.getURI());
+			//System.out.println("Property : " + property.getURI());
 			Query query = QueryFactory.create(prefix +
-					"SELECT (MAX(?o) AS ?usage) " +
+					"SELECT ?datatype (Max(?o) AS ?usage) " +
 					" WHERE { " +
 					" ?s <" + property.getURI() + "> ?o ." +
-					" FILTER ( datatype(?o) = xsd:integer ) " +
-					" } ");
+					" FILTER ( datatype(?o) = xsd:integer || datatype(?o) = xsd:float || datatype(?o) = xsd:double || datatype(?o) = xsd:decimal || datatype(?o) = xsd:dateTime ) " +
+					" } GROUP BY (datatype(?o) AS ?datatype) ORDER BY DESC (?usage)");
 			QueryExecution qe = QueryExecutionFactory.create(query, model);
 			ResultSet result = qe.execSelect();
 			if (result.hasNext()) {
 				while (result.hasNext()) {
 					QuerySolution querySolution = result.next();
-					System.out.println("usage : " + querySolution.getLiteral("usage"));
-					ListResources.add(new UriAndNumber(property.getURI().toString(), querySolution.getLiteral("usage").getInt()));
+					//System.out.println("datatype : " + querySolution.get("datatype"));
+					//System.out.println("usage : " + querySolution.getLiteral("usage"));
+					if (querySolution.getLiteral("usage") != null) {
+						ListResources.add(new UriAndStringAndBigNumber(property.getURI().toString(), querySolution.get("datatype").toString(), querySolution.getLiteral("usage").getLong()));
+					}
 				}
 			}
         });
 
 		// System.out.println("OK liste");
 
-		for (UriAndNumber resource : ListResources) {
+		for (UriAndStringAndBigNumber resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
 				
 				b = NodeFactory.createBlankNode();
 				u = NodeFactory.createURI(resource.getUri());
-				v = Util.makeIntNode(resource.getNumber());
+				st = NodeFactory.createLiteral(resource.getStr());
+				v = Util.makeDoubleNode(resource.getNumber());
+				
 				context.add(Triple.create(b, pu, u));
+				context.add(Triple.create(b, ps, st));
 				context.add(Triple.create(b, pv, v));
 
 				context.add(Triple.create(s, p, b));
@@ -124,8 +133,11 @@ public class CalcMakeListMaxPerProperty extends BaseBuiltin {
 				
 				b = NodeFactory.createBlankNode();
 				u = NodeFactory.createURI(resource.getUri());
-				v = Util.makeIntNode(resource.getNumber());
+				st = NodeFactory.createLiteral(resource.getStr());
+				v = Util.makeDoubleNode(resource.getNumber());
+				
 				context.add(Triple.create(b, pu, u));
+				context.add(Triple.create(b, ps, st));
 				context.add(Triple.create(b, pv, v));
 
 				context.add(Triple.create(s, p, b));
