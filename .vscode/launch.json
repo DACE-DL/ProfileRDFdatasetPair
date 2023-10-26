@@ -6,6 +6,34 @@
     "configurations": [
         {
             "type": "java",
+            "name": "TDBVerification",
+            "request": "launch",
+            "mainClass": "databaseManagement.TDBVerification",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
+            "name": "TDBInitialisation_V2",
+            "request": "launch",
+            "mainClass": "databaseManagement.TDBInitialisation_V2",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
+            "name": "ConvertXMLfileToJSONLD_V2",
+            "request": "launch",
+            "mainClass": "databaseManagement.ConvertXMLfileToJSONLD_V2",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
+            "name": "Test",
+            "request": "launch",
+            "mainClass": "inferencesAndQueries.Test",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
             "name": "TDBInitialisation",
             "request": "launch",
             "mainClass": "databaseManagement.TDBInitialisation",

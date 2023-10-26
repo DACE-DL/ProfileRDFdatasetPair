@@ -1,6 +1,7 @@
 package profiling.util;
 
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.InputStream;
 import java.net.URL;
@@ -11,7 +12,7 @@ import java.util.Properties;
 public final class ProfilingConf { 
 	
 	private static Properties prop = null;
-	private static String filename = "profiling.properties";
+	private static String filename = "C:\\Users\\conde\\Documents\\GitHub\\ProfileRDFdatasetPair\\config\\profiling.properties";
 	
 	public static String preferredLanguage = null;
 	public static String preferredLanguages = null;
@@ -27,6 +28,7 @@ public final class ProfilingConf {
 	public static String fileNameListDatasetsForJSONLDconversion = null;
 	public static String fileNameListSourceDatasets = null;
 	public static String fileNameListTargetDatasets = null;
+	public static String fileNameListPairDatasets = null;
 	public static String fileNameListRules = null;
 	public static String fileNameListQueries = null;
 	public static String fileNameParameters = null;
@@ -37,7 +39,10 @@ public final class ProfilingConf {
 	public static String folderForRules = null;
 	public static String folderForQueries = null;
 	public static String folderForResults = null;
+	public static String folderForSourceResults = null;
+	public static String folderForTargetResults = null;
 	public static String folderForScriptR = null;
+	public static String folderForTmp = null;
 	public static String fileNameScriptRSf = null;
 	
 	public static String folderForTDB = null;
@@ -81,11 +86,12 @@ public final class ProfilingConf {
 		
 		Properties prop = new Properties();
 		InputStream input = null;
+		// InputStream in = null;
 		try {
-			input = getClass().getClassLoader().getResourceAsStream(ProfilingConf.filename);
-			if (input == null) {
-				
-			}
+			//input = getClass().getClassLoader().getResourceAsStream(ProfilingConf.filename);
+			input = new FileInputStream(ProfilingConf.filename);
+			//System.out.println("input : " + input);
+			
 			prop.load(input);
 			
 			preferredLanguage = prop.getProperty("preferredLanguage");
@@ -122,6 +128,7 @@ public final class ProfilingConf {
 			fileNameListDatasetsForJSONLDconversion = prop.getProperty("fileNameListDatasetsForJSONLDconversion");	
 			fileNameListSourceDatasets = prop.getProperty("fileNameListSourceDatasets");
 			fileNameListTargetDatasets = prop.getProperty("fileNameListTargetDatasets");
+			fileNameListPairDatasets = prop.getProperty("fileNameListPairDatasets");
 			fileNameListRules = prop.getProperty("fileNameListRules");
 			fileNameListQueries = prop.getProperty("fileNameListQueries");
 			fileNameParameters = prop.getProperty("fileNameParameters");
@@ -144,6 +151,14 @@ public final class ProfilingConf {
 			Path pathfolderForResults = Paths.get(mainFolderProfiling + folderForResults);
 			folderForResults = pathfolderForResults.toString();
 			
+			folderForSourceResults = prop.getProperty("folderForSourceResults");
+			Path pathfolderForSourceResults = Paths.get(mainFolderProfiling + folderForSourceResults);
+			folderForSourceResults = pathfolderForSourceResults.toString();
+			
+			folderForTargetResults = prop.getProperty("folderForTargetResults");
+			Path pathfolderForTargetResults = Paths.get(mainFolderProfiling + folderForTargetResults);
+			folderForTargetResults = pathfolderForTargetResults.toString();
+		
 			folderForScriptR = prop.getProperty("folderForScriptR");
 			Path pathfolderForScriptR = Paths.get(mainFolderProfiling + folderForScriptR);
 			folderForScriptR = pathfolderForScriptR.toString();
@@ -154,6 +169,10 @@ public final class ProfilingConf {
 			Path pathfolderForTDB = Paths.get(mainFolderProfiling + folderForTDB);
 			folderForTDB = pathfolderForTDB.toString();
 			fileNameTDBdatabase = prop.getProperty("fileNameTDBdatabase");
+
+			folderForTmp = prop.getProperty("folderForTmp");
+			Path pathfolderForTmp = Paths.get(mainFolderProfiling + folderForTmp);
+			folderForTmp = pathfolderForTmp.toString();
 			
 			dsp = prop.getProperty("dsp");
 			skos = prop.getProperty("skos");

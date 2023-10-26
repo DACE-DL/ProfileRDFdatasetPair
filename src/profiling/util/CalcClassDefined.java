@@ -15,11 +15,11 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListPropertyAndSubproperty extends BaseBuiltin {
+public class CalcClassDefined extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcMakeListPropertyAndSubproperty";
+		return "calcClassDefined";
 	}
 
 	@Override
@@ -42,67 +42,55 @@ public class CalcMakeListPropertyAndSubproperty extends BaseBuiltin {
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
-		String nameOfList = "listURIsOfPropertyAndSubproperty";
+		String nameOfList = "listClassDefined";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
 		boolean success = false;
 
-		ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
-	
+		ArrayList<String> ListResources = new ArrayList<String>();
 		Integer n = 0;
 		Node s = NodeFactory.createURI(dsp + "sujet");
 		Node p = NodeFactory.createURI(dsp + "predicat");
 		Node o = NodeFactory.createURI(dsp + "objet");
-		Node b = NodeFactory.createBlankNode();
-		Node u1 = NodeFactory.createURI(dsp + "property");
-		Node u2 = NodeFactory.createURI(dsp + "subproperty");
-		Node pu1 = NodeFactory.createURI(dsp + "asProperty");
-		Node pu2 = NodeFactory.createURI(dsp + "asSubproperty");
 
 		Model model = ModelFactory.createModelForGraph(context.getGraph());
 		Query query = QueryFactory.create(prefix + 
-				"SELECT DISTINCT (?o AS ?property) (?s AS ?subproperty) " +
+				"SELECT DISTINCT (?s AS ?class) " +
 				" WHERE { " +
-				" ?s rdfs:subPropertyOf ?o ." +
-				" FILTER isIRI(?o) " +
-				" FILTER isIRI(?s) " +
-				" FILTER (?o != ?s) " +
-				" } ORDER BY ?s ?o "
-		);			
+				" ?s rdf:type ?o ." +
+				" FILTER isIRI(?o) ." +
+				" FILTER (?o=rdfs:Class||?o=owl:Class) ." +
+				" FILTER (?s != <http://www.w3.org/2002/07/owl#Class>) " +
+				" FILTER (?s != <http://www.w3.org/2000/01/rdf-schema#Class>) " +
+				" FILTER (?s != <http://www.w3.org/2004/02/skos/core#Concept>) " +
+				" FILTER (?s != <http://www.w3.org/2002/07/owl#Thing>) " +
+				" FILTER (?s != <http://www.w3.org/2002/07/owl#Nothing>) " +
+				" FILTER (?s != <http://www.w3.org/1999/02/22-rdf-syntax-ns#List>) " +  
+				" } " );			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				ListResources.add(new UriAndUri(querySolution.getResource("property").toString(), querySolution.getResource("subproperty").toString())) ;
+				ListResources.add(querySolution.getResource("class").toString()) ;
 			}
 		}
 
-		for (UriAndUri resource : ListResources) {
+		// System.out.println("OK liste");
+
+		for (String resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(dsp + nameOfList);
 				p = NodeFactory.createURI(rdf + "first");
-				
-				b = NodeFactory.createBlankNode();
-				u1 = NodeFactory.createURI(resource.getUri1());
-				u2 = NodeFactory.createURI(resource.getUri2());
-				context.add(Triple.create(b, pu1, u1));
-				context.add(Triple.create(b, pu2, u2));
-
-				context.add(Triple.create(s, p, b));
+				o = NodeFactory.createURI(resource);
+				context.add(Triple.create(s, p, o));
 				n = n + 1;
 			} else {
 				s = NodeFactory.createURI(dsp + nameOfList + n);
 				p = NodeFactory.createURI(rdf + "first");
-				
-				b = NodeFactory.createBlankNode();
-				u1 = NodeFactory.createURI(resource.getUri1());
-				u2 = NodeFactory.createURI(resource.getUri2());
-				context.add(Triple.create(b, pu1, u1));
-				context.add(Triple.create(b, pu2, u2));
-
-				context.add(Triple.create(s, p, b));
+				o = NodeFactory.createURI(resource);
+				context.add(Triple.create(s, p, o));
 				if (n == 1) {
 					s = NodeFactory.createURI(dsp + nameOfList);
 					p = NodeFactory.createURI(rdf + "rest");

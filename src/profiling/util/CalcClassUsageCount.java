@@ -96,6 +96,12 @@ public class CalcClassUsageCount extends BaseBuiltin {
 			}
 		}
 
+		try {
+			ProfilingUtil.makeJsonUriAndNumberFile(ListResources, nameOfList + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		for (UriAndNumber resource : ListResources) {
 			if (n == 0) {
 				s = NodeFactory.createURI(dsp + nameOfList);

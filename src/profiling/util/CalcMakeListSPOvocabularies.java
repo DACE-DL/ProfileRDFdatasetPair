@@ -3,7 +3,6 @@ package profiling.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.compress.java.util.jar.Pack200;
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;

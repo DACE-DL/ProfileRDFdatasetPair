@@ -1,15 +1,19 @@
 package profiling.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.BiFunction;
+
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
@@ -42,6 +46,27 @@ public class ProfilingUtil {
 		}
 		
 		return listFile;
+	}
+
+	// Retourne un tableau contenant les paires de noms de fichier à traiter	
+	public static ArrayList<PairOfDatasets> makeListPairFileName(String nameJsonFile) throws Exception {
+		ArrayList<PairOfDatasets> listPairFiles = new ArrayList<PairOfDatasets>();
+		File file  = new File(nameJsonFile);
+		if (file.exists()) {
+		   //on récupère le noms des fichier à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(nameJsonFile);
+
+			ObjectMapper objectMapper = new ObjectMapper();
+
+			List<PairOfDatasets> fileNames = objectMapper.readValue(jsonArray, new TypeReference<List<PairOfDatasets>>(){});
+			
+			fileNames.forEach(x -> listPairFiles.add(new PairOfDatasets(x.getIdPair(), x.getFilesSource(), x.getFilesTarget())));
+				
+		} else {
+			System.out.println("Le fichier " + nameJsonFile +  " est inexistant !"); 
+		}
+		
+		return listPairFiles;
 	}
 
 	// Retourne un nom de fichier à traiter	
@@ -85,8 +110,14 @@ public class ProfilingUtil {
 
 	public static String readFileAsString(String file)throws Exception
     {
-        return new String(Files.readAllBytes(Paths.get(file)));
-    }
+		String myString = "";
+		try {
+		myString = new String(Files.readAllBytes(Paths.get(file)));
+		}
+		catch (IOException e) {System.out.println("IO problem readFileAsString : " + e );}
+		catch (Exception e) {System.out.println("big problem in readFileAsString : " + e.toString());}
+        return myString;
+	}
 	
 	/**
 	 * For a given subject resource and a given collection of (label/comment) properties this finds the most
@@ -197,7 +228,252 @@ public class ProfilingUtil {
 				//System.out.println("NS2 : " + str);
 			}
 		return str;
-
+	}
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriFile(ArrayList<Uri> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<Uri> makeArrayListUri(String nameJsonObjectFile) throws Exception {
+		ArrayList<Uri> listObjects = new ArrayList<Uri>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<Uri>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
 	}
 
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriAndNumberFile(ArrayList<UriAndNumber> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        // System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<UriAndNumber> makeArrayListUriAndNumber(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriAndNumber> listObjects = new ArrayList<UriAndNumber>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndNumber>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+	
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriAndStringAndBigNumberFile(ArrayList<UriAndStringAndBigNumber> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<UriAndStringAndBigNumber> makeArrayListUriAndStringAndBigNumber(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriAndStringAndBigNumber> listObjects = new ArrayList<UriAndStringAndBigNumber>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndStringAndBigNumber>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriAndUriFile(ArrayList<UriAndUri> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<UriAndUri> makeArrayListUriAndUri(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriAndUri> listObjects = new ArrayList<UriAndUri>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndUri>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriAndUriAndUriFile(ArrayList<UriAndUriAndUri> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<UriAndUriAndUri> makeArrayListUriAndUriAndUri(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriAndUriAndUri> listObjects = new ArrayList<UriAndUriAndUri>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndUriAndUri>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+	
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriAndUriAndUriAndNumberFile(ArrayList<UriAndUriAndUriAndNumber> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<UriAndUriAndUriAndNumber> makeArrayListUriAndUriAndUriAndNumber(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriAndUriAndUriAndNumber> listObjects = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndUriAndUriAndNumber>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+	
+	//  Déplacer les fichiers d'un répertoire dans un autre répertoire
+	public static void ChangeDirectoryFiles(String oldDirectory, String newDirectory) throws Exception {
+		File file = new File(oldDirectory);
+		File newFile = new File(newDirectory);
+		//System.out.println(newDirectory);
+		//System.out.println(newFile.getName());
+		boolean dirCreated = newFile.mkdirs();
+		if (dirCreated) {
+			System.out.println("Directory creation : " + newFile.getName()); 
+		}
+        File[] files = file.listFiles();
+		ArrayList<String> listFiles = new ArrayList<String>();
+        if (files != null) {
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isDirectory() == true) {
+
+                } else {
+                    listFiles.add(files[i].getName());
+                }
+            }
+        }
+		for (String fileName : listFiles) {
+			Path transfert = Files.move(Paths.get(oldDirectory, fileName), Paths.get(newDirectory, fileName), StandardCopyOption.REPLACE_EXISTING); 
+			if(!(transfert != null)) {
+				System.out.println("Unable to move file : " + fileName); 
+			} 
+		}	
+	}
+
+	//  Créé un fichier JSON partir d'un tableau de string
+	public static void makeJsonStringFile(List<String> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	// Retourne un tableau de string à partir d'un fichier JSON
+	public static ArrayList<String> makeArrayListString(String nameJsonObjectFile) throws Exception {
+		ArrayList<String> listObjects = new ArrayList<String>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<String>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonResultsFile(ProfilingResultsObject profilingResultsObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        // System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, profilingResultsObject);		
+	}
+
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<Lpt> makeArrayListLpt(String nameJsonObjectFile) throws Exception {
+		ArrayList<Lpt> listObjects = new ArrayList<Lpt>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<Lpt>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonLptFile(ArrayList<Lpt> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
 }

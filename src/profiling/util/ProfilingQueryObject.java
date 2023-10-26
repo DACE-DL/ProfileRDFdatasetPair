@@ -1,7 +1,9 @@
 package profiling.util;
 
 public class ProfilingQueryObject {
+	private Integer iDquery;
 	private String titleQuery;
+	private String commentQuery;
 	private String typeQuery;
 	private String stringQuery;
 	
@@ -10,10 +12,20 @@ public class ProfilingQueryObject {
 		super();
 	}
 
-	public ProfilingQueryObject(String titleQuery, String typeQuery, String stringQuery) {
+	public ProfilingQueryObject(Integer iDquery, String titleQuery,String commentQuery, String typeQuery, String stringQuery) {
+		this.iDquery = iDquery;
 		this.titleQuery = titleQuery;
+		this.commentQuery = commentQuery;
 		this.typeQuery = typeQuery;
 		this.stringQuery = stringQuery;
+	}
+
+	public Integer getIDquery() {
+		return iDquery;
+	}
+
+	public void setIDquery(Integer iDquery) {
+		this.iDquery = iDquery;
 	}
 
 	public String getTypeQuery() {
@@ -31,6 +43,15 @@ public class ProfilingQueryObject {
 	public void setTitleQuery(String titleQuery) {
 		this.titleQuery = titleQuery;
 	}
+
+	public String getCommentQuery() {
+		return commentQuery;
+	}
+
+	public void setCommentQuery(String commentQuery) {
+		this.commentQuery = commentQuery;
+	}
+
 
 	public String getStringQuery() {
 		return stringQuery;

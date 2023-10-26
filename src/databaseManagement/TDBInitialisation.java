@@ -2,11 +2,17 @@ package databaseManagement;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+
+import org.apache.jena.query.Dataset;
+import org.apache.jena.query.ReadWrite;
+import org.apache.jena.rdf.model.Model;
+import org.apache.jena.shared.Lock;
 
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingUtil;
@@ -20,7 +26,8 @@ public class TDBInitialisation {
 
 	}
 	public static void initialisation() throws Exception {
-
+		
+		Instant start0 = Instant.now();
 		// Initialisation de la configuration
 		// Chemin d'accès, noms fichiers...
 		new ProfilingConf(); 
@@ -59,35 +66,72 @@ public class TDBInitialisation {
 			String typeOfSerialization = null;
 			// Si le fichier à l'extention .json 
 			if(fileName.matches("^.*json$")) {
-				typeOfSerialization = "JSON-LD";
+				typeOfSerialization = "JSONLD";
+				Dataset dataset = TDBUtil.CreateTDBDataset();
 				try {  
 					// Effacement des statements contenus dans le graphe TDB
-					TDBUtil.DeleteTDBContent(nameForGraphURI); 
-					String jsonString = ProfilingUtil.readFileAsString(pathFileDataset.toString());
-					TDBUtil.InputJsonStringToTDB(typeOfSerialization, jsonString , nameForGraphURI);
-					System.out.println("Graph size " + nameForGraphURI + " : " + TDBUtil.SizeOfTDBContent(nameForGraphURI));
+		    		System.out.println("Deletion of the TDB model");
+					dataset.begin(ReadWrite.WRITE);
+					dataset.removeNamedModel(nameForGraphURI);
+					System.out.println("Reading the JSON-LD file");
+					//System.out.println(pathFileDataset.toString());
+					//String jsonString = ProfilingUtil.readFileAsString(pathFileDataset.toString());
+					InputStream is = new FileInputStream(pathFileDataset.toString());
+					Model model = dataset.getNamedModel(nameForGraphURI);
+					model.enterCriticalSection(Lock.WRITE);
+					// Read JSON File and put it in model
+					//StringReader in = new StringReader(jsonString);
+					
+					System.out.println("Triplet registration in the TDB model");
+					// read the RDF/JSON in model
+					model.read(is, null, typeOfSerialization);
+					//model.read(is, null);
+					System.out.println("Ok ....................................................");
+					System.out.println("Graph size " + nameForGraphURI + " : " + model.size());
+					dataset.commit();
+					dataset.close();    
+					model.leaveCriticalSection();
+					model.close();
 				}
-				catch (FileNotFoundException e) {System.out.println("File not found");}
-				catch (IOException e) {System.out.println("IO problem");}
-				catch (Exception e) {System.out.println("big problem: " + e.toString());}
+				catch (FileNotFoundException e) {System.out.println("File not found : " + e);}
+				//catch (IOException e) {System.out.println("IO problem : " + e );}
+				catch (Exception e) {System.out.println("big problem : " + e.toString());e.printStackTrace();}
+				finally { 
+					//dataset.abort();
+					dataset.end(); 
+				}
 			} else
 			{
+				Dataset dataset = TDBUtil.CreateTDBDataset();
 				try {  
 					// Effacement des statements contenus dans le graphe TDB
-					TDBUtil.DeleteTDBContent(nameForGraphURI); 
+					dataset.begin(ReadWrite.WRITE);
+					dataset.removeNamedModel(nameForGraphURI); 
+					Model model = dataset.getNamedModel(nameForGraphURI);
+					model.enterCriticalSection(Lock.WRITE);
+					// Read JSON File and put it in model
 					InputStream is = new FileInputStream(pathFileDataset.toString());
-					TDBUtil.InputInputStreamContentToTDB(null, is, nameForGraphURI);
-	
-					System.out.println("Graph size " + nameForGraphURI + " : " + TDBUtil.SizeOfTDBContent(nameForGraphURI));
+					// read the RDF/JSON files in model
+					model.read(is, null );
+					System.out.println("Graph size " + nameForGraphURI + " : " + model.size());
+					dataset.commit();    
+					dataset.close();
+					model.leaveCriticalSection();
+					model.close();
 				}
 				catch (FileNotFoundException e) {System.out.println("File not found");}
-				catch (IOException e) {System.out.println("IO problem");}
-				catch (Exception e) {System.out.println("big problem: " + e.toString());}
+				catch (Exception e) {System.out.println("big problem: " + e.toString()); e.printStackTrace();}
+				finally { 
+					//dataset.abort();
+					dataset.end(); 
+				}
 			}
 			
 			
 	    }   
 		System.out.println("End of the transfer of datasets to TDB");
+		Instant end0 = Instant.now();
+		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
 	}
 
 }

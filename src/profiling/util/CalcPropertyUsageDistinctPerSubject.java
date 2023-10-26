@@ -55,10 +55,11 @@ public class CalcPropertyUsageDistinctPerSubject extends BaseBuiltin {
 		Query query = QueryFactory.create(prefix + 
 			"SELECT DISTINCT (COUNT(?subject) AS ?subjectCount) (SUM(?usage) AS ?usageSum) (MIN(?usage) AS ?usageMin) (MAX(?usage) AS ?usageMax)" +
 				" WHERE { " +
-					"{ SELECT DISTINCT (?s AS ?subject) (COUNT(DISTINCT ?element) AS ?usage) " +
+					"{ SELECT DISTINCT (?s AS ?subject) (COUNT(DISTINCT ?property) AS ?usage) " +
 					" WHERE { " +
-					"dsp:listURIofProperty rdf:rest*/rdf:first ?element ." +
-					" ?s ?element ?o ." +
+					"dsp:listPropertyUsageCount rdf:rest*/rdf:first ?element ." +
+					"?element dsp:asURI ?property ." +
+					" ?s ?property ?o ." +
 					" FILTER isIRI(?s) " +
 					" } GROUP BY ?s }" +
 				" } "

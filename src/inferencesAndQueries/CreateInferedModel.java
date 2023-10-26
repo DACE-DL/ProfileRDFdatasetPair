@@ -82,6 +82,13 @@ public class CreateInferedModel {
 
 		Instant end0 = Instant.now();
 		System.out.println("Runtime for loading models into memory: " + Duration.between(start0, end0).toMillis() + " millisecondes");
+		
+		System.out.println("Model size before addtional treatement:" + modelTemp.size());
+        ProfilingPreProcessing.makeTreatements(modelTemp);
+		System.out.println("Model size after addtional treatement:" + modelTemp.size());	
+		
+		Instant end1 = Instant.now();
+		System.out.println("Runtime for additional treatments: " + Duration.between(end0, end1).toMillis() + " millisecondes");
 
 		Instant start1 = Instant.now();
 
@@ -94,25 +101,18 @@ public class CreateInferedModel {
 		
 		// Register custom primitive
 		
-		// BuiltinRegistry.theRegistry.register(new CalcTest());
-		
+		//BuiltinRegistry.theRegistry.register(new CalcTest());
 		BuiltinRegistry.theRegistry.register(new CalcNumberOfTriples());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListProperty());
+		//BuiltinRegistry.theRegistry.register(new CalcPropertyUsageCount());
 		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsageDistinctPerSubject());
 		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsageDistinctPerObject());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListClass());
-		BuiltinRegistry.theRegistry.register(new CalcClassUsageCount());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListClassDefined());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListClassNotDefined());
-		BuiltinRegistry.theRegistry.register(new CalcMakeListClassOfInterest());
-		//BuiltinRegistry.theRegistry.register(new CalcMakeListPropertyOfInterest());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListClassAndSubClass());
-		// BuiltinRegistry.theRegistry.register(new CalcClassHierarchyDeep());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsage());
+		// BuiltinRegistry.theRegistry.register(new CalcMakeVectorWithListUriAndNumber());
+		//BuiltinRegistry.theRegistry.register(new CalcRQuantile());
+		//BuiltinRegistry.theRegistry.register(new CalcPropertyMostUsed());
 		// BuiltinRegistry.theRegistry.register(new CalcOutDegree());
 		// BuiltinRegistry.theRegistry.register(new CalcInDegree());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListPropertyAndSubproperty());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyHierarchyDeep());
+		// BuiltinRegistry.theRegistry.register(new CalcPropertyAndSubproperty());
+		// BuiltinRegistry.theRegistry.register(new CalcPropertyHierarchyDeep());	
 		// BuiltinRegistry.theRegistry.register(new CalcSubclassUsage());
 		// BuiltinRegistry.theRegistry.register(new CalcEntitiesMentioned());
 		// BuiltinRegistry.theRegistry.register(new CalcDistinctEntities());
@@ -130,6 +130,26 @@ public class CreateInferedModel {
 		// BuiltinRegistry.theRegistry.register(new CalcMakeListMaxPerProperty());
 		// BuiltinRegistry.theRegistry.register(new CalcMakeListPerProperty());
 		// BuiltinRegistry.theRegistry.register(new CalcMakeListSPOvocabularies());
+        // // For the Classes
+		// BuiltinRegistry.theRegistry.register(new CalcClassUsageCount());
+		// BuiltinRegistry.theRegistry.register(new CalcClassDefined());
+		// BuiltinRegistry.theRegistry.register(new CalcClassNotDefined());
+		// BuiltinRegistry.theRegistry.register(new CalcClassAndSubClass());
+		// BuiltinRegistry.theRegistry.register(new CalcClassHierarchyDeep());
+		// BuiltinRegistry.theRegistry.register(new CalcClassMostUsed());
+		// BuiltinRegistry.theRegistry.register(new CalcPropertyWithDomaineAndRange());
+		
+		
+		
+		
+		
+		
+		
+		//BuiltinRegistry.theRegistry.register(new CalcListClassOfInterest());
+		//BuiltinRegistry.theRegistry.register(new CalcMakeListClassOfInterest());
+		//BuiltinRegistry.theRegistry.register(new CalcMakeListPropertyOfInterest());
+		
+		
 		
 
 		//String test = "C:/Users/conde/Documents/GitHub/ProfileRDFdatasetPair/src/profiling/util/CalcPropertyUsage.java";
@@ -137,7 +157,7 @@ public class CreateInferedModel {
 		//BuiltinRegistry.theRegistry.register(impl);
 
 		// !!!! pour l'instant une seule liste de règles
-		System.out.println(listRules.get(0).toString());
+		//System.out.println(listRules.get(0).toString());
 		Path pathFileRules = Paths.get(ProfilingConf.folderForRules , listRules.get(0).toString());
 		System.out.println(pathFileRules.toString());
 		Reasoner reasonerRules = new GenericRuleReasoner(Rule.rulesFromURL(pathFileRules.toString()));
@@ -149,9 +169,8 @@ public class CreateInferedModel {
 		//System.out.println("VBOX_MSI_INSTALL_PATH = "  + System.getenv("VBOX_MSI_INSTALL_PATH"));
 		//System.out.println("SIS_DATA = "  + System.getenv("SIS_DATA"));
 
-		Instant end1 = Instant.now();
-		System.out.println("Runtime for inferred model delivery: " + Duration.between(start1, end1).toMillis() + " millisecondes");
-
+		Instant end2 = Instant.now();
+		System.out.println("Runtime for inferred model delivery: " + Duration.between(start1, end2).toMillis() + " millisecondes");
 
 		return infModel;
 	}

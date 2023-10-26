@@ -50,7 +50,6 @@ public class CalcMakeListPerProperty extends BaseBuiltin {
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
-		String xsd = ProfilingConf.xsd;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
 		String nameOfList = dsp + "listOfPerProperty";

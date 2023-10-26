@@ -15,11 +15,11 @@ import org.apache.jena.rdf.model.ModelFactory;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcMakeListClassNotDefined extends BaseBuiltin {
+public class CalcClassNotDefined extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcMakeListClassNotDefined";
+		return "calcClassNotDefined";
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class CalcMakeListClassNotDefined extends BaseBuiltin {
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
-		String nameOfList = "listURIofClassNotDefined";
+		String nameOfList = "listClassNotDefined";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -58,9 +58,10 @@ public class CalcMakeListClassNotDefined extends BaseBuiltin {
 		Query query = QueryFactory.create(prefix + 
 				"SELECT DISTINCT (?elementClass AS ?class) " +
 				" WHERE { " +
-				"dsp:listURIofClass rdf:rest*/rdf:first ?elementClass ." +
+				"dsp:listClassUsageCount rdf:rest*/rdf:first ?elementClass ." +
+				"?elementClass dsp:asURI ?uriClass." +
 				" FILTER NOT EXISTS { " +
-				"dsp:listURIofClassDefined rdf:rest*/rdf:first ?elementClass ." +
+				"dsp:listClassDefined rdf:rest*/rdf:first ?uriClass ." +
 				" } " +
 				" } " );			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		

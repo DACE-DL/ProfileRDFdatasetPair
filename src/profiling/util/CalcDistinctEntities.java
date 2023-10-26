@@ -74,7 +74,9 @@ public class CalcDistinctEntities extends BaseBuiltin {
 			Selector selector1 = new SimpleSelector(s1, model.createProperty(property.getURI()), o1) ;
 			StmtIterator stmtIteSubj = model.listStatements(selector1);
 			stmtIteSubj.forEach((stmSubj) -> {
-				listSubject.add(stmSubj.getSubject().toString());
+				if (stmSubj.getSubject().isURIResource() && stmSubj.getObject().isURIResource()) {
+					listSubject.add(stmSubj.getSubject().toString());
+				}
 			});
         });
 

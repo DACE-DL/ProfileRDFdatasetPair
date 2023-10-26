@@ -130,6 +130,18 @@ public class QueryInferedModel {
 				} else {
 					System.out.println();
 				}
+				if (objectQuery.getCommentQuery().length() > 0) {
+					System.out.println();
+					for (int c = 0; c < objectQuery.getCommentQuery().length() + 6; c++)
+						System.out.print("-");
+					System.out.println();
+					System.out.println("|  " + objectQuery.getCommentQuery() + "  |");
+					for (int c = 0; c < objectQuery.getCommentQuery().length() + 6; c++)
+						System.out.print("-");
+					System.out.println();
+				} else {
+					System.out.println();
+				}
 		    }
 
 			
@@ -140,6 +152,7 @@ public class QueryInferedModel {
 				}
 				if (objectQuery.getTypeQuery().equalsIgnoreCase("SELECT")) {	
 					Query query = QueryFactory.create(objectQuery.getStringQuery());
+					//System.out.println("test : " + objectQuery.getStringQuery());
 					QueryExecution qe = QueryExecutionFactory.create(query, infModel);		
 					ResultSet results = qe.execSelect();
 				

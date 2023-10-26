@@ -3,7 +3,6 @@ package profiling.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.collections4.IteratorUtils;
 import org.apache.jena.graph.Node;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
@@ -59,6 +58,7 @@ public class CalcEntitiesMentioned extends BaseBuiltin {
 		Property p = null;
 		Resource o = null;
 		List<Resource> listProperty = new ArrayList<>();
+		List<Resource> listSubject = new ArrayList<>();
 	
 		p = model.createProperty(rdf ,"type");
 		o = model.createResource(rdf + "Property");
@@ -75,8 +75,14 @@ public class CalcEntitiesMentioned extends BaseBuiltin {
 			Resource s1 = null;
 			Resource o1 = null;
 			Selector selector1 = new SimpleSelector(s1, model.createProperty(property.getURI()), o1) ;
-			StmtIterator stmtIteSubj = model.listStatements(selector1);
-			nNumber = nNumber + IteratorUtils.size(stmtIteSubj);
+			StmtIterator stmtIte1 = model.listStatements(selector1);
+			stmtIte1.forEach((stm1) -> {
+				if (stm1.getSubject().isURIResource() && stm1.getObject().isURIResource()) {
+					listSubject.add(stm1.getSubject());
+				}
+			});
+			nNumber = nNumber + listSubject.size();
+			listSubject.clear();
         });
 
 		// Creating a node for the output parameter

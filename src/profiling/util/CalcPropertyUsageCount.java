@@ -1,26 +1,31 @@
 package profiling.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Selector;
+import org.apache.jena.rdf.model.SimpleSelector;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
-public class CalcPropertyUsage extends BaseBuiltin {
+public class CalcPropertyUsageCount extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcPropertyUsage";
+		return "calcPropertyUsageCount";
 	}
 
 	@Override
@@ -42,8 +47,7 @@ public class CalcPropertyUsage extends BaseBuiltin {
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
-		String prefix = ProfilingConf.queryPrefix;
-		String nameOfList = "listPropertyUsage";
+		String nameOfList = "listPropertyUsageCount";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
@@ -61,23 +65,53 @@ public class CalcPropertyUsage extends BaseBuiltin {
 		Node pu = NodeFactory.createURI(dsp + "asURI");
 		Node pv = NodeFactory.createURI(dsp + "asValue");
 
+		Resource s1 = null;
+		Property p1 = null;
+		Resource o1 = null;
+
+		Instant start0 = Instant.now();
+
 		Model model = ModelFactory.createModelForGraph(context.getGraph());
-		Query query = QueryFactory.create(prefix + 
-				"SELECT DISTINCT (?p AS ?property) (COUNT(*) AS ?usage) " +
-				" WHERE { " +
-				" ?p rdf:type <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ." +
-				" ?s ?p ?o ." +
-				" FILTER isIRI(?p) " +
-				" } GROUP BY ?p ORDER BY DESC (?usage)"
-		);			
-		QueryExecution qe = QueryExecutionFactory.create(query, model);		
-		ResultSet result = qe.execSelect();
-		if (result.hasNext()) {
-			while( result.hasNext() ) {
-				QuerySolution querySolution = result.next() ;
-				ListResources.add(new UriAndNumber(querySolution.getResource("property").toString(), querySolution.getLiteral("usage").getInt())) ;
-			}
+		p1 = model.createProperty(rdf ,"type");
+		o1 = model.createResource(rdf + "Property");
+
+		Selector selector = new SimpleSelector(s1, p1, o1) ;
+		StmtIterator stmtIte= model.listStatements(selector);
+		Instant end = Instant.now();
+		System.out.println("Running time extraction properties : " + Duration.between(start0, end).toMillis() + " millisecondes");
+		stmtIte.forEach((statement) -> {
+			//Instant endTemp1 = Instant.now();
+			Resource s2 = null;
+			Property p2 = model.createProperty(statement.getSubject().getURI());
+			Resource o2 = null;
+			Selector selector2 = new SimpleSelector(s2, p2, o2) ;
+			StmtIterator stmtIte2 = model.listStatements(selector2);
+			List<Statement> listStmtIte2 = stmtIte2.toList();
+			ListResources.add(new UriAndNumber(statement.getSubject().getURI(), listStmtIte2.size() )) ;
+			stmtIte2.close();
+			//Instant endTemp2 = Instant.now();
+			//System.out.println("Running time extraction usage for " + statement.getSubject().getURI() + " : "+ Duration.between(endTemp1, endTemp2).toMillis() + " millisecondes");
+        });
+		stmtIte.close();
+		end = Instant.now();
+		System.out.println("Running time extraction properties usage : " + Duration.between(start0, end).getSeconds() + " secondes");
+
+		Instant end0 = Instant.now();
+		System.out.println("Running time extraction : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		
+		Collections.sort(ListResources, new UriAndNumberComparator());
+
+		Instant end1 = Instant.now();
+		System.out.println("Running time sort : " + Duration.between(end0, end1).toMillis() + " millisecondes");
+
+		try {
+			ProfilingUtil.makeJsonUriAndNumberFile(ListResources, nameOfList + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		Instant end2 = Instant.now();
+		System.out.println("Running time make json file : " + Duration.between(end1, end2).toMillis() + " millisecondes");
 
 		for (UriAndNumber resource : ListResources) {
 			if (n == 0) {
@@ -138,6 +172,15 @@ public class CalcPropertyUsage extends BaseBuiltin {
 			context.add(Triple.create(s, p, o));
 			success = true;
 		}
+		Instant end3 = Instant.now();
+		System.out.println("Running time make RDF list : " + Duration.between(end2, end3).toMillis() + " millisecondes");
 		return success;
+	}
+
+	class UriAndNumberComparator implements java.util.Comparator<UriAndNumber> {
+		@Override
+		public int compare(UriAndNumber a, UriAndNumber b) {
+			return b.getNumber() - a.getNumber();
+		}
 	}
 }

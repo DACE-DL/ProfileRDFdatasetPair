@@ -1,6 +1,7 @@
 package profiling.util;
 
 import java.util.ArrayList;
+
 import org.apache.jena.graph.Node;
 import org.apache.jena.graph.NodeFactory;
 import org.apache.jena.graph.Triple;
@@ -12,6 +13,12 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Selector;
+import org.apache.jena.rdf.model.SimpleSelector;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
@@ -51,8 +58,10 @@ public class CalcMakeListPropertyOfInterest extends BaseBuiltin {
 		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
 		ArrayList<String> ListProperty = new ArrayList<String>();
 		ArrayList<UriAndUri> ListPairOfClass = new ArrayList<UriAndUri>();
+		ArrayList<UriAndUri> ListInstance = new ArrayList<UriAndUri>();
 		
 		Integer n = 0;
+		
 		Node s = NodeFactory.createURI(dsp + "sujet");
 		Node p = NodeFactory.createURI(dsp + "predicat");
 		Node o = NodeFactory.createURI(dsp + "objet");
@@ -92,36 +101,54 @@ public class CalcMakeListPropertyOfInterest extends BaseBuiltin {
 				ListPairOfClass.add(new UriAndUri(querySolution2.getResource("class1").toString(), querySolution2.getResource("class2").toString())) ;
 			}
 		}
-
+		
 		ListProperty.forEach((property) -> {
-			ListPairOfClass.forEach((pairOfclass) -> {
-				//System.out.println(property);
-		   		//System.out.println(pairOfclass.getUri1());
-				//System.out.println(pairOfclass.getUri2());
-				//System.out.println("******  ******");
-				Query query3 = QueryFactory.create(prefix +
-						"SELECT DISTINCT ?class1 ?property ?class2 " +
-						" WHERE { " +
-						" values ?property {<" + property + "> }" +
-						" values ?class1 {<" + pairOfclass.getUri1() + "> }" +
-						" values ?class2 {<" + pairOfclass.getUri2() + "> }" +
-						" FILTER EXISTS {?intanceClass1 rdf:type ?class1 . ?intanceClass2 rdf:type ?class2 . ?intanceClass1 ?property ?instanceClass2 } " +
-						" } GROUP BY ?class1 ?property ?class2" );
-				QueryExecution qe3 = QueryExecutionFactory.create(query3, model);
-				ResultSet result3 = qe3.execSelect();
-				if (result3.hasNext()) {
-					while( result3.hasNext() ) {
-						QuerySolution querySolution3 = result3.next() ;
-				        //System.out.println(querySolution3.getResource("property").toString());
-		   		        //System.out.println(querySolution3.getResource("class1").toString());
-						//System.out.println(querySolution3.getResource("class2").toString());
-						//System.out.println("**************************");
-		 				ListResources.add(new UriAndUriAndUri(querySolution3.getResource("class1").toString(), querySolution3.getResource("property").toString(), querySolution3.getResource("class2").toString())) ;
-				 	}
+			Resource s1 = null;
+			Property p1 = null;
+			Resource o1 = null;
+			p1 = model.createProperty(property);
+			Selector selector = new SimpleSelector(s1, p1, o1) ;
+			StmtIterator stmtIte= model.listStatements(selector);
+			ListInstance.clear();
+			while (stmtIte.hasNext()) {
+				Statement statement1 = stmtIte.next();						
+				if (statement1.getSubject().isURIResource() && statement1.getObject().isURIResource()) {
+					UriAndUri uriAndUri = new UriAndUri("","");
+					uriAndUri.setUri1(statement1.getSubject().toString());
+					uriAndUri.setUri2(statement1.getObject().toString());
+					ListInstance.add(uriAndUri);
 				}
-			});	
+			}
+			if (ListInstance.size() > 0) {	
+				ListPairOfClass.forEach((pairOfclass) -> {
+					boolean stopStmtIte = false;
+					// Attention nombre d'itération limité !
+					for (int i = 0; i < ListInstance.size() && !stopStmtIte && i < 20; i=i+1+(ListInstance.size()/20)) {
+						Query query3 = QueryFactory.create(prefix +
+								"SELECT * " +
+								" WHERE { " +
+								"<" + ListInstance.get(i).getUri1() +"> rdf:type <" + pairOfclass.getUri1()+"> ."+
+								"<" + ListInstance.get(i).getUri2() +"> rdf:type <" + pairOfclass.getUri2()+"> ."+
+								" } " );
+						QueryExecution qe3 = QueryExecutionFactory.create(query3, model);
+						ResultSet result3 = qe3.execSelect();
+						if (result3.hasNext()) {
+							ListResources.add(new UriAndUriAndUri(pairOfclass.getUri1(), pairOfclass.getUri2(), property));
+							//System.out.println("pairOfclass.getUri1() : " + pairOfclass.getUri1());
+							//System.out.println("pairOfclass.getUri2() : " + pairOfclass.getUri2());
+							//System.out.println("property : " + property);
+							stopStmtIte = true;			
+						}
+					};
+				});	
+			}
         });
 
+		try {
+			ProfilingUtil.makeJsonUriAndUriAndUriFile(ListResources, nameOfList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		for (UriAndUriAndUri resource : ListResources) {
 			if (n == 0) {

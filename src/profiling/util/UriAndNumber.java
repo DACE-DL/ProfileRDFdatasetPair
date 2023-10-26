@@ -5,7 +5,8 @@ public class UriAndNumber {
 	private String uri;
 	private Integer number;
 	
-
+	public UriAndNumber() {
+	}
 	
 	public UriAndNumber(String uri, Integer number) {
 		this.uri = uri;

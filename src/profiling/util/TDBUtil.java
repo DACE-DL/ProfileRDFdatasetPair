@@ -24,15 +24,20 @@ import org.apache.jena.tdb2.TDB2Factory;
 public class TDBUtil {
 	
 	public static Dataset CreateTDBDataset() throws Exception {
-		
 		// Initialisation de la configuration
 		// Chemin d'accès, noms fichiers...
 		new ProfilingConf();  
-
 		// Create dataset
+		Dataset dataset = null;
+		try {   
 		Path pathDataBase = Paths.get(ProfilingConf.folderForTDB , ProfilingConf.fileNameTDBdatabase);
 		Location location = Location.create(pathDataBase.toString());
-		Dataset dataset = TDB2Factory.connectDataset(location);
+		dataset = TDB2Factory.connectDataset(location);
+		}
+		catch (Exception e) {System.out.println("CreateTDBDataset erreur: " + e);}
+		finally { 
+			dataset.end() ; 
+		}
 		return dataset;
     }
 	
@@ -309,18 +314,23 @@ public class TDBUtil {
 	}
 	
 	public static void DeleteTDBContent(String graphURI) throws Exception {
+		Dataset dataset = null;
 		try {
-			Dataset dataset = CreateTDBDataset();
+			dataset = CreateTDBDataset();
 		    // Create transaction for writing
-		    dataset.begin(ReadWrite.WRITE);
-			dataset.removeNamedModel(graphURI);
-			dataset.commit();
-			dataset.close();	
+			if (dataset != null) {
+				//System.out.println(dataset);
+		    	dataset.begin(ReadWrite.WRITE);
+				dataset.removeNamedModel(graphURI);
+				dataset.commit();
+				dataset.close();	
+			} else { 
+				System.out.println("Fichier inexistant sur TDB !");
+			}
 		}
-		catch (FileNotFoundException e) {System.out.println("File not found");}
-        catch (IOException e) {System.out.println("IO problem");}
-		catch (Exception e) {System.out.println("problem with DeleteTDBContent " + e );
-		}
+		catch (FileNotFoundException e) {System.out.println("File not found : " + e);}
+        catch (IOException e) {System.out.println("IO problem : " + e );}
+		catch (Exception e) {System.out.println("Problem with Delete TDB Content : " + e );}
 	}
 	
 	public static void DeleteTDBContent(ArrayList<String> listGraphURI) throws Exception {

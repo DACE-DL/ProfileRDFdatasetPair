@@ -66,7 +66,7 @@ public class CalcMakeListClassOfInterest extends BaseBuiltin {
 				"dsp:listURIofClassDefined rdf:rest*/rdf:first ?elementClass1 ." +
 				"dsp:listURIofClassDefined rdf:rest*/rdf:first ?elementClass2 ." +
 				"FILTER EXISTS {?s1 rdf:type ?elementClass1 .?s2 rdf:type ?elementClass2 .?s1 ?p ?s2 } " +
-				"FILTER  (?elementClass1 = <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/armor> || ?elementClass2 = <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/armor>) " +
+				//"FILTER  (?elementClass1 = <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/armor> || ?elementClass2 = <http://dbkwik.webdatacommons.org/marvelcinematicuniverse.wikia.com/class/armor>) " +
 				" } GROUP BY ?elementClass1 ?elementClass2" );	
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
@@ -79,6 +79,11 @@ public class CalcMakeListClassOfInterest extends BaseBuiltin {
 			}
 		}
 
+		try {
+			ProfilingUtil.makeJsonUriAndUriFile(ListResources, nameOfList);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		// System.out.println("OK liste");
 
 		for (UriAndUri resource : ListResources) {

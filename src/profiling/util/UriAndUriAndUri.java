@@ -6,6 +6,9 @@ public class UriAndUriAndUri {
 	private String uri2;
 	private String uri3;
 	
+	public UriAndUriAndUri() {
+	}
+
 	public UriAndUriAndUri(String uri1, String uri2, String uri3) {
 		this.uri1 = uri1;
 		this.uri2 = uri2;

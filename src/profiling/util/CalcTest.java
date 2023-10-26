@@ -1,6 +1,10 @@
 package profiling.util;
 
+import java.util.ArrayList;
+
 import org.apache.jena.graph.Node;
+import org.apache.jena.graph.NodeFactory;
+import org.apache.jena.graph.Triple;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -9,21 +13,25 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.ModelFactory;
-import org.apache.jena.reasoner.rulesys.BindingEnvironment;
+import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Selector;
+import org.apache.jena.rdf.model.SimpleSelector;
+import org.apache.jena.rdf.model.Statement;
+import org.apache.jena.rdf.model.StmtIterator;
 import org.apache.jena.reasoner.rulesys.RuleContext;
-import org.apache.jena.reasoner.rulesys.Util;
 import org.apache.jena.reasoner.rulesys.builtins.BaseBuiltin;
 
 public class CalcTest extends BaseBuiltin {
 
 	@Override
 	public String getName() {
-		return "calcTest";
+		return "calcMakeListPropertyOfInterest";
 	}
 
 	@Override
 	public int getArgLength() {
-		return 2 ;
+		return 0;
 	}
 
 	@Override
@@ -38,41 +46,187 @@ public class CalcTest extends BaseBuiltin {
 
 	private boolean doUserRequiredAction(Node[] args, int length, RuleContext context) {
 		new ProfilingConf();
+		String dsp = ProfilingConf.dsp;
+		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
+		String nameOfList = "listURIofPropertyOfInterest";
 		// Check we received the correct number of parameters
 		checkArgs(length, context);
 
 		boolean success = false;
 
-		// Retrieve the input arguments
-		Node node1 = getArg(0, args, context);
-		// Verify the typing of the parameters
-		if (node1.isURI()) {
-			Node number = null;
-			double nNumber = 0;
-			Model model = ModelFactory.createModelForGraph(context.getGraph());
-			Query query = QueryFactory.create(prefix + 
-					"SELECT (count(?tree) as ?number) " +
-					" WHERE { " +
-					"?tree bfo:BFO_0000050 " + "<" + node1.getURI() + "> ." +
-					" ?tree rdf:type afy:StructuralElement ." +
-					" ?tree dcterms:type <http://aims.fao.org/aos/agrovoc/c_7887> ." +
-					" } " );			
-			QueryExecution qe = QueryExecutionFactory.create(query, model);		
-			ResultSet result = qe.execSelect();
-			if (result.hasNext()) {
-				QuerySolution querySolution = result.next() ;
-				nNumber = querySolution.getLiteral("number").getDouble() ;
+		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
+		ArrayList<String> ListProperty = new ArrayList<String>();
+		ArrayList<UriAndUri> ListPairOfClass = new ArrayList<UriAndUri>();
+		ArrayList<UriAndUri> ListInstance = new ArrayList<UriAndUri>();
+		
+		Integer n = 0;
+		
+		Node s = NodeFactory.createURI(dsp + "sujet");
+		Node p = NodeFactory.createURI(dsp + "predicat");
+		Node o = NodeFactory.createURI(dsp + "objet");
+		Node b = NodeFactory.createBlankNode();
+		Node u1 = NodeFactory.createURI(dsp + "class1");
+		Node u2 = NodeFactory.createURI(dsp + "class2");
+		Node u3 = NodeFactory.createURI(dsp + "property");
+		Node pu1 = NodeFactory.createURI(dsp + "asClass1");
+		Node pu2 = NodeFactory.createURI(dsp + "asClass2");
+		Node pu3 = NodeFactory.createURI(dsp + "asProperty");
+
+		//Instant start0 = Instant.now();
+		Model model = ModelFactory.createModelForGraph(context.getGraph());
+		Query query = QueryFactory.create(prefix + 
+				"SELECT ?property WHERE { " +
+					" dsp:listURIofProperty rdf:rest*/rdf:first ?property . " +
+				" } " );	
+		QueryExecution qe = QueryExecutionFactory.create(query, model);		
+		ResultSet result = qe.execSelect();
+		if (result.hasNext()) {
+			while( result.hasNext() ) {
+				QuerySolution querySolution = result.next();
+				ListProperty.add(querySolution.getResource("property").toString()) ;
 			}
+		}
 
+		Query query2 = QueryFactory.create(prefix + 
+				"SELECT DISTINCT ?class1 ?class2 WHERE { " +
+		 				" dsp:listURIofClassOfInterest rdf:rest*/rdf:first ?element . " +
+		 				" ?element dsp:asClass1 ?class1 ." + 
+		 				" ?element dsp:asClass2 ?class2 ." +
+		 		    	" } "  );	
+		QueryExecution qe2 = QueryExecutionFactory.create(query2, model);		
+		ResultSet result2 = qe2.execSelect();
+		if (result2.hasNext()) {
+			while( result2.hasNext() ) {
+				QuerySolution querySolution2 = result2.next();
+				ListPairOfClass.add(new UriAndUri(querySolution2.getResource("class1").toString(), querySolution2.getResource("class2").toString())) ;
+			}
+		}
+		
+		
+		
+		//Instant end1 = Instant.now();
+		//System.out.println("Total running time class and property: " + Duration.between(start0, end1).toMillis() + " millisecondes");
+		
+		ListProperty.forEach((property) -> {
+			//Instant start1 = Instant.now();
+			Resource s1 = null;
+			Property p1 = null;
+			Resource o1 = null;
+			p1 = model.createProperty(property);
+			Selector selector = new SimpleSelector(s1, p1, o1) ;
+			StmtIterator stmtIte= model.listStatements(selector);
+			ListInstance.clear();
+			while (stmtIte.hasNext()) {
+				Statement statement1 = stmtIte.next();						
+				if (statement1.getSubject().isURIResource() && statement1.getObject().isURIResource()) {
+					UriAndUri uriAndUri = new UriAndUri("","");
+					uriAndUri.setUri1(statement1.getSubject().toString());
+					uriAndUri.setUri2(statement1.getObject().toString());
+					ListInstance.add(uriAndUri);
+				}
+			}
+			if (ListInstance.size() > 0) {	
+				//System.out.println("taille liste instance: " + property + " : " + ListInstance.size());		
+				//Instant end4 = Instant.now();
+				//System.out.println("Total running time for make list instance: " + Duration.between(start1, end4).toMillis() + " millisecondes");	
+				ListPairOfClass.forEach((pairOfclass) -> {
+					boolean stopStmtIte = false;
+					// Attention nombre d'itération limité !
+					for (int i = 0; i < ListInstance.size() && !stopStmtIte && i < 20; i=i+1+ListInstance.size()/50) {
+						Query query3 = QueryFactory.create(prefix +
+								"SELECT * " +
+								" WHERE { " +
+								"<" + ListInstance.get(i).getUri1() +"> rdf:type <" + pairOfclass.getUri1()+"> ."+
+								"<" + ListInstance.get(i).getUri2() +"> rdf:type <" + pairOfclass.getUri2()+"> ."+
+								" } " );
+						QueryExecution qe3 = QueryExecutionFactory.create(query3, model);
+						ResultSet result3 = qe3.execSelect();
+						if (result3.hasNext()) {
+							ListResources.add(new UriAndUriAndUri(pairOfclass.getUri1(), property, pairOfclass.getUri2()));
+							//Instant end3 = Instant.now();
+							//System.out.println("Total running time property 2: " + Duration.between(start1, end3).toMillis() + " millisecondes");	
+							//System.out.println(property);
+							//System.out.println(pairOfclass.getUri1());
+							//System.out.println(pairOfclass.getUri2());
+							//System.out.println("******  ******");
+							stopStmtIte = true;			
+						}
+					};
+				});	
+				//Instant end5 = Instant.now();
+				//System.out.println("Total running time for treatment list instance: " + Duration.between(start1, end5).toMillis() + " millisecondes");	
+			}
+        });
 
-			// Creating a node for the output parameter
-			number = Util.makeIntNode((int) nNumber);
-			// Binding the output parameter to the node
-			BindingEnvironment env = context.getEnv();
-			success = env.bind(args[1], number);
-			qe.close();
-		}   
+		//Instant end2 = Instant.now();
+		//System.out.println("Total running time before list: " + Duration.between(start0, end2).getSeconds() + " secondes");
+
+		for (UriAndUriAndUri resource : ListResources) {
+			if (n == 0) {
+				s = NodeFactory.createURI(dsp + nameOfList);
+				p = NodeFactory.createURI(rdf + "first");
+				
+				b = NodeFactory.createBlankNode();
+				u1 = NodeFactory.createURI(resource.getUri1());
+				u2 = NodeFactory.createURI(resource.getUri2());
+				u3 = NodeFactory.createURI(resource.getUri3());
+				context.add(Triple.create(b, pu1, u1));
+				context.add(Triple.create(b, pu2, u2));
+				context.add(Triple.create(b, pu3, u3));
+
+				context.add(Triple.create(s, p, b));
+				n = n + 1;
+			} else {
+				s = NodeFactory.createURI(dsp + nameOfList + n);
+				p = NodeFactory.createURI(rdf + "first");
+				
+				b = NodeFactory.createBlankNode();
+				u1 = NodeFactory.createURI(resource.getUri1());
+				u2 = NodeFactory.createURI(resource.getUri2());
+				u3 = NodeFactory.createURI(resource.getUri3());
+				context.add(Triple.create(b, pu1, u1));
+				context.add(Triple.create(b, pu2, u2));
+				context.add(Triple.create(b, pu3, u3));
+
+				context.add(Triple.create(s, p, b));
+				if (n == 1) {
+					s = NodeFactory.createURI(dsp + nameOfList);
+					p = NodeFactory.createURI(rdf + "rest");
+					o = NodeFactory.createURI(dsp + nameOfList + n);
+					context.add(Triple.create(s, p, o));
+					n = n + 1;
+				} else {
+					s = NodeFactory.createURI(dsp + nameOfList + (n - 1));
+					p = NodeFactory.createURI(rdf + "rest");
+					o = NodeFactory.createURI(dsp + nameOfList + n);
+					context.add(Triple.create(s, p, o));
+					n = n + 1;
+				}
+			}
+		}
+
+		if (n > 0) {
+
+			if (n == 1) {
+				s = NodeFactory.createURI(dsp + nameOfList);
+				p = NodeFactory.createURI(rdf + "rest");
+				o = NodeFactory.createURI(rdf + "nil");
+				context.add(Triple.create(s, p, o));
+			} else {
+				s = NodeFactory.createURI(dsp + nameOfList + (n - 1));
+				p = NodeFactory.createURI(rdf + "rest");
+				o = NodeFactory.createURI(rdf + "nil");
+				context.add(Triple.create(s, p, o));
+			}
+			s = NodeFactory.createURI(dsp + nameOfList);
+			p = NodeFactory.createURI(rdf + "type");
+			o = NodeFactory.createURI(rdf + "List");
+			context.add(Triple.create(s, p, o));
+			success = true;
+		}
+		//Instant end0 = Instant.now();
+		//System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
 		return success;
 	}
 }

@@ -6,8 +6,9 @@ public class UriAndStringAndBigNumber {
 	private String str;
 	private Long number;
 	
+	public UriAndStringAndBigNumber() {
+	}
 
-	
 	public UriAndStringAndBigNumber(String uri, String str, Long number) {
 		this.uri = uri;
 		this.str = str;
