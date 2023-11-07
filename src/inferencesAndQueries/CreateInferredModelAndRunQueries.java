@@ -118,7 +118,7 @@ public class CreateInferredModelAndRunQueries {
 			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
 			System.out.println("Processing of LPT determination");
 			System.out.println("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-			ProfilingPostProcessing.makeTreatements();
+			ProfilingPostProcessing.makeTreatements(pathForSourceResults.toString(), pathForTargetResults.toString());
 			Path pathForLptResults = Paths.get(ProfilingConf.folderForResults, idPair);
 			ProfilingUtil.ChangeDirectoryFiles(ProfilingConf.folderForTmp, pathForLptResults.toString());
 

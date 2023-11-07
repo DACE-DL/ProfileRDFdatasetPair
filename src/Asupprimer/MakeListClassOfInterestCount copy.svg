@@ -20,7 +20,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 public class MakeListClassOfInterestCount {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndUriAndUriAndNumber> makeList(Model model, String nameOfList) {
+	public static ArrayList<UriAndUriAndUriAndNumber> makeList(Model model,ArrayList<UriAndUriAndUri> listClassOfInterest, String nameOfList) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -28,8 +28,7 @@ public class MakeListClassOfInterestCount {
 		String prefix = ProfilingConf.queryPrefix;
 
 		ArrayList<UriAndUriAndUriAndNumber> ListResources = new ArrayList<UriAndUriAndUriAndNumber>();
-		ArrayList<UriAndUriAndUri> listClassOfInterest = new ArrayList<UriAndUriAndUri>();
-
+		
 		Integer n = 0;
 		Resource s = model.createResource(dsp + "sujet");
 		Property p = model.createProperty(dsp + "predicat");
@@ -46,28 +45,10 @@ public class MakeListClassOfInterestCount {
 		
 		Instant start4 = Instant.now();
 		
-		Query query = QueryFactory.create(prefix + 
-			"SELECT ?class1 ?property ?class2 WHERE { " +
-			" dsp:listClassOfInterest rdf:rest*/rdf:first ?element ." +
-			" ?element dsp:asURI1 ?class1 ." +
-			" ?element dsp:asURI2 ?property ." +
-			" ?element dsp:asURI3 ?class2 ." +
-			" } "
-		);			
-		QueryExecution qe = QueryExecutionFactory.create(query, model);		
-		ResultSet result = qe.execSelect();
-		if (result.hasNext()) {
-			while( result.hasNext() ) {
-				QuerySolution querySolution = result.next() ;
-				listClassOfInterest.add(new UriAndUriAndUri(querySolution.getResource("class1").toString(), 
-				querySolution.getResource("property").toString(), querySolution.getResource("class2").toString())) ;
-			}
-		}
-
 		listClassOfInterest.forEach((classesAndProperty) -> {
-			System.out.println("Class1 : " + classesAndProperty.getUri1().toString());
-			System.out.println("Property : " + classesAndProperty.getUri2().toString());
-			System.out.println("Class2 : " + classesAndProperty.getUri3().toString());
+			// System.out.println("Class1 : " + classesAndProperty.getUri1().toString());
+			// System.out.println("Property : " + classesAndProperty.getUri2().toString());
+			// System.out.println("Class2 : " + classesAndProperty.getUri3().toString());
 			Query query2 = QueryFactory.create(prefix +
 				" SELECT  ?class1 ?property ?class2 (COUNT(*) AS ?usage)" +
 				" WHERE { " +
@@ -79,8 +60,7 @@ public class MakeListClassOfInterestCount {
 				"   ?ic1 ?property ?ic2 ." +
 				" } GROUP BY ?class1 ?property ?class2 ORDER BY DESC(?usage) "
 			);
-			
-			//System.out.println("query : " + query2);
+		
 
 			QueryExecution qe2 = QueryExecutionFactory.create(query2, model);
 			ResultSet result2 = qe2.execSelect();

@@ -151,7 +151,7 @@ public class ProfilingPreProcessing {
         
 		// Construction d'un vecteur pour l'usage des propriétés.
 		String vectorUsageProperty = "c(0.0)";
-		vectorUsageProperty = MakeVectorWithListUriAndNumber.makeVector(model, nameOfListPropertyUsageCount);
+		vectorUsageProperty = MakeVectorWithNumber.makeVector(model, nameOfListPropertyUsageCount);
 		//System.out.println("Vector Usages Properties : " + vectorUsageProperty);
 
 		// Calcul quantile pour l'usage des propriétés.
@@ -184,7 +184,7 @@ public class ProfilingPreProcessing {
 
 		// Construction d'un vecteur pour l'usage des classes.
 		String vectorUsageClass = "c(0.0)";
-		vectorUsageClass = MakeVectorWithListUriAndNumber.makeVector(model, nameOfListClassUsageCount);
+		vectorUsageClass = MakeVectorWithNumber.makeVector(model, nameOfListClassUsageCount);
 		//System.out.println("Vector Usages Classes : " + vectorUsageClass);
 
 		// Calcul quantile pour l'usage des classes.
@@ -199,14 +199,46 @@ public class ProfilingPreProcessing {
 
 		
 		// Liste des classes les plus utilisées et leur connections avec d'autres classes.
-		String nameOfListClassOfInterest = "listClassOfInterest";
-		ArrayList<UriAndUriAndUri> listClassOfInterest = new ArrayList<UriAndUriAndUri>();
-		listClassOfInterest = MakeListClassOfInterest.makeList(model, nameOfListClassOfInterest);
+		String nameOfListClassAndPropertyOfInterestCount = "listClassAndPropertyOfInterestCount";
+		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCount = new ArrayList<UriAndUriAndUriAndNumber>();
+		listClassAndPropertyOfInterestCount = MakeListClassAndPropertyOfInterestCount.makeList(model, nameOfListClassAndPropertyOfInterestCount);
 
-		// Liste des classes les plus utilisées et leur connections avec d'autres classes.
-		String nameOfListClassOfInterestCount = "listClassOfInterestCount";
-		ArrayList<UriAndUriAndUriAndNumber> listClassOfInterestCount = new ArrayList<UriAndUriAndUriAndNumber>();
-		listClassOfInterestCount = MakeListClassOfInterestCount.makeList(model, nameOfListClassOfInterest);
+		// Construction d'un vecteur pour l'usage des classes et propriétés.
+		String vectorUsageClassAndProperty = "c(0.0)";
+		vectorUsageClassAndProperty = MakeVectorWithUriAndUriAndUriAndNumber.makeVector(model, listClassAndPropertyOfInterestCount);
+		//System.out.println("Vector Usages Classes and Properties: " + vectorUsageClassAndProperty);
+		
+		// Calcul quantile pour l'usage des classes avec propriétes.
+		double classAndPropertyUsageQuantile75 = 0.0;
+		classAndPropertyUsageQuantile75 = GiveRQuantile.giveDouble(vectorUsageClassAndProperty, "c(0.75)");
+		//System.out.println("Classes and properties Usage Quantile 75 : " + classAndPropertyUsageQuantile75);
+
+		// Liste des classes et propriétés les plus utilisées (quartile 75).
+		String nameOfListClassAndPropertyOfInterest = "listClassAndPropertyOfInterest";
+		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterest = new ArrayList<UriAndUriAndUriAndNumber>();
+		listClassAndPropertyOfInterest = MakeListUriAndUriAndUriAndNumberMostUsed.makeList(model, listClassAndPropertyOfInterestCount, nameOfListClassAndPropertyOfInterest, classAndPropertyUsageQuantile75);
+
+		// Liste des classes d'intérêts pour les sujets.
+		String nameOflistSubjectClassOfInterest = "listSubjectClassOfInterest";
+		ArrayList<UriAndNumber> listSubjectClassOfInterest = new ArrayList<UriAndNumber>();
+		listSubjectClassOfInterest = MakeListSubjectClassOfInterest.makeList(model, nameOfListClassAndPropertyOfInterest, nameOflistSubjectClassOfInterest);
+
+		// Liste des classes d'intérêts pour les sujets.
+		String nameOflistObjectClassOfInterest = "listObjectClassOfInterest";
+		ArrayList<UriAndNumber> listObjectClassOfInterest = new ArrayList<UriAndNumber>();
+		listObjectClassOfInterest = MakeListObjectClassOfInterest.makeList(model, nameOfListClassAndPropertyOfInterest, nameOflistObjectClassOfInterest);
+
+
+		// Liste des propriétés d'intérêts.
+		String nameOfListPropertyOfInterest = "listPropertyOfInterest";
+		ArrayList<UriAndNumber> listPropertyOfInterest = new ArrayList<UriAndNumber>();
+		listPropertyOfInterest = MakeListPropertyOfInterest.makeList(model, nameOfListClassAndPropertyOfInterest, nameOfListPropertyOfInterest);
+
+		// Liste of datatypes des propriétés les plus utilisées .
+		String nameOfListDatatypesMostUsed = "listOfDatatypesMostUsed";
+		ArrayList<Uri> listOfDatatypesMostUsed = new ArrayList<Uri>();
+		listOfDatatypesMostUsed = MakeListDatatypesMostUsed.makeList(model, listPropertyMostUsed, nameOfListDatatypesMostUsed);
+
 
 		// TEST
 		ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
@@ -310,13 +342,37 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriAndUriAndUriFile(listClassOfInterest, nameOfListClassOfInterest + ".json");
+			ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listClassAndPropertyOfInterestCount, nameOfListClassAndPropertyOfInterestCount + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listClassOfInterestCount, nameOfListClassOfInterestCount + ".json");
+			ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listClassAndPropertyOfInterest, nameOfListClassAndPropertyOfInterest + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriAndNumberFile(listSubjectClassOfInterest, nameOflistSubjectClassOfInterest + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriAndNumberFile(listObjectClassOfInterest, nameOflistObjectClassOfInterest + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriAndNumberFile(listPropertyOfInterest, nameOfListPropertyOfInterest + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriFile(listOfDatatypesMostUsed, nameOfListDatatypesMostUsed + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

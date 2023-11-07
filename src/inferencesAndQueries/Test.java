@@ -4,9 +4,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
-
-import profiling.util.PairOfDatasets;
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingUtil;
 
@@ -67,17 +64,23 @@ public class Test {
     	// model.leaveCriticalSection() ;
     	// dataset.end();	
 		// }
-		// Récupération du nom du fichier contenant la liste des ontologies à traiter pour le jeux de données source et target.
-		Path pathOfTheListPairDatasets = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameListPairDatasets);					
-		// Récupération du nom des fichiers d'ontologies dans listSourceDatasetsFileName
-		ArrayList<PairOfDatasets> listPairDatasetsFileName = new ArrayList<PairOfDatasets>();	
-		listPairDatasetsFileName = ProfilingUtil.makeListPairFileName(pathOfTheListPairDatasets.toString()); 
+		// // Récupération du nom du fichier contenant la liste des ontologies à traiter pour le jeux de données source et target.
+		// Path pathOfTheListPairDatasets = Paths.get(ProfilingConf.mainFolderProfiling, ProfilingConf.fileNameListPairDatasets);					
+		// // Récupération du nom des fichiers d'ontologies dans listSourceDatasetsFileName
+		// ArrayList<PairOfDatasets> listPairDatasetsFileName = new ArrayList<PairOfDatasets>();	
+		// listPairDatasetsFileName = ProfilingUtil.makeListPairFileName(pathOfTheListPairDatasets.toString()); 
 
-		for(PairOfDatasets pairOfDatasets: listPairDatasetsFileName){
-			System.out.println(pairOfDatasets.getFilesSource().get(0).getName());
-			System.out.println(pairOfDatasets.getFilesTarget().get(0).getName());
-		}
-
+		// for(PairOfDatasets pairOfDatasets: listPairDatasetsFileName){
+		// 	System.out.println(pairOfDatasets.getFilesSource().get(0).getName());
+		// 	System.out.println(pairOfDatasets.getFilesTarget().get(0).getName());
+		// }
+		String idPair = "MyPair" ;
+		Path pathForLptResults = Paths.get(ProfilingConf.folderForResults, idPair);
+		Path pathForSourceResults = Paths.get(ProfilingConf.folderForResults, idPair, "source");
+		Path pathForTargetResults = Paths.get(ProfilingConf.folderForResults, idPair, "target");
+		ProfilingPostProcessing.makeTreatements(pathForSourceResults.toString(), pathForTargetResults.toString());
+		ProfilingUtil.ChangeDirectoryFiles(ProfilingConf.folderForTmp, pathForLptResults.toString());
+		
 		Instant end0 = Instant.now();
 		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
 	}  

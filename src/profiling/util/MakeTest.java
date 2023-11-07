@@ -21,12 +21,11 @@ public class MakeTest {
 		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
 		
 		Query query = QueryFactory.create(prefix + 
-				"SELECT DISTINCT * " +
+				"SELECT DISTINCT ?property ?o" +
 				" WHERE { " +
-				" 	?ic1 rdf:type <http://dbkwik.webdatacommons.org/swtor.wikia.com/class/starship> ." +
-				" 	?ic2 rdf:type <http://dbkwik.webdatacommons.org/swtor.wikia.com/class/starship> ." +
-				"   ?ic1 <http://dbkwik.webdatacommons.org/swtor.wikia.com/property/name> ?ic2 ." +
-				" } " );			
+				" 	<http://dbkwik.webdatacommons.org/swtor.wikia.com/property/location> ?property ?o ." +
+				" }"
+		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
