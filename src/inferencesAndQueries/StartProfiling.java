@@ -2,6 +2,8 @@ package inferencesAndQueries;
 
 import java.time.Duration;
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 
 public class StartProfiling {
 
@@ -12,9 +14,12 @@ public class StartProfiling {
 
 	public static void main(String[] args) throws Exception {
 		
-		
 		Instant start0 = Instant.now();
-		
+		String formattedDate = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")
+    	.withZone(ZoneId.systemDefault())
+    	.format(Instant.now());
+		System.out.println("Start time : " + formattedDate);
+
 		CreateInferredModelAndRunQueries.InferencesAndQuery();
 		
 		Instant end0 = Instant.now();

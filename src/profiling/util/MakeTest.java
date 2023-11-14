@@ -21,10 +21,29 @@ public class MakeTest {
 		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
 		
 		Query query = QueryFactory.create(prefix + 
-				"SELECT DISTINCT ?property ?o" +
-				" WHERE { " +
-				" 	<http://dbkwik.webdatacommons.org/swtor.wikia.com/property/location> ?property ?o ." +
-				" }"
+				" SELECT ?propertyGroup (COUNT(*) AS ?usageCount) " +
+				" WHERE {      " +
+				"  { " +
+				"    SELECT DISTINCT ?subject (GROUP_CONCAT(?property; separator=\" | \") AS ?propertyList) " +	
+				"	 WHERE { " +	
+				" 	 	?subject ?property ?object ." +	
+				" 	 } " +	
+				"	 GROUP BY ?subject " +	
+				"   } " +	
+				"   BIND (CONCAT(?propertyList) AS ?propertyGroup) " +	
+				" } " +		
+				" GROUP BY ?propertyGroup " +	
+				" ORDER BY DESC(COUNT(*)) " 	  
+					
+					
+					  
+					
+					
+				  
+				  
+				
+				
+				
 		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();

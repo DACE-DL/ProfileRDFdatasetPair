@@ -17,7 +17,7 @@ import org.apache.jena.rdf.model.ResourceFactory;
 public class MakeListPropertyMostUsed {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfList, double dQuantile) {
+	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfList) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -42,8 +42,7 @@ public class MakeListPropertyMostUsed {
 			"SELECT (?uri AS ?property) (?val AS ?usage) WHERE { dsp:listPropertyUsageCount rdf:rest*/rdf:first ?element ." +
 			" ?element dsp:asURI ?uri ." +
 			" ?element dsp:asValue ?val ." +
-			"FILTER (?val > " + dQuantile + ") " +
-			" } ORDER BY DESC (?usage)"
+			" } ORDER BY DESC (?usage) LIMIT 100"
 		);			
  		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();

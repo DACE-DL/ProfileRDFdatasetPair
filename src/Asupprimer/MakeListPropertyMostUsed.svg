@@ -11,14 +11,13 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
-import org.apache.jena.rdf.model.ResIterator;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-public class MakeListPropertyUsageCount {
+public class MakeListPropertyMostUsed {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfList) {
+	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfList, double dQuantile) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -26,7 +25,6 @@ public class MakeListPropertyUsageCount {
 		String prefix = ProfilingConf.queryPrefix;
 
 		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
-		ArrayList<Uri> ListProperties = new ArrayList<Uri>();
 	
 		Integer n = 0;
 		Resource s = model.createResource(dsp + "sujet");
@@ -38,27 +36,25 @@ public class MakeListPropertyUsageCount {
 		Property pu = model.createProperty(dsp + "asURI");
 		Property pv = model.createProperty(dsp + "asValue");
 
+		//System.out.println("Quantile : " + dQuantile);
+			
 		Query query = QueryFactory.create(prefix + 
-			"SELECT ?property WHERE { " +
-			" ?s ?property ?o ." +
-			" FILTER (?property NOT IN (<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>))" +
-			" } GROUP BY ?property"
+			"SELECT (?uri AS ?property) (?val AS ?usage) WHERE { dsp:listPropertyUsageCount rdf:rest*/rdf:first ?element ." +
+			" ?element dsp:asURI ?uri ." +
+			" ?element dsp:asValue ?val ." +
+			"FILTER (?val > " + dQuantile + ") " +
+			" } ORDER BY DESC (?usage)"
 		);			
-		QueryExecution qe = QueryExecutionFactory.create(query, model);		
+ 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				ListProperties.add(new Uri(querySolution.getResource("property").toString())) ;
+				ListResources.add(new UriAndNumber(querySolution.getResource("property").toString(), querySolution.getLiteral("usage").getInt())) ;
 			}
 		}
 		
-		ListProperties.forEach((property) -> {
-			ResIterator stmtIte2 = model.listResourcesWithProperty(model.createProperty(property.getUri()));
-		    ListResources.add(new UriAndNumber(property.getUri(), stmtIte2.toList().size() )) ;
-		    stmtIte2.close();
-		});
-
+		
 		Collections.sort(ListResources, new UriAndNumberComparator());
 
 		for (UriAndNumber resource : ListResources) {
