@@ -33,22 +33,24 @@ public class MakeListPropertyCombinationBySubject {
 		// Property pv = model.createProperty(dsp + "asValue");
 
 		Query query = QueryFactory.create(prefix + 
-		" SELECT ?propertyGroup (COUNT(*) AS ?usageCount) " +
+		" SELECT ?propertyList (COUNT(?subject) AS ?usageCount) " +
 		" WHERE {      " +
-		"  { " +
-		"    SELECT DISTINCT ?subject (GROUP_CONCAT(DISTINCT ?property; separator=\"|\") AS ?propertyList) " +	
-		"	 WHERE { " +	
-		" 	 	?subject ?property ?object ." +	
-		"		FILTER ( !STRSTARTS(str(?property),\"" + dsp + "\") && " + 
-        " 			?property NOT IN ( <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#first>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ) " +
-      	"     	) " +
-		" 	 } " +	
-		"	 GROUP BY ?subject " +	
-		"   } " +	
-		"   BIND (CONCAT(?propertyList) AS ?propertyGroup) " +	
+		"  	 { " +
+		"    SELECT ?subject (GROUP_CONCAT(DISTINCT ?property; separator=\"|\") AS ?propertyList) { " +	
+		"    	SELECT ?subject ?property " +	
+		"	 	WHERE { " +	
+		" 	 		?subject ?property ?object ." +	
+		"			FILTER ( !STRSTARTS(str(?property),\"" + dsp + "\") && " + 
+        " 				?property NOT IN ( <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#first>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ) " +
+      	"     		) " +
+		" 	 	} " +	
+		"	 	ORDER BY ?property " +
+		"	 } " +
+		"    GROUP BY ?subject " +	
+		"    } " +	
 		" } " +		
-		" GROUP BY ?propertyGroup " +	
-		" ORDER BY DESC(COUNT(*)) " +
+		" GROUP BY ?propertyList " +	
+		" ORDER BY DESC(?usageCount) " +
 		" LIMIT 100 " 	  
 		);
 		
@@ -59,7 +61,7 @@ public class MakeListPropertyCombinationBySubject {
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				String[] elements = querySolution.getLiteral("propertyGroup").getString().split("\\|");
+				String[] elements = querySolution.getLiteral("propertyList").getString().split("\\|");
 				ArrayList<Uri> ListProperty = new ArrayList<Uri>();
 				for (String element : elements) {
 					Uri uri = new Uri(element);

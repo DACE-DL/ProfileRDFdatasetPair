@@ -3,7 +3,7 @@ package profiling.util;
 import java.util.ArrayList;
 
 
-public class TraitListLanguages {
+public class TraitListLanguagesPredicatValue {
 	static Boolean noCommonLanguage = true;
 	// Recherche des LPT liés aux languages
 	public static ArrayList<Lpt> makeList(ArrayList<Uri> listLanguageSource, ArrayList<Uri> listLanguageTarget) {
@@ -38,10 +38,6 @@ public class TraitListLanguages {
 			if (noCommonLanguage) {
 				// LPT 1.1.2.4: Predicate value terminological multilingual problem
 				listLpts.add(new Lpt("LPT1.1.2.4"));
-				// LPT 2.1.4: Predicate terminological multilingual problem
-				listLpts.add(new Lpt("LPT2.1.4"));
-				// LPT 3.1.4: Class terminological multilingual problem
-				listLpts.add(new Lpt("LPT3.1.4"));
 			}
 		}
 	

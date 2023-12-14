@@ -1,4 +1,4 @@
-package profiling.util;
+package Asupprimer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,14 @@ import org.apache.jena.rdf.model.Selector;
 import org.apache.jena.rdf.model.SimpleSelector;
 import org.apache.jena.rdf.model.StmtIterator;
 
-public class MakeListLanguages {
+import profiling.util.ProfilingConf;
+import profiling.util.Uri;
+import profiling.util.UriAndNumber;
+
+public class MakeListLanguagesSubject {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<Uri> makeList(Model model, String nameOfList) {
+	public static ArrayList<Uri> makeList(Model model, ArrayList<UriAndNumber> listProperty, String nameOfList) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -28,47 +32,38 @@ public class MakeListLanguages {
 		Resource u = model.createResource(dsp + "uri");
 		Property pu = model.createProperty(dsp + "asURI");
 
-		Resource s1 = null;
-		Property p1 = null;
-		Resource o1 = null;
-		List<Resource> listProperty = new ArrayList<>();
-		List<RDFNode> listObject = new ArrayList<>();
-	
-		p1 = model.createProperty(rdf ,"type");
-		o1 = model.createResource(rdf + "Property");
-
-		Selector selector = new SimpleSelector(s1, p1, o1) ;
-		StmtIterator stmtIte= model.listStatements(selector);
-		
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
-
-		listProperty.forEach((property) -> {
-			Resource s2 = null;
-			Resource o2 = null;
-			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2) ;
-			StmtIterator stmtIte1 = model.listStatements(selector1);
-			stmtIte1.forEach((stmObj) -> {
-				if (stmObj.getObject().isLiteral()) {
-					listObject.add(stmObj.getObject());
-				}	
-			});
-        });
-
-		// Duplicate checking
+		List<RDFNode> listSubject = new ArrayList<>();
 		ArrayList<Uri> listDistinctLanguages = new ArrayList<>();
 		List<String> listLanguagesString = new ArrayList<>();
-		listObject.forEach((object) -> {
-			if (object.isLiteral()) {
-				if (object.asLiteral().getLanguage().toString() != "") {
-					if (!listLanguagesString.contains(object.asLiteral().getLanguage().toString())) { 
-						listLanguagesString.add(object.asLiteral().getLanguage().toString());
-						listDistinctLanguages.add(new Uri(object.asLiteral().getLanguage().toString()));
+
+		listProperty.forEach((property) -> {
+			Resource s1 = null;
+			Resource o1 = null;
+			Selector selector1 = new SimpleSelector(s1, model.createProperty(property.getUri()), o1) ;
+			StmtIterator stmtIte1 = model.listStatements(selector1);
+			stmtIte1.forEach((stmSubj) -> {
+				if (stmSubj.getSubject().isURIResource()) {
+					listSubject.add(stmSubj.getSubject());
+				}	
+			});
+			listSubject.forEach((subject) -> {
+				Property p2 = null;
+ 				Resource o2 = null;
+				Selector selector2 = new SimpleSelector(subject.asResource(), p2, o2) ;
+				StmtIterator stmtIte2 = model.listStatements(selector2);
+				stmtIte2.forEach((stmObj) -> {
+					if (stmObj.getObject().isLiteral()) {
+					if (stmObj.getObject().asLiteral().getLanguage().toString() != "") {
+					if (!listLanguagesString.contains(stmObj.getObject().asLiteral().getLanguage().toString())) { 
+						listLanguagesString.add(stmObj.getObject().asLiteral().getLanguage().toString());
+						listDistinctLanguages.add(new Uri(stmObj.getObject().asLiteral().getLanguage().toString()));
 					}	
-				}			
-			} 
-		});
+				}
+					}	
+				});
+			});
+			listSubject.clear();
+        });
 
 		for (Uri resource : listDistinctLanguages) {
 			if (n == 0) {

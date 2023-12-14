@@ -24,7 +24,9 @@ public class ProfilingPostProcessing{
 		String nameOfListPropertyAndSubproperty = "listPropertyAndSubproperty";
 		String nameOfListClassUsageCount = "listClassUsageCount";
 		String nameOfListDatatypes = "listOfDatatypes";
-		String nameOfListLanguages = "listOfLanguages";
+		String nameOfListLanguagesPredicat = "listOfLanguagesPredicat";
+		String nameOfListLanguagesPredicatValue = "listOfLanguagesPredicatValue";
+		String nameOfListLanguagesClass = "listOfLanguagesClass";
 		String nameOfListLinks = "listLinks";
 		String nameOfListMaxPerProperty = "listMaxPerProperty"; 
 		String nameOfListPerProperty = "listPerProperty"; 
@@ -121,21 +123,51 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 		
-		ArrayList<Uri> listOfLanguagesSource = new ArrayList<Uri>();
-		Path pathNamelistOfLanguagesSource = Paths.get(pathForSourceResults, nameOfListLanguages + ".json");
+		ArrayList<Uri> listOfLanguagesPredicatSource = new ArrayList<Uri>();
+		Path pathNamelistOfLanguagesPredicatSource = Paths.get(pathForSourceResults, nameOfListLanguagesPredicat + ".json");
 	    try {
-			listOfLanguagesSource = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesSource.toString());
+			listOfLanguagesPredicatSource = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesPredicatSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		ArrayList<Uri> listOfLanguagesTarget = new ArrayList<Uri>();
-		Path pathNamelistOfLanguagesTarget = Paths.get(pathForTargetResults, nameOfListLanguages + ".json");
+		ArrayList<Uri> listOfLanguagesPredicatTarget = new ArrayList<Uri>();
+		Path pathNamelistOfLanguagesPredicatTarget = Paths.get(pathForTargetResults, nameOfListLanguagesPredicat + ".json");
 	    try {
-			listOfLanguagesTarget = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesTarget.toString());
+			listOfLanguagesPredicatTarget = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesPredicatTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
+		ArrayList<Uri> listOfLanguagesClassSource = new ArrayList<Uri>();
+		Path pathNamelistOfLanguagesClassSource = Paths.get(pathForSourceResults, nameOfListLanguagesClass + ".json");
+	    try {
+			listOfLanguagesClassSource = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesClassSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ArrayList<Uri> listOfLanguagesClassTarget = new ArrayList<Uri>();
+		Path pathNamelistOfLanguagesClassTarget = Paths.get(pathForTargetResults, nameOfListLanguagesClass + ".json");
+	    try {
+			listOfLanguagesClassTarget = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesClassTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<Uri> listOfLanguagesPredicatValueSource = new ArrayList<Uri>();
+		Path pathNamelistOfLanguagesPredicatValueSource = Paths.get(pathForSourceResults, nameOfListLanguagesPredicatValue + ".json");
+	    try {
+			listOfLanguagesPredicatValueSource = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesPredicatValueSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		ArrayList<Uri> listOfLanguagesPredicatValueTarget = new ArrayList<Uri>();
+		Path pathNamelistOfLanguagesPredicatValueTarget = Paths.get(pathForTargetResults, nameOfListLanguagesPredicatValue + ".json");
+	    try {
+			listOfLanguagesPredicatValueTarget = ProfilingUtil.makeArrayListUri(pathNamelistOfLanguagesPredicatValueTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		ArrayList<UriAndUri> listLinksSource = new ArrayList<UriAndUri>();
 		Path pathNamelistLinksSource = Paths.get(pathForSourceResults, nameOfListLinks + ".json");
 	    try {
@@ -301,20 +333,20 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestSource = new ArrayList<UriAndUriAndUriAndNumber>();
-		Path pathNamelistClassAndPropertyOfInterestSource = Paths.get(pathForSourceResults, nameOfListClassAndPropertyOfInterest + ".json");
-	    try {
-			listClassAndPropertyOfInterestSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestSource.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestTarget = new ArrayList<UriAndUriAndUriAndNumber>();
-		Path pathNamelistClassAndPropertyOfInterestTarget = Paths.get(pathForTargetResults, nameOfListClassAndPropertyOfInterest + ".json");
-	    try {
-			listClassAndPropertyOfInterestTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestTarget.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestSource = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Path pathNamelistClassAndPropertyOfInterestSource = Paths.get(pathForSourceResults, nameOfListClassAndPropertyOfInterest + ".json");
+	    // try {
+		// 	listClassAndPropertyOfInterestSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestSource.toString());
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
+		// ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestTarget = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Path pathNamelistClassAndPropertyOfInterestTarget = Paths.get(pathForTargetResults, nameOfListClassAndPropertyOfInterest + ".json");
+	    // try {
+		// 	listClassAndPropertyOfInterestTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestTarget.toString());
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
 		
 		ArrayList<UriAndNumber> listSubjectClassOfInterestSource = new ArrayList<UriAndNumber>();
 		Path pathNamelistSubjectClassOfInterestSource = Paths.get(pathForSourceResults, nameOfListSubjectClassOfInterest + ".json");
@@ -378,15 +410,21 @@ public class ProfilingPostProcessing{
 
 		System.out.println("Source size : " + resultsSource.getNumberOfTriples());
 		System.out.println("Target size : " + resultsTarget.getNumberOfTriples());
-		System.out.println("ListPropertyUsageCountSource size : " + listPropertyUsageCountSource.size());	
-		System.out.println("ListPropertyUsageCountTarget size : " + listPropertyUsageCountTarget.size());
-		System.out.println("ListSubjectVocabularySource size : " + listSubjectVocabularySource.size());
+		//System.out.println("ListPropertyUsageCountSource size : " + listPropertyUsageCountSource.size());	
+		//System.out.println("ListPropertyUsageCountTarget size : " + listPropertyUsageCountTarget.size());
+		//System.out.println("ListSubjectVocabularySource size : " + listSubjectVocabularySource.size());
 		
 		///////////////////////////////////////////////////////////////
 		// Recherche de problèmes liés au langages                   //
 		///////////////////////////////////////////////////////////////
 
-		listLptsTemp = TraitListLanguages.makeList(listOfLanguagesSource, listOfLanguagesTarget);
+		listLptsTemp = TraitListLanguagesPredicat.makeList(listOfLanguagesPredicatSource, listOfLanguagesPredicatTarget);
+		listLpts.addAll(listLptsTemp);
+
+		listLptsTemp = TraitListLanguagesPredicatValue.makeList(listOfLanguagesPredicatValueSource, listOfLanguagesPredicatValueTarget);
+		listLpts.addAll(listLptsTemp);
+		
+		listLptsTemp = TraitListLanguagesClass.makeList(listOfLanguagesClassSource, listOfLanguagesClassTarget);
 		listLpts.addAll(listLptsTemp);
 		
 		///////////////////////////////////////////////////////////////

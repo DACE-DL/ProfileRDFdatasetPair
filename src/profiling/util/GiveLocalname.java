@@ -12,11 +12,14 @@ public class GiveLocalname {
             // Obtenez le localname à partir de l'URI
             localname = uri.getFragment();
 			if (localname == null) {
-				localname = "a";
-				System.out.println("uri : " + uri);
+				localname = uri.getPath();
+				String[] elements = localname.split("\\/");
+				localname = elements[elements.length-1];
 			}
-            // Affichez le localname
-            System.out.println("Localname : " + localname);
+			if (localname == null) {
+				localname = " ";
+			}
+            //System.out.println("Localname : " + localname);
         } catch (URISyntaxException e) {
             e.printStackTrace();
         }

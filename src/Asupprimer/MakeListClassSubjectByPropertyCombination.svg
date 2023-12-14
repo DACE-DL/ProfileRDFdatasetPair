@@ -1,0 +1,96 @@
+package profiling.util;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
+import org.apache.jena.query.Query;
+import org.apache.jena.query.QueryExecution;
+import org.apache.jena.query.QueryExecutionFactory;
+import org.apache.jena.query.QueryFactory;
+import org.apache.jena.query.QuerySolution;
+import org.apache.jena.query.ResultSet;
+import org.apache.jena.rdf.model.Model;
+
+public class MakeListClassSubjectByPropertyCombination {
+	
+	// Création d'une liste des propriétés et de leur usage dans un triplet
+	public static ArrayList<UriListAndUriAndNumberListAndNumber> makeList(Model model, ArrayList<UriListAndNumber> ListPropertyCombinaison, String nameOfList) {
+		
+		new ProfilingConf();
+		String prefix = ProfilingConf.queryPrefix;
+		String dsp = ProfilingConf.dsp;
+
+		ArrayList<UriListAndUriAndNumberListAndNumber> ListResources = new ArrayList<UriListAndUriAndNumberListAndNumber>();
+	
+		for (UriListAndNumber propertyCombinaison : ListPropertyCombinaison) {
+
+			ArrayList<Uri> ListProperty = new ArrayList<Uri>();
+			ArrayList<UriAndNumber> ListClass = new ArrayList<UriAndNumber>();
+			ListProperty = propertyCombinaison.getUriList();
+			String listPropertyString1 = "";
+			String listPropertyString2 = "";
+			int index = 0;
+			for (Uri property : ListProperty) {
+				index++;
+				if (index == 1) {
+					listPropertyString1 = "<" + property.getUri() + "> ?object1" ;
+				} else {
+					listPropertyString1 = listPropertyString1 + " ; <" + property.getUri() + "> ?object" + index ;
+				}
+				if (index == 1) {
+					listPropertyString2 = "<" + property.getUri() + ">" ;
+				} else {
+					listPropertyString2 = listPropertyString2 + " , <" + property.getUri() + ">" ;
+				}
+			}
+			
+			Query query = QueryFactory.create(prefix + 
+				" SELECT (COUNT(DISTINCT ?instance) AS ?usageCount) " +
+				" (GROUP_CONCAT(DISTINCT ?class; SEPARATOR=\"|\") AS ?classList) " +
+		 		" WHERE { "+
+				"  		?instance " + listPropertyString1 + " . " +
+				"		MINUS { " +	
+				"			?instance ?otherProperty ?otherObject . " +	
+				"			FILTER (!STRSTARTS(STR(?otherProperty),\"" + dsp + "\") && " + 
+				"			?otherProperty NOT IN ( " + listPropertyString2 + 
+				"  	   	 	, <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#first>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> " +
+				"  			))" +
+				"    	} " +
+				"       OPTIONAL { ?instance rdf:type ?class } " +
+				"  } " 
+			);
+			
+			System.out.println("Query : " + query.toString()); 
+
+			QueryExecution qe = QueryExecutionFactory.create(query, model);		
+			ResultSet result = qe.execSelect();
+			if (result.hasNext()) {
+				while( result.hasNext() ) {
+					QuerySolution querySolution = result.next() ;
+					if ( !(querySolution.getLiteral("classList")==null) ) {
+					String[] elements = querySolution.getLiteral("classList").getString().split("\\|");
+					for (String element : elements) {
+						UriAndNumber uriAndNumber = new UriAndNumber(element, 888);
+						ListClass.add(uriAndNumber);
+					}
+					}
+			
+					UriListAndUriAndNumberListAndNumber uriListAndUriAndNumberListAndNumber = new UriListAndUriAndNumberListAndNumber();
+					uriListAndUriAndNumberListAndNumber.setUriList(ListProperty);
+					uriListAndUriAndNumberListAndNumber.setUriAndNumberList(ListClass);
+					uriListAndUriAndNumberListAndNumber.setNumber(querySolution.getLiteral("usageCount").getInt());
+					ListResources.add(uriListAndUriAndNumberListAndNumber) ;
+				}
+			}
+		}
+		return ListResources;
+	}
+	
+	static class UriComparator implements java.util.Comparator<Uri> {
+		@Override
+		public int compare(Uri a, Uri b) {
+			return GiveLocalname.giveName(a.getUri()).compareTo(GiveLocalname.giveName(b.getUri()));
+		}
+	}
+	
+}

@@ -5,77 +5,60 @@ import java.util.List;
 
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.Selector;
 import org.apache.jena.rdf.model.SimpleSelector;
 import org.apache.jena.rdf.model.StmtIterator;
 
-public class MakeListLinksSVG {
+public class MakeListLanguagesPredicat {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndUri> makeList(Model model, String nameOfList) {
+	public static ArrayList<Uri> makeList(Model model, ArrayList<UriAndNumber> listProperty, String nameOfList) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 
-		ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
-		List<String> listResourcesString = new ArrayList<>();
-		
-		Resource s1 = null;
-		Property p1 = null;
-		Resource o1 = null;
 		Integer n = 0;
 		Resource s = model.createResource(dsp + "sujet");
 		Property p = model.createProperty(dsp + "predicat");
 		Resource o = model.createResource(dsp + "objet");
 		Resource b = model.createResource();
-		Resource u1 = model.createResource(dsp + "property");
-		Resource u2 = model.createResource(dsp + "subproperty");
-		Property pu1 = model.createProperty(dsp + "asNamespaceSubject");
-		Property pu2 = model.createProperty(dsp + "asNamespaceObject");
-		List<Resource> listProperty = new ArrayList<>();
-	
-		p1 = model.createProperty(rdf ,"type");
-		o1 = model.createResource(rdf + "Property");
+		Resource u = model.createResource(dsp + "uri");
+		Property pu = model.createProperty(dsp + "asURI");
 
-		SimpleSelector selector = new SimpleSelector(s1, p1, o1) ;
-		StmtIterator stmtIte= model.listStatements(selector);
-		
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
+		ArrayList<Uri> listDistinctLanguages = new ArrayList<>();
+		List<String> listLanguagesString = new ArrayList<>();
 
 		listProperty.forEach((property) -> {
-			Resource s2 = null;
 			Resource o2 = null;
-			SimpleSelector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2);
+			Property p2 = null;
+			Selector selector1 = new SimpleSelector(model.createResource(property.getUri()), p2, o2) ;
 			StmtIterator stmtIte1 = model.listStatements(selector1);
 			stmtIte1.forEach((stm) -> {
-				if (stm.getSubject().isResource() && stm.getObject().isResource()) {
-					if (!(stm.getSubject().isAnon() || stm.getObject().isAnon())) {		
-						if (stm.getSubject().getNameSpace() != stm.getObject().asResource().getNameSpace()) {
-							String SubNsObNs = stm.getSubject().getNameSpace() + stm.getObject().asResource().getNameSpace();
-							if (!listResourcesString.contains(SubNsObNs)) { 
-								listResourcesString.add(SubNsObNs);
-								ListResources.add(new UriAndUri(stm.getSubject().getNameSpace(), stm.getObject().asResource().getNameSpace())) ;
-							}	
-						}
-					}	
-				}			
+				if (stm.getObject().isLiteral()) {
+					if (stm.getObject().asLiteral().getLanguage().toString() != "") {
+						if (!listLanguagesString.contains(stm.getObject().asLiteral().getLanguage().toString())) { 
+							//System.out.println("Property predicat: " + stm.getPredicate().toString());
+							//System.out.println("Objet predicat: " + stm.getObject().toString());
+							listLanguagesString.add(stm.getObject().asLiteral().getLanguage().toString());
+							listDistinctLanguages.add(new Uri(stm.getObject().asLiteral().getLanguage().toString()));
+						}	
+					}			
+				}	
 			});
         });
 
-		for (UriAndUri resource : ListResources) {
+		
+		for (Uri resource : listDistinctLanguages) {
 			if (n == 0) {
 				s = model.createResource(dsp + nameOfList);
 				p = model.createProperty(rdf + "first");
 				
 				b = model.createResource();
-				u1 = model.createResource(resource.getUri1().toString());
-				u2 = model.createResource(resource.getUri2().toString());
-				model.add(b, pu1, u1);
-				model.add(b, pu2, u2);
-
+				u = model.createResource(resource.getUri().toString());
+				model.add(b, pu, u);
 				model.add(s, p, b);
 				n = n + 1;
 			} else {
@@ -83,11 +66,8 @@ public class MakeListLinksSVG {
 				p = model.createProperty(rdf + "first");
 				
 				b = model.createResource();
-				u1 = model.createResource(resource.getUri1().toString());
-				u2 = model.createResource(resource.getUri2().toString());
-				model.add(b, pu1, u1);
-				model.add(b, pu2, u2);
-
+				u = model.createResource(resource.getUri().toString());
+				model.add(b, pu, u);
 				model.add(s, p, b);
 				if (n == 1) {
 					s = model.createResource(dsp + nameOfList);
@@ -123,6 +103,7 @@ public class MakeListLinksSVG {
 			o = model.createResource(rdf + "List");
 			model.add(s, p, o);
 		}
-		return ListResources;
+		
+		return listDistinctLanguages;
 	}
 }

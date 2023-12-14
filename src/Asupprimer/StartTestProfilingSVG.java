@@ -1,9 +1,10 @@
-package inferencesAndQueries;
+package Asupprimer;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 
+import inferencesAndQueries.CreateInferredModelAndRunQueries;
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingQueryObject;
 

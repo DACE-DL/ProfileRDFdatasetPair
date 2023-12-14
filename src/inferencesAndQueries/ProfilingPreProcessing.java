@@ -55,11 +55,6 @@ public class ProfilingPreProcessing {
 		ArrayList<UriAndUri> listPropertyAndSubproperty = new ArrayList<UriAndUri>();
 		listPropertyAndSubproperty = MakeListPropertyAndSubproperty.makeList(model, nameOfListPropertyAndSubproperty);
 
-		// Liste des classes et de leur usage.
-		String nameOfListClassUsageCount = "listClassUsageCount";
-		ArrayList<UriAndNumber> listClassUsageCount = new ArrayList<UriAndNumber>();
-		listClassUsageCount = MakeListClassUsageCount.makeList(model, nameOfListClassUsageCount);
-
 		// Properties hierarchy deep and loop
 		HierarchyDeepAndLoop hierarchyDeepAndLoop = new HierarchyDeepAndLoop();
 		hierarchyDeepAndLoop = GivePropertyHierarchyDeep.giveHierarchyDeepAndLoop(model, nameOfListPropertyAndSubproperty);
@@ -93,21 +88,25 @@ public class ProfilingPreProcessing {
 		// Liste of datatypes.
 		String nameOfListDatatypes = "listOfDatatypes";
 		ArrayList<Uri> listOfDatatypes = new ArrayList<Uri>();
-		listOfDatatypes = MakeListDatatypes.makeList(model, nameOfListDatatypes);
+		listOfDatatypes = MakeListDatatypes.makeList(model, listPropertyUsageCount, nameOfListDatatypes);
 		
-		// Liste of languages.
-		String nameOfListLanguages = "listOfLanguages";
-		ArrayList<Uri> listOfLanguages = new ArrayList<Uri>();
-		listOfLanguages = MakeListLanguages.makeList(model, nameOfListLanguages);
+		// Liste of languages predicat.
+		String nameOfListLanguagesPredicat = "listOfLanguagesPredicat";
+		ArrayList<Uri> listOfLanguagesPredicat = new ArrayList<Uri>();
+		listOfLanguagesPredicat = MakeListLanguagesPredicat.makeList(model, listPropertyUsageCount, nameOfListLanguagesPredicat);
+
+		// Liste of languages predicat values.
+		String nameOfListLanguagesPredicatValue = "listOfLanguagesPredicatValue";
+		ArrayList<Uri> listOfLanguagesPredicatValue = new ArrayList<Uri>();
+		listOfLanguagesPredicatValue = MakeListLanguagesPredicatValue.makeList(model, listPropertyUsageCount, nameOfListLanguagesPredicatValue);
 
 		// Typed String Length
-		double numberOfTypedStringLength = GiveTypedStringLength.giveLength(model);
+		double numberOfTypedStringLength = GiveTypedStringLength.giveLength(model, listPropertyUsageCount);
 		results.setNumberTypedStringLength(numberOfTypedStringLength);
 
 		// Untyped String Length
-		double numberOfUntypedStringLength = GiveUntypedStringLength.giveLength(model);
+		double numberOfUntypedStringLength = GiveUntypedStringLength.giveLength(model, listPropertyUsageCount);
 		results.setNumberUntypedStringLength(numberOfUntypedStringLength);
-
 
 		// Typed Subjects
 		Integer numberOfTypedSubjects = GiveTypedSubjects.giveNumber(model);
@@ -141,7 +140,7 @@ public class ProfilingPreProcessing {
 		String nameOfListPvocabulary = "listPredicatVocabulary"; 
 		String nameOfListOvocabulary = "listObjectVocabulary"; 
 		ArrayList<List<String>> listResourcesSPO = new ArrayList<List<String>>(3);
-		listResourcesSPO = MakeListSPOvocabularies.makeList(model, nameOfListSvocabulary, nameOfListPvocabulary, nameOfListOvocabulary);
+		listResourcesSPO = MakeListSPOvocabularies.makeList(model, listPropertyUsageCount, nameOfListSvocabulary, nameOfListPvocabulary, nameOfListOvocabulary);
 		List<String> listDistinctSubjectVocabularies = new ArrayList<>();
 		List<String> listDistinctPredicatVocabularies = new ArrayList<>();
 		List<String> listDistinctObjectVocabularies = new ArrayList<>();
@@ -149,27 +148,20 @@ public class ProfilingPreProcessing {
 		listDistinctPredicatVocabularies = listResourcesSPO.get(1);
 		listDistinctObjectVocabularies = listResourcesSPO.get(2);
         
-
 		// Lists of vocabularies.
-		
 		String nameOfListSharedPartSubjectVocabulary = "listSharedPartSubjectVocabulary"; 
 		List<String> listSharedPartSubjectVocabulary = new ArrayList<String>();
-		//listSharedPartSubjectVocabulary = MakeListSharedPartSubjectVocabulary.makeList(model, listDistinctSubjectVocabularies, nameOfListSharedPartSubjectVocabulary);
-		
-		// Construction d'un vecteur pour l'usage des propriétés.
-		//String vectorUsageProperty = "c(0.0)";
-		//vectorUsageProperty = MakeVectorWithNumber.makeVector(model, nameOfListPropertyUsageCount);
-		//System.out.println("Vector Usages Properties : " + vectorUsageProperty);
-
-		// Calcul quantile pour l'usage des propriétés.
-		//double propertyUsageQuantile75 = 0.0;
-		//propertyUsageQuantile75 = GiveRQuantile.giveDouble(vectorUsageProperty, "c(0.75)");
-		//System.out.println("Properties Usage Quantile 75 : " + propertyUsageQuantile75);
+		listSharedPartSubjectVocabulary = MakeListSharedPartSubjectVocabulary.makeList(model, listDistinctSubjectVocabularies, nameOfListSharedPartSubjectVocabulary);
 		
 		// Liste des 100 premiéres propriétés les plus utilisées.
 		String nameOfListPropertyMostUsed = "listPropertyMostUsed";
 		ArrayList<UriAndNumber> listPropertyMostUsed = new ArrayList<UriAndNumber>();
 		listPropertyMostUsed = MakeListPropertyMostUsed.makeList(model, nameOfListPropertyMostUsed);
+
+		// Liste des 100 premiéres propriétés les plus utilisées avec datatypes et classes range.
+		String nameOfListPropertyMostUsedWithDatatypeAndClassRange = "listPropertyMostUsedWithDatatypeAndClassRange";
+		ArrayList<UriAndUriAndNumberListAndUriAndNumberListAndNumber> listPropertyMostUsedWithDatatypeAndClassRange = new ArrayList<UriAndUriAndNumberListAndUriAndNumberListAndNumber>();
+		listPropertyMostUsedWithDatatypeAndClassRange = MakeListPropertyMostUsedWithDatatypeAndClassRange.makeList(model, nameOfListPropertyMostUsedWithDatatypeAndClassRange);
 
 		// Liste des 100 premiéres propriétés les plus utilisées.
 		String nameOfListPropertyUsagePerSubject = "listPropertyUsagePerSubject";
@@ -181,12 +173,17 @@ public class ProfilingPreProcessing {
 		ArrayList<UriAndNumberAndNumber> listPropertyUsagePerObject = new ArrayList<UriAndNumberAndNumber>();
 		listPropertyUsagePerObject = MakeListPropertyUsagePerObject.makeList(model, nameOfListPropertyMostUsed, nameOfListPropertyUsagePerObject);
 
-		// Liste des combinaisons de propriétés les plus utilisées par sujet.
-		String nameOfListPropertyCombinationBySubject = "listPropertyCombinationBySubject";
-		ArrayList<UriListAndNumber> listPropertyCombinationBySubject = new ArrayList<UriListAndNumber>();
-		listPropertyCombinationBySubject = MakeListPropertyCombinationBySubject.makeList(model, nameOfListPropertyUsagePerObject);
-		
 		//// For the Classes ////
+
+		// Liste des classes et de leur usage.
+		String nameOfListClassUsageCount = "listClassUsageCount";
+		ArrayList<UriAndNumber> listClassUsageCount = new ArrayList<UriAndNumber>();
+		listClassUsageCount = MakeListClassUsageCount.makeList(model, nameOfListClassUsageCount);
+		
+		// Liste of languages class.
+		String nameOfListLanguagesClass = "listOfLanguagesClass";
+		ArrayList<Uri> listOfLanguagesClass = new ArrayList<Uri>();
+		listOfLanguagesClass = MakeListLanguagesClass.makeList(model, listClassUsageCount, nameOfListLanguagesClass);
 
 		// Liste of classes defined.
 		String nameOfListClassDefined = "listClassDefined";
@@ -198,9 +195,14 @@ public class ProfilingPreProcessing {
 		ArrayList<Uri> listOfClassNotDefined = new ArrayList<Uri>();
 		listOfClassNotDefined = MakeListClassNotDefined.makeList(model, nameOfListClassNotDefined);
 
+		// Liste des classes et des sous-classes.
+		String nameOfListClassAndSubclass = "listClassAndSubclass";
+		ArrayList<UriAndUri> listClassAndSubclass = new ArrayList<UriAndUri>();
+		listClassAndSubclass = MakeListClassAndSubclass.makeList(model, nameOfListClassAndSubclass);
+
 		// Classes hierarchy deep and loop
 		HierarchyDeepAndLoop ClassHierarchyDeepAndLoop = new HierarchyDeepAndLoop();
-		ClassHierarchyDeepAndLoop = GiveClassHierarchyDeep.giveHierarchyDeepAndLoop(model, nameOfListPropertyAndSubproperty);
+		ClassHierarchyDeepAndLoop = GiveClassHierarchyDeep.giveHierarchyDeepAndLoop(model, nameOfListClassAndSubclass);
 		results.setClassHierarchyDeep(ClassHierarchyDeepAndLoop.getHierarchyDeep());
 		results.setClassHierarchyLoop(ClassHierarchyDeepAndLoop.getLoop());
 
@@ -219,26 +221,23 @@ public class ProfilingPreProcessing {
 		ArrayList<UriAndNumber> listClassMostUsed = new ArrayList<UriAndNumber>();
 		listClassMostUsed = MakeListClassMostUsed.makeList(model, nameOfListClassMostUsed, classUsageQuantile75);
 
+		//MakeTestInsert.make(model);
+		
+		// Liste des classes sujet des combinaisons de propriétés les plus utilisées par sujet.
+		String nameOfListClassSubjectByPropertyCombination = "listClassSubjectByPropertyCombination";
+		ArrayList<UriListAndUriAndNumberListAndNumber> listClassSubjectByPropertyCombination = new ArrayList<UriListAndUriAndNumberListAndNumber>();
+		listClassSubjectByPropertyCombination = MakeListClassSubjectByPropertyCombination.makeList(model, nameOfListPropertyUsagePerObject);
+
 		System.out.println("Début traitement listClassAndPropertyOfInterestCount ");
 		// Liste des classes les plus utilisées et leur connections avec d'autres classes.
 		String nameOfListClassAndPropertyOfInterestCount = "listClassAndPropertyOfInterestCount";
 		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCount = new ArrayList<UriAndUriAndUriAndNumber>();
-		//listClassAndPropertyOfInterestCount = MakeListClassAndPropertyOfInterestCount.makeList(model, nameOfListClassAndPropertyOfInterestCount);
+		listClassAndPropertyOfInterestCount = MakeListClassAndPropertyOfInterestCount.makeList(model, nameOfListClassAndPropertyOfInterestCount);
 
-		// Construction d'un vecteur pour l'usage des classes et propriétés.
-		String vectorUsageClassAndProperty = "c(0.0)";
-		vectorUsageClassAndProperty = MakeVectorWithUriAndUriAndUriAndNumber.makeVector(model, listClassAndPropertyOfInterestCount);
-		//System.out.println("Vector Usages Classes and Properties: " + vectorUsageClassAndProperty);
-		
-		// Calcul quantile pour l'usage des classes avec propriétes.
-		double classAndPropertyUsageQuantile75 = 0.0;
-		classAndPropertyUsageQuantile75 = GiveRQuantile.giveDouble(vectorUsageClassAndProperty, "c(0.75)");
-		//System.out.println("Classes and properties Usage Quantile 75 : " + classAndPropertyUsageQuantile75);
-
-		// Liste des classes et propriétés les plus utilisées (quartile 75).
+		// Liste des classes et propriétés les plus utilisées (100).
 		String nameOfListClassAndPropertyOfInterestMostUsed = "listClassAndPropertyOfInterestMostUsed";
 		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestMostUsed = new ArrayList<UriAndUriAndUriAndNumber>();
-		listClassAndPropertyOfInterestMostUsed = MakeListUriAndUriAndUriAndNumberMostUsed.makeList(model, listClassAndPropertyOfInterestCount, nameOfListClassAndPropertyOfInterestMostUsed, classAndPropertyUsageQuantile75);
+		listClassAndPropertyOfInterestMostUsed = MakeListClassAndPropertyOfInterestMostUsed.makeList(model, listClassAndPropertyOfInterestCount, nameOfListClassAndPropertyOfInterestMostUsed);
 
 		// Liste des classes d'intérêts pour les sujets.
 		String nameOflistSubjectClassOfInterest = "listSubjectClassOfInterest";
@@ -250,7 +249,6 @@ public class ProfilingPreProcessing {
 		ArrayList<UriAndNumber> listObjectClassOfInterest = new ArrayList<UriAndNumber>();
 		listObjectClassOfInterest = MakeListObjectClassOfInterest.makeList(model, nameOfListClassAndPropertyOfInterestMostUsed, nameOflistObjectClassOfInterest);
 
-
 		// Liste des propriétés d'intérêts.
 		String nameOfListPropertyOfInterest = "listPropertyOfInterest";
 		ArrayList<UriAndNumber> listPropertyOfInterest = new ArrayList<UriAndNumber>();
@@ -261,13 +259,11 @@ public class ProfilingPreProcessing {
 		ArrayList<Uri> listOfDatatypesMostUsed = new ArrayList<Uri>();
 		listOfDatatypesMostUsed = MakeListDatatypesMostUsed.makeList(model, listPropertyMostUsed, nameOfListDatatypesMostUsed);
 
-
 		// TEST
 		ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
-		//listOfTest = MakeTest.make(model);
+		// listOfTest = MakeTest.make(model);
 
-		
-		
+
 		//////////////////////////////////////////////
 		// Transfert des listes dans fichers .json  //
 		//////////////////////////////////////////////
@@ -297,7 +293,20 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriFile(listOfLanguages, nameOfListLanguages + ".json");
+			ProfilingUtil.makeJsonUriFile(listOfLanguagesPredicat, nameOfListLanguagesPredicat + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+
+		try {
+			ProfilingUtil.makeJsonUriFile(listOfLanguagesPredicatValue, nameOfListLanguagesPredicatValue + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriFile(listOfLanguagesClass, nameOfListLanguagesClass + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -344,13 +353,18 @@ public class ProfilingPreProcessing {
 			e.printStackTrace();
 		}
 
-
 		try {
 			ProfilingUtil.makeJsonUriAndNumberFile(listPropertyMostUsed, nameOfListPropertyMostUsed + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
+		try {
+			ProfilingUtil.makeJsonUriAndUriAndNumberListAndUriAndNumberListAndNumberFile(listPropertyMostUsedWithDatatypeAndClassRange, nameOfListPropertyMostUsedWithDatatypeAndClassRange + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		try {
 			ProfilingUtil.makeJsonUriAndNumberAndNumberFile(listPropertyUsagePerSubject, nameOfListPropertyUsagePerSubject + ".json");
 		} catch (Exception e) {
@@ -359,12 +373,6 @@ public class ProfilingPreProcessing {
 
 		try {
 			ProfilingUtil.makeJsonUriAndNumberAndNumberFile(listPropertyUsagePerObject, nameOfListPropertyUsagePerObject + ".json");
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		try {
-			ProfilingUtil.makeJsonUriListAndNumberFile(listPropertyCombinationBySubject, nameOfListPropertyCombinationBySubject + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -382,11 +390,23 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
+			ProfilingUtil.makeJsonUriAndUriFile(listClassAndSubclass, nameOfListClassAndSubclass + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
 			ProfilingUtil.makeJsonUriAndNumberFile(listClassMostUsed, nameOfListClassMostUsed + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		try {
+			ProfilingUtil.makeJsonUriListAndUriAndNumberListAndNumberFile(listClassSubjectByPropertyCombination, nameOfListClassSubjectByPropertyCombination + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
 		try {
 			ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listClassAndPropertyOfInterestCount, nameOfListClassAndPropertyOfInterestCount + ".json");
 		} catch (Exception e) {

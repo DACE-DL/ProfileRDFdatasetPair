@@ -14,7 +14,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 public class MakeListSPOvocabularies {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<List<String>> makeList(Model model, String nameOfListS, String nameOfListP, String nameOfListO) {
+	public static ArrayList<List<String>> makeList(Model model, ArrayList<UriAndNumber> listProperty, String nameOfListS, String nameOfListP, String nameOfListO) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -36,21 +36,11 @@ public class MakeListSPOvocabularies {
 		Resource s1 = null;
 		Property p1 = null;
 		Resource o1 = null;
-		List<Resource> listProperty = new ArrayList<>();
+		
 	
-		p1 = model.createProperty(rdf ,"type");
-		o1 = model.createResource(rdf + "Property");
-
-		Selector selector = new SimpleSelector(s1, p1, o1) ;
-		StmtIterator stmtIte= model.listStatements(selector);
-
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
-
 		// On boucle sur les propriétés
 		listProperty.forEach((property) -> {
-			Resource p2 = model.createProperty(property.getURI());
+			Resource p2 = model.createProperty(property.getUri());
 			String nameSpacePredicat = ProfilingUtil.controlNameSpace(p2.getNameSpace());
 			if	(!nameSpacePredicat.equals("")) {
 				// Duplicate checking

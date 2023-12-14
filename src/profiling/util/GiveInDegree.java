@@ -20,7 +20,7 @@ public class GiveInDegree {
 		Query query = QueryFactory.create(prefix + 
 			"SELECT (COUNT(?o)/COUNT(DISTINCT ?o) AS ?usage) " +
 			" WHERE { " +
-			" ?p rdf:type <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ." +
+			//" ?p rdf:type <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ." +
 			" ?s ?p ?o ." +
 			" FILTER isIRI(?p) " +
 			" } "

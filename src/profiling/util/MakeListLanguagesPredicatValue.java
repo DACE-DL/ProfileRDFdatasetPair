@@ -1,67 +1,62 @@
 package profiling.util;
 
 import java.util.ArrayList;
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
-import org.apache.jena.rdf.model.Literal;
+import java.util.List;
+
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
+import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
-import org.apache.jena.rdf.model.ResourceFactory;
+import org.apache.jena.rdf.model.Selector;
+import org.apache.jena.rdf.model.SimpleSelector;
+import org.apache.jena.rdf.model.StmtIterator;
 
-public class MakeListPropertyUsageCount {
+public class MakeListLanguagesPredicatValue {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfList) {
+	public static ArrayList<Uri> makeList(Model model, ArrayList<UriAndNumber> listProperty, String nameOfList) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
-		String prefix = ProfilingConf.queryPrefix;
 
-		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
-		
 		Integer n = 0;
 		Resource s = model.createResource(dsp + "sujet");
 		Property p = model.createProperty(dsp + "predicat");
 		Resource o = model.createResource(dsp + "objet");
 		Resource b = model.createResource();
 		Resource u = model.createResource(dsp + "uri");
-		Literal v = null;
 		Property pu = model.createProperty(dsp + "asURI");
-		Property pv = model.createProperty(dsp + "asValue");
 
-		Query query = QueryFactory.create(prefix + 
-		"SELECT ?property (COUNT(?property) AS ?propertyUsage) " +
-		" WHERE { " +
-			" ?s ?property ?o ." +
-			//" FILTER (?property NOT IN (<http://www.w3.org/1999/02/22-rdf-syntax-ns#type>))" +
-		" } GROUP BY ?property ORDER BY DESC (?propertyUsage) " 
-		);			
-		QueryExecution qe = QueryExecutionFactory.create(query, model);		
-		ResultSet result = qe.execSelect();
-		if (result.hasNext()) {
-			while( result.hasNext() ) {
-				QuerySolution querySolution = result.next() ;
-				ListResources.add(new UriAndNumber(querySolution.getResource("property").toString(), querySolution.getLiteral("propertyUsage").getInt())) ;
-			}
-		}
-		
-		for (UriAndNumber resource : ListResources) {
+		ArrayList<Uri> listDistinctLanguages = new ArrayList<>();
+		List<String> listLanguagesString = new ArrayList<>();
+
+		listProperty.forEach((property) -> {
+			Resource s1 = null;
+			Resource o1 = null;
+			Selector selector1 = new SimpleSelector(s1, model.createProperty(property.getUri()), o1) ;
+			StmtIterator stmtIte1 = model.listStatements(selector1);
+			stmtIte1.forEach((stmObj) -> {
+				if (stmObj.getObject().isLiteral()) {
+						if (stmObj.getObject().asLiteral().getLanguage().toString() != "") {
+							if (!listLanguagesString.contains(stmObj.getObject().asLiteral().getLanguage().toString())) { 
+								listLanguagesString.add(stmObj.getObject().asLiteral().getLanguage().toString());
+								listDistinctLanguages.add(new Uri(stmObj.getObject().asLiteral().getLanguage().toString()));
+							}	
+						}	
+				}		
+			});
+        });
+
+
+		for (Uri resource : listDistinctLanguages) {
 			if (n == 0) {
 				s = model.createResource(dsp + nameOfList);
 				p = model.createProperty(rdf + "first");
 				
 				b = model.createResource();
 				u = model.createResource(resource.getUri().toString());
-				v = ResourceFactory.createTypedLiteral(resource.getNumber());
 				model.add(b, pu, u);
-				model.add(b, pv, v);
-
 				model.add(s, p, b);
 				n = n + 1;
 			} else {
@@ -70,10 +65,7 @@ public class MakeListPropertyUsageCount {
 				
 				b = model.createResource();
 				u = model.createResource(resource.getUri().toString());
-				v = ResourceFactory.createTypedLiteral(resource.getNumber());
 				model.add(b, pu, u);
-				model.add(b, pv, v);
-
 				model.add(s, p, b);
 				if (n == 1) {
 					s = model.createResource(dsp + nameOfList);
@@ -109,13 +101,7 @@ public class MakeListPropertyUsageCount {
 			o = model.createResource(rdf + "List");
 			model.add(s, p, o);
 		}
-		return ListResources;
-	}
-
-	static class UriAndNumberComparator implements java.util.Comparator<UriAndNumber> {
-		@Override
-		public int compare(UriAndNumber a, UriAndNumber b) {
-			return b.getNumber() - a.getNumber();
-		}
+		
+		return listDistinctLanguages;
 	}
 }

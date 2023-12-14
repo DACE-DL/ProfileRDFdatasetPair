@@ -14,7 +14,7 @@ public class GiveUntypedStringLength {
 	static Integer n = 0;
 	static double l = 0;
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static double giveLength(Model model) {
+	public static double giveLength(Model model, ArrayList<UriAndNumber> listProperty) {
 		double nNumber = 0;
 	
 		new ProfilingConf();
@@ -23,23 +23,12 @@ public class GiveUntypedStringLength {
 		Resource s1 = null;
 		Property p1 = null;
 		Resource o1 = null;
-		List<Resource> listProperty = new ArrayList<>();
 		List<RDFNode> listObject = new ArrayList<>();
-	
-		p1 = model.createProperty(rdf ,"type");
-		o1 = model.createResource(rdf + "Property");
-
-		Selector selector = new SimpleSelector(s1, p1, o1) ;
-		StmtIterator stmtIte= model.listStatements(selector);
-		
-		stmtIte.forEach((statement) -> {
-            listProperty.add(statement.getSubject());
-        });
 
 		listProperty.forEach((property) -> {
 			Resource s2 = null;
 			Resource o2 = null;
-			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getURI()), o2) ;
+			Selector selector1 = new SimpleSelector(s2, model.createProperty(property.getUri()), o2) ;
 			StmtIterator stmtIte1 = model.listStatements(selector1);
 			stmtIte1.forEach((stmObj) -> {
 				listObject.add(stmObj.getObject());

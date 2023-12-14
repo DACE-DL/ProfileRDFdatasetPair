@@ -52,6 +52,7 @@ public class TDBInitialisation {
 		System.out.println("Max memory is: " + maxSize);
 		System.out.println("The number of available processors is: " + availableProcessors);
 		
+		//System.out.println("List Source Datasets FileName size: " + listSourceDatasetsFileName.size());
 		// Pour touts les datasets
 		for (int i = 0; i < listSourceDatasetsFileName.size(); i++) {
 

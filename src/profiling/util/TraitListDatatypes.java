@@ -48,7 +48,8 @@ public class TraitListDatatypes {
 			System.out.println("CommonDatatypes : " + commonDatatypes);
 			if (commonDatatypes == minListDatatypesSize) {
 
-			} else {	
+			} else {
+				// LPT 1.1.1.2: Predicate value format value type	
 				listLpts.add(new Lpt("LPT1.1.1.2"));
 			}
 		}

@@ -8,6 +8,7 @@ import org.apache.jena.query.QueryExecutionFactory;
 import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
+import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.Model;
 
 public class GiveClassHierarchyDeep {
@@ -32,7 +33,7 @@ public class GiveClassHierarchyDeep {
 
 			QueryExecution qe = QueryExecutionFactory.create(query, model);		
 			ResultSet result = qe.execSelect();
-			// ResultSetFormatter.out(System.out, result);
+			//ResultSetFormatter.out(System.out, result);
 			Integer nNumber = 0;
 			ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
 			ArrayList<UriAndUri> ListResourcesTemp = new ArrayList<UriAndUri>();
@@ -50,7 +51,7 @@ public class GiveClassHierarchyDeep {
 				maxDeep = 1;
 				while( result.hasNext() ) {
 					QuerySolution querySolution = result.next() ;
-					ListResources.add(new UriAndUri(querySolution.getResource("class").toString(), querySolution.getResource("Subclass").toString())) ;
+					ListResources.add(new UriAndUri(querySolution.getResource("class").toString(), querySolution.getResource("subclass").toString())) ;
 				}
 				// Finding the maximum hierarchical depth
 				

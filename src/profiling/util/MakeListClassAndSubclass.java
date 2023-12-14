@@ -28,10 +28,10 @@ public class MakeListClassAndSubclass {
 		Property p = model.createProperty(dsp + "predicat");
 		Resource o = model.createResource(dsp + "objet");
 		Resource b = model.createResource();
-		Resource u1 = model.createResource(dsp + "property");
-		Resource u2 = model.createResource(dsp + "subproperty");
-		Property pu1 = model.createProperty(dsp + "asProperty");
-		Property pu2 = model.createProperty(dsp + "asSubproperty");
+		Resource u1 = model.createResource(dsp + "class");
+		Resource u2 = model.createResource(dsp + "subclass");
+		Property pu1 = model.createProperty(dsp + "asClass");
+		Property pu2 = model.createProperty(dsp + "asSubclass");
 		
 		Query query = QueryFactory.create(prefix + 
 				"SELECT DISTINCT (?o AS ?class) (?s AS ?subclass) " +

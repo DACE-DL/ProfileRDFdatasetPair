@@ -23,12 +23,6 @@ public class MakeListClassAndPropertyOfInterestCount {
 		String prefix = ProfilingConf.queryPrefix;
 
 		ArrayList<UriAndUriAndUriAndNumber> ListResources = new ArrayList<UriAndUriAndUriAndNumber>();
-		ArrayList<UriAndUriAndUriAndNumber> ListResources3 = new ArrayList<UriAndUriAndUriAndNumber>();
-		ArrayList<Uri> listProperties = new ArrayList<Uri>();
-		ArrayList<UriAndUri> listClassSubjectAndProperties = new ArrayList<UriAndUri>();
-		ArrayList<UriAndUri> listClassSubjectAndPropertiesReduced = new ArrayList<UriAndUri>();
-		ArrayList<UriAndUri> listClassObjectAndProperties = new ArrayList<UriAndUri>();
-		ArrayList<UriAndUri> listClassObjectAndPropertiesReduced = new ArrayList<UriAndUri>();
 		
 		// Integer n = 0;
 		// Resource s = model.createResource(dsp + "sujet");
@@ -47,206 +41,45 @@ public class MakeListClassAndPropertyOfInterestCount {
 		Instant start4 = Instant.now();
 
 		Query query = QueryFactory.create(prefix + 
-			"SELECT (?uri AS ?property) WHERE { " +
-			" dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
-			" ?element dsp:asURI ?uri ." +
-			" } "
+		"SELECT ?property (SUM(?usage) AS ?propertyUsage)  (GROUP_CONCAT(DISTINCT ?classSubjectclassObjectAndCount ; separator=\"|\") AS ?classSubjectclassObjectAndCountList) " +
+		" WHERE { " +
+			"SELECT ?property (COUNT(?s) AS ?usage) (CONCAT(STR( ?classSubject ), ';', STR(COUNT(?classSubject)), '*' ,STR( ?classObject ), ';', STR(COUNT(?classObject))) AS ?classSubjectclassObjectAndCount)" +
+			" WHERE { " +
+				" ?s ?property ?o ." +
+				" ?s rdf:type ?classSubject ." +	
+				" ?o rdf:type ?classObject " +		
+				" FILTER EXISTS { " +
+				" dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
+				" ?element dsp:asURI ?property ." +
+				" } " +	
+				" " +
+			" } GROUP BY ?property ?classSubject ?classObject ORDER BY DESC (?usage) " +
+		" } GROUP BY ?property ORDER BY DESC (?propertyUsage) LIMIT 100"
 		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				listProperties.add(new Uri(querySolution.getResource("property").toString())) ;
+				String property = querySolution.getResource("property").toString();
+				if (!(querySolution.getLiteral("classSubjectclassObjectAndCountList")==null)) {
+					String[] classSubjectclassObjectAndCounts = querySolution.getLiteral("classSubjectclassObjectAndCountList").getString().split("\\|");
+					for (String classSubjectclassObjectAndCount : classSubjectclassObjectAndCounts) {
+						String[] classSubjectclassObjectCount = classSubjectclassObjectAndCount.split("\\*");
+						String[] classSubjectCount = classSubjectclassObjectCount[0].split("\\;");
+						String[] classObjectCount = classSubjectclassObjectCount[1].split("\\;");
+						ListResources.add(new UriAndUriAndUriAndNumber(
+							classSubjectCount[0],
+							property,
+							classObjectCount[0],
+							Integer.valueOf(classSubjectCount[1])
+						));
+					}
+				}
 			}
 		}
-		////////////////////////////////////
-		// Subject classes And Properties //
-		////////////////////////////////////
-		Instant start3 = Instant.now();
-		listProperties.forEach((property) -> {
-			Query query2 = QueryFactory.create(prefix +
-				" SELECT DISTINCT ?class1 WHERE { " +
-					" dsp:listClassMostUsed rdf:rest*/rdf:first ?element1 ." +
-					" ?element1 dsp:asURI ?class1 ." +
-					" BIND (IRI(?class1) AS ?iriClass1 )" +
-					" FILTER EXISTS { " +
-					" 	?ic1 rdf:type ?iriClass1 ." +
-					"   ?ic1 <" + property.getUri() + "> ?ic2 ." +
-					"   FILTER isIRI(?ic2) " +
-					" }" +
-				" } "
-			);
-	
-			QueryExecution qe2 = QueryExecutionFactory.create(query2, model);
-			ResultSet result2 = qe2.execSelect();
-			if (result2.hasNext()) {
-				while (result2.hasNext()) {
-					QuerySolution querySolution = result2.next();
-					listClassSubjectAndProperties.add(new UriAndUri(querySolution.getResource("class1").toString(),
-							property.getUri()));
-				}
-			}
-		});
-		// Reducing the number of subject classes
-		listClassSubjectAndProperties.forEach((classSubjectAndProperties) -> {
-			Query query2 = QueryFactory.create(prefix +
-				" SELECT  ?class1 ?property (COUNT(?ic1) AS ?usage)" +
-				" WHERE { " +
-				"   BIND (IRI(STR(<" + classSubjectAndProperties.getUri1().toString() + ">)) AS ?class1) ." +
-				"   BIND (IRI(STR(<" + classSubjectAndProperties.getUri2().toString() + ">)) AS ?property) ." +
-				" 	?ic1 rdf:type ?class1 ." +
-				"   ?ic1 ?property ?ic2 ." +
-				" } GROUP BY ?class1 ?property ORDER BY DESC(?usage)"
-			);
-	
-			QueryExecution qe2 = QueryExecutionFactory.create(query2, model);
-			ResultSet result2 = qe2.execSelect();
-			if (result2.hasNext()) {
-				while (result2.hasNext() & listClassSubjectAndPropertiesReduced.size() < 100) {
-					QuerySolution querySolution = result2.next();
-					listClassSubjectAndPropertiesReduced.add(new UriAndUri(querySolution.getResource("class1").toString(),
-							querySolution.getResource("property").toString()));
-				}
-			}
-		});
-		Instant end3 = Instant.now();
-		System.out.println("Class Subjet and properties running time : " + Duration.between(start3, end3).getSeconds() + " secondes");
-		System.out.println("Class Subjet size : " + listClassSubjectAndProperties.size());
-
-		////////////////////////////////////
-		// Object classes And Properties //
-		////////////////////////////////////
-		start3 = Instant.now();
-		listProperties.forEach((property) -> {
-			Query query2 = QueryFactory.create(prefix +
-				" SELECT DISTINCT ?class1 WHERE { " +
-					" dsp:listClassMostUsed rdf:rest*/rdf:first ?element1 ." +
-					" ?element1 dsp:asURI ?class1 ." +
-					" BIND (IRI(?class1) AS ?iriClass1 )" +
-					" FILTER EXISTS { " +
-					" 	?ic2 rdf:type ?iriClass1 ." +
-					"   ?ic1 <" + property.getUri() + "> ?ic2 ." +
-					"   FILTER isIRI(?ic2) " +
-					" }" +
-				" } "
-			);
-			
-			QueryExecution qe2 = QueryExecutionFactory.create(query2, model);
-			ResultSet result2 = qe2.execSelect();
-			if (result2.hasNext()) {
-				while (result2.hasNext()) {
-					QuerySolution querySolution = result2.next();
-					listClassObjectAndProperties.add(new UriAndUri(querySolution.getResource("class1").toString(),
-							property.getUri()));
-				}
-			}
-		});
-
-		// Reducing the number of object classes
-		listClassObjectAndProperties.forEach((classObjectAndProperties) -> {
-			Query query2 = QueryFactory.create(prefix +
-				" SELECT  ?class1 ?property (COUNT(?ic2) AS ?usage)" +
-				" WHERE { " +
-				"   BIND (IRI(STR(<" + classObjectAndProperties.getUri1().toString() + ">)) AS ?class1) ." +
-				"   BIND (IRI(STR(<" + classObjectAndProperties.getUri2().toString() + ">)) AS ?property) ." +
-				" 	?ic2 rdf:type ?class1 ." +
-				"   ?ic1 ?property ?ic2 ." +
-				" } GROUP BY ?class1 ?property ORDER BY DESC(?usage) "
-			);
-	
-			QueryExecution qe2 = QueryExecutionFactory.create(query2, model);
-			ResultSet result2 = qe2.execSelect();
-			if (result2.hasNext()) {
-				while (result2.hasNext() & listClassObjectAndPropertiesReduced.size() < 100) {
-					QuerySolution querySolution = result2.next();
-					listClassObjectAndPropertiesReduced.add(new UriAndUri(querySolution.getResource("class1").toString(),
-							querySolution.getResource("property").toString()));
-				}
-			}
-		});
-		end3 = Instant.now();
-		System.out.println("Class Objet and properties running time : " + Duration.between(start3, end3).getSeconds() + " secondes");
-		System.out.println("Class Objet size : " + listClassObjectAndProperties.size());
-		start3 = Instant.now();
-		listProperties.forEach((property) -> {
-			listClassSubjectAndPropertiesReduced.forEach((classSubjectAndProperty) -> {
-				if (classSubjectAndProperty.getUri2().equals(property.getUri())) {
-			
-					listClassObjectAndPropertiesReduced.forEach((classObjectAndProperty) -> {
-						if (classObjectAndProperty.getUri2().equals(property.getUri())) {
-							String class1 = "<" + classSubjectAndProperty.getUri1().toString() + ">";
-							String iriProperty = "<" + classObjectAndProperty.getUri2().toString() + ">";
-							String class2 = "<" + classObjectAndProperty.getUri1().toString() + ">";	
-							Query query2 = QueryFactory.create(prefix +
-							" SELECT  ?class1 ?property ?class2 " +
-							" WHERE { " +
-							"   VALUES ?class1 { " + class1 + " } " +
-							"   VALUES ?property { " + iriProperty + " } " +
-							"   VALUES ?class2 { " + class2 + " } " +
-							"	FILTER EXISTS { " +
-							" 	 ?ic1 rdf:type ?class1 ." +
-							" 	 ?ic2 rdf:type ?class2 ." +
-							"    ?ic1 ?property ?ic2 ." +
-							" 	}" +
-							" } "
-							);
 							
-							QueryExecution qe2 = QueryExecutionFactory.create(query2, model);
-							ResultSet result2 = qe2.execSelect();
-							if (result2.hasNext()) {
-								while (result2.hasNext()) {
-									QuerySolution querySolution = result2.next();
-									ListResources.add(new UriAndUriAndUriAndNumber(
-										querySolution.getResource("class1").toString(),
-										querySolution.getResource("property").toString(),
-										querySolution.getResource("class2").toString(),
-										999));
-								}
-							}
-						}	
-					});
-				}	
-			});
-
-		});
-		end3 = Instant.now();
-		System.out.println("Class subjet, property, class object running time : " + Duration.between(start3, end3).toMillis() + " millisecondes");
-		System.out.println("Class subjet, property, class object size : " + ListResources.size());
-		start3 = Instant.now();
-		for (UriAndUriAndUriAndNumber resource : ListResources) {
-			start3 = Instant.now();
-			String class1 = "<" + resource.getUri1().toString() + ">";
-			String property = "<" + resource.getUri2().toString() + ">";
-			String class2 = "<" + resource.getUri3().toString() + ">";
-			Query query3 = QueryFactory.create(prefix +
-				" SELECT  ?class1 ?property ?class2 (COUNT(*) AS ?usage)" +
-				" WHERE { " +
-				"   VALUES ?class1 { " + class1 + " } " +
-				"   VALUES ?property { " + property + " } " +
-				"   VALUES ?class2 { " + class2 + " } " +
-				"   ?ic1 ?property ?ic2 ." +
-				" 	?ic1 rdf:type ?class1 ." +
-				" 	?ic2 rdf:type ?class2 ." +
-				" } GROUP BY ?class1 ?property ?class2 ORDER BY DESC(?usage) "
-			);
-			QueryExecution qe3 = QueryExecutionFactory.create(query3, model);
-			ResultSet result3 = qe3.execSelect();
-			if (result3.hasNext()) {
-				while (result3.hasNext()) {
-				QuerySolution querySolution = result3.next();
-				ListResources3.add(new UriAndUriAndUriAndNumber(
-				querySolution.getResource("class1").toString(),
-				querySolution.getResource("property").toString(),
-				querySolution.getResource("class2").toString(),
-				querySolution.getLiteral("usage").getInt()));
-				}
-			}
-			end3 = Instant.now();
-			System.out.println("Calculation usage running time : " + Duration.between(start3, end3).toMillis() + " millisecondes");
-		
-		};	
-	Instant end4 = Instant.now();
+		Instant end4 = Instant.now();
 		System.out.println("All Class Subjet and Object and properties running time : " + Duration.between(start4, end4).toMillis() + " millisecondes");
 
 		// Collections.sort(ListResources, new UriAndUriAndUriAndNumberComparator());
@@ -319,7 +152,7 @@ public class MakeListClassAndPropertyOfInterestCount {
 		// 	o = model.createResource(rdf + "List");
 		// 	model.add(s, p, o);
 		// }
-		return ListResources3;
+		return ListResources;
 	}
 
 	static class UriAndUriAndUriAndNumberComparator implements java.util.Comparator<UriAndUriAndUriAndNumber> {
