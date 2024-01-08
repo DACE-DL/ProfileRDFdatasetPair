@@ -33,11 +33,6 @@ public class MakeListSPOvocabularies {
 		Resource o = model.createResource(dsp + "objet");
 		Literal v = null;
 		
-		Resource s1 = null;
-		Property p1 = null;
-		Resource o1 = null;
-		
-	
 		// On boucle sur les propriétés
 		listProperty.forEach((property) -> {
 			Resource p2 = model.createProperty(property.getUri());

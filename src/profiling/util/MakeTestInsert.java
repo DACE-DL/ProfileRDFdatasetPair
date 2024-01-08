@@ -1,7 +1,5 @@
 package profiling.util;
 
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryFactory;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.update.UpdateAction;
 import org.apache.jena.update.UpdateFactory;
@@ -13,7 +11,6 @@ public class MakeTestInsert {
 	public static void make(Model model) {
 		
 		new ProfilingConf();
-		String dsp = ProfilingConf.dsp;
 		String prefix = ProfilingConf.queryPrefix;	
 		
 		String queryUpdateString = prefix + 

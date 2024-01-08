@@ -1,4 +1,4 @@
-package profiling.util;
+package Asupprimer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -10,6 +10,11 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
+
+import profiling.util.GiveLocalname;
+import profiling.util.ProfilingConf;
+import profiling.util.Uri;
+import profiling.util.UriListAndNumber;
 
 public class MakeListPropertyCombinationBySubject {
 	

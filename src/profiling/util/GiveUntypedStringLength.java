@@ -3,7 +3,6 @@ package profiling.util;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.RDFNode;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.Selector;
@@ -18,11 +17,7 @@ public class GiveUntypedStringLength {
 		double nNumber = 0;
 	
 		new ProfilingConf();
-		String rdf = ProfilingConf.rdf;
-
-		Resource s1 = null;
-		Property p1 = null;
-		Resource o1 = null;
+		
 		List<RDFNode> listObject = new ArrayList<>();
 
 		listProperty.forEach((property) -> {

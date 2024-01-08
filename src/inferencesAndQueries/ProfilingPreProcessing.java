@@ -259,6 +259,10 @@ public class ProfilingPreProcessing {
 		ArrayList<Uri> listOfDatatypesMostUsed = new ArrayList<Uri>();
 		listOfDatatypesMostUsed = MakeListDatatypesMostUsed.makeList(model, listPropertyMostUsed, nameOfListDatatypesMostUsed);
 
+		// Création de classes pour des combinaison de propriétés .
+		MakeClassWithPropertyCombinaison.makeClasses(model,  listClassSubjectByPropertyCombination);
+
+
 		// TEST
 		ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
 		// listOfTest = MakeTest.make(model);

@@ -17,7 +17,7 @@ public class MakeTest {
 	public static ArrayList<UriAndUriAndUri> make(Model model) {
 		
 		new ProfilingConf();
-		String dsp = ProfilingConf.dsp;
+	
 		String prefix = ProfilingConf.queryPrefix;
 		
 		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
