@@ -16,4 +16,9 @@ public class Uri {
 	public void setUri(String uri) {
 		this.uri = uri;
 	}
+	// Méthode toString()
+    @Override
+    public String toString() {
+        return uri;
+    }
 }

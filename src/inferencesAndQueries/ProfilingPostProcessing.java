@@ -10,7 +10,7 @@ import profiling.util.*;
 public class ProfilingPostProcessing{
 	
 	// On effectue les post-traitements
-	public static void makeTreatements(String pathForSourceResults, String pathForTargetResults) {
+	public static void makeTreatements(String idPair, String pathForSourceResults, String pathForTargetResults) {
 
 		// Initialisation de la configuration
 		// Chemin d'accès, noms fichiers...
@@ -19,20 +19,20 @@ public class ProfilingPostProcessing{
 		ArrayList<Lpt> listLpts = new ArrayList<Lpt>();
 		ArrayList<Lpt> listLptsTemp = new ArrayList<Lpt>();
 
-		String nameOfResultsFile = "results";
+		String nameOfResultsFile = "results"; // dans CSV
 		String nameOfListPropertyUsageCount = "listPropertyUsageCount";
 		String nameOfListPropertyAndSubproperty = "listPropertyAndSubproperty";
 		String nameOfListClassUsageCount = "listClassUsageCount";
-		String nameOfListDatatypes = "listOfDatatypes";
-		String nameOfListLanguagesPredicat = "listOfLanguagesPredicat";
-		String nameOfListLanguagesPredicatValue = "listOfLanguagesPredicatValue";
-		String nameOfListLanguagesClass = "listOfLanguagesClass";
-		String nameOfListLinks = "listLinks";
+		String nameOfListDatatypes = "listOfDatatypes"; // dans CSV
+		String nameOfListLanguagesPredicat = "listOfLanguagesPredicat"; // dans CSV
+		String nameOfListLanguagesPredicatValue = "listOfLanguagesPredicatValue"; // dans CSV
+		String nameOfListLanguagesClass = "listOfLanguagesClass"; // dans CSV
+		String nameOfListLinks = "listLinks"; // dans CSV
 		String nameOfListMaxPerProperty = "listMaxPerProperty"; 
 		String nameOfListPerProperty = "listPerProperty"; 
-		String nameOfListSubjectVocabulary = "listSubjectVocabulary"; 
-		String nameOfListPredicatVocabulary = "listPredicatVocabulary"; 
-		String nameOfListObjectVocabulary = "listObjectVocabulary"; 
+		String nameOfListSubjectVocabulary = "listSubjectVocabulary"; // dans CSV
+		String nameOfListPredicatVocabulary = "listPredicatVocabulary"; // dans CSV
+		String nameOfListObjectVocabulary = "listObjectVocabulary"; // dans CSV
 		String nameOfListPropertyMostUsed = "listPropertyMostUsed";
 		String nameOfListClassDefined = "listClassDefined";
 		String nameOfListClassNotDefined = "listClassNotDefined";
@@ -43,6 +43,11 @@ public class ProfilingPostProcessing{
 		String nameOfListObjectClassOfInterest = "listObjectClassOfInterest";
 		String nameOfListPropertyOfInterest = "listPropertyOfInterest";
 		String nameOfListDatatypesOfInterest = "listOfDatatypesMostUsed";
+		String nameOfListOfNewClassWithPropertiesCombinaison = "listOfNewClassWithPropertiesCombinaison";
+		String nameOfListOfRelationshipsDomain = "listOfRelationshipsDomain";
+		String nameOfListOfRelationshipsRange = "listOfRelationshipsRange";
+		
+		
 		
 		////////////////////////////////////////////////////////////////////
 		// Récupération des résultats et listes générés lors du profilage //
@@ -408,6 +413,54 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 
+		ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonSource = new ArrayList<UriAndUriList>();
+		Path pathNamelistOfNewClassWithPropertiesCombinaisonSource = Paths.get(pathForTargetResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
+	    try {
+			listOfNewClassWithPropertiesCombinaisonSource = ProfilingUtil.makeArrayListUriAndUriList(pathNamelistOfNewClassWithPropertiesCombinaisonSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonTarget = new ArrayList<UriAndUriList>();
+		Path pathNamelistOfNewClassWithPropertiesCombinaisonTarget = Paths.get(pathForTargetResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
+	    try {
+			listOfNewClassWithPropertiesCombinaisonTarget = ProfilingUtil.makeArrayListUriAndUriList(pathNamelistOfNewClassWithPropertiesCombinaisonTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<UriListAndUriList> listOfRelationshipsDomainSource = new ArrayList<UriListAndUriList>();
+		Path pathNamelistOfRelationshipsDomainSource = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
+	    try {
+			listOfRelationshipsDomainSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsDomainSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<UriListAndUriList> listOfRelationshipsDomainTarget = new ArrayList<UriListAndUriList>();
+		Path pathNamelistOfRelationshipsDomainTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
+	    try {
+			listOfRelationshipsDomainTarget = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsDomainTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<UriListAndUriList> listOfRelationshipsRangeSource = new ArrayList<UriListAndUriList>();
+		Path pathNamelistOfRelationshipsRangeSource = Paths.get(pathForTargetResults, nameOfListOfRelationshipsRange + ".json");
+	    try {
+			listOfRelationshipsRangeSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsRangeSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<UriListAndUriList> listOfRelationshipsRangeTarget = new ArrayList<UriListAndUriList>();
+		Path pathNamelistOfRelationshipsRangeTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsRange + ".json");
+	    try {
+			listOfRelationshipsRangeTarget = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsRangeTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		System.out.println("Source size : " + resultsSource.getNumberOfTriples());
 		System.out.println("Target size : " + resultsTarget.getNumberOfTriples());
 		//System.out.println("ListPropertyUsageCountSource size : " + listPropertyUsageCountSource.size());	
@@ -449,5 +502,26 @@ public class ProfilingPostProcessing{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		///////////////////////////////////////////////////////////////
+		// Création fichier CSV pour ML                              //
+		///////////////////////////////////////////////////////////////
+		
+		Object[][] tableauDeuxD = new Object[40][3];
+		tableauDeuxD = TraitResultsForML.makeResultsForML(idPair, resultsSource, resultsTarget,
+		listOfDatatypesSource, listOfDatatypesTarget,
+		listOfLanguagesPredicatSource, listOfLanguagesPredicatTarget,
+		listOfLanguagesPredicatValueSource, listOfLanguagesPredicatValueTarget,
+		listOfLanguagesClassSource, listOfLanguagesClassTarget,
+		listLinksSource, listLinksTarget,
+		listSubjectVocabularySource, listSubjectVocabularyTarget,
+		listPredicatVocabularySource, listPredicatVocabularyTarget,
+		listObjectVocabularySource, listObjectVocabularyTarget,
+		listOfNewClassWithPropertiesCombinaisonSource, listOfNewClassWithPropertiesCombinaisonTarget,
+		listOfRelationshipsDomainSource, listOfRelationshipsDomainTarget,
+		listOfRelationshipsRangeSource, listOfRelationshipsRangeTarget
+		);
+		String nameOfResultsForMLfile = "resultsForMLfile";
+		ProfilingUtil.saveTwoDimensionalTableInCSV(tableauDeuxD, nameOfResultsForMLfile + ".csv");
 	}
 }

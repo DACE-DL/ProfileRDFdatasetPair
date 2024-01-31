@@ -23,6 +23,7 @@ public class StartTestProfiling {
 		String typeQuery = "";
 		String stringQuery = "";
 		ArrayList<String> listRules = new ArrayList<String>();
+		String idPair = "";
 		ArrayList<String> listDatasets = new ArrayList<String>();
 		String fileNameTestResult = "";
 		String topSpatial = "";
@@ -794,12 +795,13 @@ public class StartTestProfiling {
 		Instant start0 = Instant.now();
 		
 		listRules.add("profiling.rules");
+		idPair = "starwars-swtor";
 		listDatasets.add("source.json");
 		fileNameTestResult = "Result_Test_profiling.json";
 		topSpatial = "false";
 		consoleOutput = "true";
 		
-		CreateInferredModelAndRunQueries.InferencesAndQuery(listDatasets, listRules, topSpatial, listQuery, consoleOutput, fileNameTestResult);
+		CreateInferredModelAndRunQueries.InferencesAndQuery(idPair, listDatasets, listRules, topSpatial, listQuery, consoleOutput, fileNameTestResult);
 		
 		Instant end0 = Instant.now();
 		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");

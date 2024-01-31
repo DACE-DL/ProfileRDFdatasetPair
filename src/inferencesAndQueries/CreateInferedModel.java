@@ -30,21 +30,22 @@ import profiling.util.*;
 
 public class CreateInferedModel { 
 
-	public static InfModel createInferedModel(ArrayList<String> listDatasets, ArrayList<String> listRules, String topSpatial) throws Exception {
+	public static InfModel createInferedModel(String idPair, ArrayList<String> listDatasets, ArrayList<String> listRules, String topSpatial) throws Exception {
 		// Initialisation de la configuration
 		// Chemin d'accès, noms fichiers...	
 		new ProfilingConf();
 
 		Instant start0 = Instant.now();
+		String idPairForGraphURI = idPair.replaceFirst("[.][^.]+$", "");
 
 		// On charge les ontologies de la liste listDatasets recues en paramétre
 		Map<String, Model> ontologiesModels = new HashMap<String, Model>();
 		for(String nameOntology: listDatasets){
-			// Un nom pour le graphe TDB à partir du nom de l'ontologie
+			// Un nom pour le graphe TDB à partir du nom de l'ontologie et de l'identifiant de la paire
 			String nameForGraphURI = nameOntology.replaceFirst("[.][^.]+$", "");
 			Dataset dataset = TDBUtil.CreateTDBDataset();
 			dataset.begin(ReadWrite.READ);
-			ontologiesModels.put(nameForGraphURI, ModelFactory.createDefaultModel().add(dataset.getNamedModel(nameForGraphURI)));
+			ontologiesModels.put(idPairForGraphURI + nameForGraphURI, ModelFactory.createDefaultModel().add(dataset.getNamedModel(idPairForGraphURI + nameForGraphURI)));
 			dataset.commit();
 			dataset.close();
 			dataset.end();

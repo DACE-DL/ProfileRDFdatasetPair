@@ -1,5 +1,7 @@
 package profiling.util;
 
+import java.util.Objects;
+
 public class UriAndUriAndUri {
 	
 	private String uri1;
@@ -33,4 +35,22 @@ public class UriAndUriAndUri {
 		this.uri3 = uri3;
 	}
 	
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        UriAndUriAndUri other = (UriAndUriAndUri) obj;
+        return Objects.equals(uri1, other.uri1) &&
+               Objects.equals(uri2, other.uri2) &&
+               Objects.equals(uri3, other.uri3);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uri1, uri2, uri3);
+    }
 }

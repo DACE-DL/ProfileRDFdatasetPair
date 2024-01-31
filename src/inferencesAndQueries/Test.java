@@ -78,7 +78,7 @@ public class Test {
 		Path pathForLptResults = Paths.get(ProfilingConf.folderForResults, idPair);
 		Path pathForSourceResults = Paths.get(ProfilingConf.folderForResults, idPair, "source");
 		Path pathForTargetResults = Paths.get(ProfilingConf.folderForResults, idPair, "target");
-		ProfilingPostProcessing.makeTreatements(pathForSourceResults.toString(), pathForTargetResults.toString());
+		ProfilingPostProcessing.makeTreatements(idPair, pathForSourceResults.toString(), pathForTargetResults.toString());
 		ProfilingUtil.ChangeDirectoryFiles(ProfilingConf.folderForTmp, pathForLptResults.toString());
 		
 		Instant end0 = Instant.now();

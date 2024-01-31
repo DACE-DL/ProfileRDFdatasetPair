@@ -1,9 +1,16 @@
 package inferencesAndQueries;
 
+import java.io.FileOutputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.jena.ontology.OntModel;
+import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.Model;
+import org.apache.jena.rdf.model.ModelFactory;
+
 import profiling.util.*;
 
 public class ProfilingPreProcessing {
@@ -226,7 +233,7 @@ public class ProfilingPreProcessing {
 		// Liste des classes sujet des combinaisons de propriétés les plus utilisées par sujet.
 		String nameOfListClassSubjectByPropertyCombination = "listClassSubjectByPropertyCombination";
 		ArrayList<UriListAndUriAndNumberListAndNumber> listClassSubjectByPropertyCombination = new ArrayList<UriListAndUriAndNumberListAndNumber>();
-		listClassSubjectByPropertyCombination = MakeListClassSubjectByPropertyCombination.makeList(model, nameOfListPropertyUsagePerObject);
+		listClassSubjectByPropertyCombination = MakeListClassSubjectByPropertiesCombinations.makeList(model, nameOfListPropertyUsagePerObject);
 
 		System.out.println("Début traitement listClassAndPropertyOfInterestCount ");
 		// Liste des classes les plus utilisées et leur connections avec d'autres classes.
@@ -259,13 +266,55 @@ public class ProfilingPreProcessing {
 		ArrayList<Uri> listOfDatatypesMostUsed = new ArrayList<Uri>();
 		listOfDatatypesMostUsed = MakeListDatatypesMostUsed.makeList(model, listPropertyMostUsed, nameOfListDatatypesMostUsed);
 
-		// Création de classes pour des combinaison de propriétés .
-		MakeClassWithPropertyCombinaison.makeClasses(model,  listClassSubjectByPropertyCombination);
+		// Création de nouvelles classes pour les combinaisons de propriétés (Avec marquage d'instances).
+		// On nettoie et réduit au préalable la liste
+		String nameOfCleanedAndReducedListClassSubjectByPropertyCombination = "cleanedAndReducedListClassSubjectByPropertyCombination";
+		ArrayList<UriListAndUriAndNumberListAndNumber> cleanedAndReducedListClassSubjectByPropertyCombination = new ArrayList<UriListAndUriAndNumberListAndNumber>();
+		cleanedAndReducedListClassSubjectByPropertyCombination = MakeListClassSubjectCleanedAndReduced.makeList(listClassSubjectByPropertyCombination);
+		ArrayList<UriListAndUriAndNumberListAndNumber> cleanedAndReducedListClassSubjectByPropertyCombinationTemp = new ArrayList<UriListAndUriAndNumberListAndNumber>();
+		cleanedAndReducedListClassSubjectByPropertyCombinationTemp.addAll(cleanedAndReducedListClassSubjectByPropertyCombination);
+
+		String nameOfListNewClassWithPropertiesCombinaison = "listOfNewClassWithPropertiesCombinaison";
+		ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaison = new ArrayList<UriAndUriList>();
+		listOfNewClassWithPropertiesCombinaison = MakeListNewClassesWithPropertiesCombinaisons.makeClasses(model,  cleanedAndReducedListClassSubjectByPropertyCombinationTemp);
+
+		// Liste des relations entre les nouvelles classes.
+		String nameOfListRelationshipsBetweenNewClasses = "listOfRelationshipsBetweenNewClasses";
+		ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClasses = new ArrayList<UriAndUriAndUriAndNumber>();
+		listOfRelationshipsBetweenNewClasses = MakeListNewClassesRelationships.makeList(model,  listOfNewClassWithPropertiesCombinaison);
+		
+		// Création d'un model de description.
+		UriForDescriptionModel resultsForDescriptionModel = new UriForDescriptionModel();
+		String nameOfDescriptionModel = "descriptionModel";
+		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+		String nameOfListOfRelationshipsDomain = "listOfRelationshipsDomain";
+		ArrayList<UriListAndUriList> listOfRelationshipsDomain = new ArrayList<UriListAndUriList>();
+		String nameOfListOfRelationshipsRange = "listOfRelationshipsRange";
+		ArrayList<UriListAndUriList> listOfRelationshipsRange = new ArrayList<UriListAndUriList>();
+		resultsForDescriptionModel = MakeDescriptionModel.makeModel(listOfRelationshipsBetweenNewClasses);
+		descriptionModel = resultsForDescriptionModel.getDescriptionModel();
+		listOfRelationshipsDomain = resultsForDescriptionModel.getListOfRelationshipsDomain();
+		listOfRelationshipsRange = resultsForDescriptionModel.getListOfRelationshipsRange();
+
+		// Liste des classes les plus importantes.
+		String nameOfListMostImportantClasses = "listMostImportantClasses";
+		ArrayList<String> listMostImportantClasses = new ArrayList<String>();
+		listMostImportantClasses = MakeListMostImportantClasses.makeList(listOfRelationshipsDomain, listOfRelationshipsRange);
+
+		// Liste des relation entre classes les plus importantes.
+		String nameOfListMostImportantRelationshipsBetweenClasses = "listMostImportantRelationshipsBetweenClasses";
+		ArrayList<String> listMostImportantRelationshipsBetweenClasses = new ArrayList<String>();
+		listMostImportantRelationshipsBetweenClasses = MakeListMostImportantRelationshipsBetweenClasses.makeList(listOfRelationshipsDomain, listOfRelationshipsRange);
+		
+		// Création d'un model de description.
+		String nameOfDescriptionModelWithMultipleProperties = "descriptionModelWithMultipleProperties";
+		OntModel descriptionModelWithMultipleProperties = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+		descriptionModelWithMultipleProperties = MakeDescriptionModelWithMultipleProperties.makeModel(listOfRelationshipsBetweenNewClasses);
 
 
 		// TEST
 		ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
-		// listOfTest = MakeTest.make(model);
+		listOfTest = MakeTest.make(model);
 
 
 		//////////////////////////////////////////////
@@ -406,6 +455,12 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
+			ProfilingUtil.makeJsonUriListAndUriAndNumberListAndNumberFile(cleanedAndReducedListClassSubjectByPropertyCombination, nameOfCleanedAndReducedListClassSubjectByPropertyCombination + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
 			ProfilingUtil.makeJsonUriListAndUriAndNumberListAndNumberFile(listClassSubjectByPropertyCombination, nameOfListClassSubjectByPropertyCombination + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -446,6 +501,72 @@ public class ProfilingPreProcessing {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
+		try {
+			ProfilingUtil.makeJsonUriAndUriListFile(listOfNewClassWithPropertiesCombinaison, nameOfListNewClassWithPropertiesCombinaison + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listOfRelationshipsBetweenNewClasses, nameOfListRelationshipsBetweenNewClasses + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+		// Convertion du modèle de description en fichier JSON
+		System.out.println("Convert description model to file.....");
+        // Récupération du chemin du fichier.
+		Path pathOut = Paths.get(ProfilingConf.folderForTmp, nameOfDescriptionModel + ".owl");				
+		// Sortie fichier 
+		FileOutputStream outStream = new FileOutputStream(pathOut.toString());
+		// exporte le resultat dans un fichier
+		descriptionModel.write(outStream, "RDF/XML");
+		outStream.close();   
+		descriptionModel.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}				            	
+
+		try {
+			ProfilingUtil.makeJsonStringFile(listMostImportantClasses, nameOfListMostImportantClasses + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonStringFile(listMostImportantRelationshipsBetweenClasses, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriListAndUriListFile(listOfRelationshipsDomain, nameOfListOfRelationshipsDomain + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriListAndUriListFile(listOfRelationshipsRange, nameOfListOfRelationshipsRange + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+		// Convertion du modèle de description en fichier JSON
+		System.out.println("Convert description model with multiple properties to file.....");
+		// Récupération du chemin du fichier.
+		Path pathOut = Paths.get(ProfilingConf.folderForTmp, nameOfDescriptionModelWithMultipleProperties + ".owl");				
+		// Sortie fichier 
+		FileOutputStream outStream = new FileOutputStream(pathOut.toString());
+		// exporte le resultat dans un fichier
+		descriptionModelWithMultipleProperties.write(outStream, "RDF/XML");
+		outStream.close();   
+		descriptionModelWithMultipleProperties.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}				            	
 
 		String nameOfResultsFile = "results";
 		try {

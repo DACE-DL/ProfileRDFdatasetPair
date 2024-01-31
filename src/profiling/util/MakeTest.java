@@ -15,28 +15,19 @@ public class MakeTest {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static ArrayList<UriAndUriAndUri> make(Model model) {
-		
-		new ProfilingConf();
 	
 		String prefix = ProfilingConf.queryPrefix;
 		
 		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
 		Instant start3 = Instant.now();
 		Query query = QueryFactory.create(prefix + 	  
-		"SELECT ?property (SUM(?usage) AS ?propertyUsage)  (GROUP_CONCAT(DISTINCT ?classSubjectclassObjectAndCount ; separator=\"|\") AS ?classSubjectclassObjectAndCountList) " +
+		
+		
+		"SELECT ?subject " +
 		" WHERE { " +
-			"SELECT ?property (COUNT(?s) AS ?usage) (CONCAT(STR( ?classSubject ), ';', STR(COUNT(?classSubject)), '|' ,STR( ?classObject ), ';', STR(COUNT(?classObject))) AS ?classSubjectclassObjectAndCount)" +
-			" WHERE { " +
-				" ?s ?property ?o ." +
-				" ?s rdf:type ?classSubject ." +	
-				" ?o rdf:type ?classObject " +		
-				" FILTER EXISTS { " +
-				" dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
-				" ?element dsp:asURI ?property ." +
-				" } " +	
-				" " +
-			" } GROUP BY ?property ?classSubject ?classObject ORDER BY DESC (?usage) " +
-		" } GROUP BY ?property ORDER BY DESC (?propertyUsage) LIMIT 100"
+				" ?subject rdf:type <http://dbkwik.webdatacommons.org/swtor.wikia.com/class/character> ." +	
+				" ?subject rdf:type dsp:Class-19 ." +
+		" } LIMIT 30 "
 		
  
 
@@ -55,6 +46,40 @@ public class MakeTest {
 		return ListResources;
 	}
 }
+
+// "SELECT ?subject " +
+// 		" WHERE { " +
+// 				" ?subject rdf:type dsp:Class-19 ." +	
+// 		" } LIMIT 30 "
+
+// "SELECT ?property ?object " +
+// 		" WHERE { " +
+// 				" <http://dbkwik.webdatacommons.org/swtor.wikia.com/resource/Category:Echani> ?property ?object ." +	
+// 		" } "
+
+// "SELECT (COUNT(*) AS ?count) " +
+// 		" WHERE { " +
+// 				" ?subject rdf:type <http://dbkwik.webdatacommons.org/ontology/Image> ." +	
+// 				" ?subject <http://purl.org/dc/elements/1.1/rights> ?object1 ." +
+// 				" ?subject <http://xmlns.com/foaf/0.1/thumbnail> ?object2 ." +
+// 		" } "
+
+
+// "SELECT ?property (SUM(?usage) AS ?propertyUsage)  (GROUP_CONCAT(DISTINCT ?classSubjectclassObjectAndCount ; separator=\"|\") AS ?classSubjectclassObjectAndCountList) " +
+// 		" WHERE { " +
+// 			"SELECT ?property (COUNT(?s) AS ?usage) (CONCAT(STR( ?classSubject ), ';', STR(COUNT(?classSubject)), '|' ,STR( ?classObject ), ';', STR(COUNT(?classObject))) AS ?classSubjectclassObjectAndCount)" +
+// 			" WHERE { " +
+// 				" ?s ?property ?o ." +
+// 				" ?s rdf:type ?classSubject ." +	
+// 				" ?o rdf:type ?classObject " +		
+// 				" FILTER EXISTS { " +
+// 				" dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
+// 				" ?element dsp:asURI ?property ." +
+// 				" } " +	
+// 				" " +
+// 			" } GROUP BY ?property ?classSubject ?classObject ORDER BY DESC (?usage) " +
+// 		" } GROUP BY ?property ORDER BY DESC (?propertyUsage) LIMIT 100"
+
 
 // "SELECT *  " +
 // 		" WHERE { " +

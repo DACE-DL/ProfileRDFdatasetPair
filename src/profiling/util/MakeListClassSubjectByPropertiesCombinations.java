@@ -11,7 +11,7 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 
-public class MakeListClassSubjectByPropertyCombination {
+public class MakeListClassSubjectByPropertiesCombinations {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static ArrayList<UriListAndUriAndNumberListAndNumber> makeList(Model model, String nameOfList) {
