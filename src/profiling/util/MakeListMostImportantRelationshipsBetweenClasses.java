@@ -5,26 +5,13 @@ import java.util.ArrayList;
 public class MakeListMostImportantRelationshipsBetweenClasses {
 	
 	// Création du modèle de description
-	public static ArrayList<String>  makeList(ArrayList<UriListAndUriList> listOfRelationshipsDomain, ArrayList<UriListAndUriList> listOfRelationshipsRange) {
+	public static ArrayList<UriAndUriAndUri>  makeList(ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClasses) {
 		
-		ArrayList<String> listMostImportantRelationshipsBetweenClasses = new ArrayList<String>();
+		ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClasses = new ArrayList<UriAndUriAndUri>();
 		
-		for (UriListAndUriList resource : listOfRelationshipsDomain) {
-			for (String relation : resource.getUriList1()) {
-				// Si propriété pas encore traitée
-				if (!listMostImportantRelationshipsBetweenClasses.contains(relation)) {
-					listMostImportantRelationshipsBetweenClasses.add(relation);
-				}
-			}
-		}
-
-		for (UriListAndUriList resource : listOfRelationshipsRange) {
-			for (String relation : resource.getUriList1()) {
-				// Si propriété pas encore traitée
-				if (!listMostImportantRelationshipsBetweenClasses.contains(relation)) {
-					listMostImportantRelationshipsBetweenClasses.add(relation);
-				}
-			}
+		for (UriAndUriAndUriAndNumber resource : listOfRelationshipsBetweenNewClasses) {
+			UriAndUriAndUri uriAndUriAndUri = new UriAndUriAndUri(resource.getUri1(), resource.getUri2(), resource.getUri3());
+			listMostImportantRelationshipsBetweenClasses.add(uriAndUriAndUri);
 		}
 
 		return listMostImportantRelationshipsBetweenClasses;

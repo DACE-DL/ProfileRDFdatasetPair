@@ -303,10 +303,10 @@ public class ProfilingPreProcessing {
 
 		// Liste des relation entre classes les plus importantes.
 		String nameOfListMostImportantRelationshipsBetweenClasses = "listMostImportantRelationshipsBetweenClasses";
-		ArrayList<String> listMostImportantRelationshipsBetweenClasses = new ArrayList<String>();
-		listMostImportantRelationshipsBetweenClasses = MakeListMostImportantRelationshipsBetweenClasses.makeList(listOfRelationshipsDomain, listOfRelationshipsRange);
+		ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClasses = new ArrayList<UriAndUriAndUri>();
+		listMostImportantRelationshipsBetweenClasses = MakeListMostImportantRelationshipsBetweenClasses.makeList(listOfRelationshipsBetweenNewClasses);
 		
-		// Liste des relation entre classes les plus importantes.
+		// Liste des propriétés des classes les plus importantes.
 		String nameOfListMostImportantPropertiesOfClasses = "listMostImportantPropertiesOfClasses";
 		ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClasses = new ArrayList<UriAndUriAndUriListList>();
 		listMostImportantPropertiesOfClasses = MakeListMostImportantPropertiesOfClasses.makeList(listMostImportantClasses, listOfNewClassWithPropertiesCombinaison, listPropertyMostUsedWithDatatypeAndClassRange);
@@ -550,7 +550,7 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
-			ProfilingUtil.makeJsonStringFile(listMostImportantRelationshipsBetweenClasses, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
+			ProfilingUtil.makeJsonUriAndUriAndUriFile(listMostImportantRelationshipsBetweenClasses, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

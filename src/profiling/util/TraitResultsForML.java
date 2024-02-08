@@ -3,7 +3,6 @@ package profiling.util;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opengis.metadata.Datatype;
 
 
 public class TraitResultsForML {
@@ -18,15 +17,14 @@ public class TraitResultsForML {
 	List<String> listPredicatVocabularySource, List<String> listPredicatVocabularyTarget,
 	List<String> listObjectVocabularySource, List<String> listObjectVocabularyTarget,
 	ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonSource, ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonTarget,
-	ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesSource, ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTarget,
 	ArrayList<UriListAndUriList> listOfRelationshipsDomainSource, ArrayList<UriListAndUriList> listOfRelationshipsDomainTarget,
 	ArrayList<UriListAndUriList> listOfRelationshipsRangeSource, ArrayList<UriListAndUriList> listOfRelationshipsRangeTarget,	
 	ArrayList<String> listMostImportantClassesSource, ArrayList<String> listMostImportantClassesTarget,
-	ArrayList<String> listMostImportantRelationshipsBetweenClassesSource, ArrayList<String> listMostImportantRelationshipsBetweenClassesTarget,
+	ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClassesSource, ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClassesTarget,
 	ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesSource, ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesTarget
 	) {
 		// Déclaration et initialisation d'un tableau en deux dimensions avec des chiffres et des listes
-        Object[][] tableauDeuxD = new Object[40][3];
+        Object[][] tableauDeuxD = new Object[43][3];
 		Integer numberLine = 0;
 		ArrayList<String> characteristics = new ArrayList<>();
         ArrayList<Object> values = new ArrayList<>();
@@ -138,8 +136,30 @@ public class TraitResultsForML {
 		}
 		tableauDeuxD[numberLine + 10][1] = new ArrayList<>(aList);
 
+		tableauDeuxD[numberLine + 11][0] = "List of most important classes";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (String element : listMostImportantClassesSource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 11][1] = new ArrayList<>(aList);
+	
+		tableauDeuxD[numberLine + 12][0] = "List of relationships between the most important classes";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUriAndUri element : listMostImportantRelationshipsBetweenClassesSource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 12][1] = new ArrayList<>(aList);
 
-
+		tableauDeuxD[numberLine + 13][0] = "List of properties of the most important classes";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUriAndUriListList element : listMostImportantPropertiesOfClassesSource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 13][1] = new ArrayList<>(aList);
+		
 		// Pour le dataset target 
 		values.clear();
 		ProfilingUtil.listCharacteristics(resultsTarget, characteristics, values);
@@ -228,7 +248,27 @@ public class TraitResultsForML {
 		}
 		tableauDeuxD[numberLine + 10][2] = new ArrayList<>(aList);
 
-		
+		aList.clear();
+		aList = new ArrayList<>();
+		for (String element : listMostImportantClassesTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 11][2] = new ArrayList<>(aList);
+
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUriAndUri element : listMostImportantRelationshipsBetweenClassesTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 12][2] = new ArrayList<>(aList);
+
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUriAndUriListList element : listMostImportantPropertiesOfClassesTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 13][2] = new ArrayList<>(aList);
+
 		return tableauDeuxD;
 	}
 

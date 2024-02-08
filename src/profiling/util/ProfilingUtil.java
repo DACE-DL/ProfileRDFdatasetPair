@@ -504,7 +504,7 @@ public class ProfilingUtil {
 	public static ArrayList<UriAndUriAndUri> makeArrayListUriAndUriAndUri(String nameJsonObjectFile) throws Exception {
 		ArrayList<UriAndUriAndUri> listObjects = new ArrayList<UriAndUriAndUri>();
 		// Récupération du chemin du fichier.
-		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		Path pathOfTheFile = Paths.get(nameJsonObjectFile);
 		File file  = new File(pathOfTheFile.toString());
 		if (file.exists()) {
 		   //on récupère les objects à traiter dans le fichier JSON

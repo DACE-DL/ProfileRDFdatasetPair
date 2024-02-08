@@ -53,4 +53,18 @@ public class UriAndUriAndUri {
     public int hashCode() {
         return Objects.hash(uri1, uri2, uri3);
     }
+
+	// Méthode toString()
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append(uri1);
+		sb.append(",");
+		sb.append(uri2);
+		sb.append(",");
+		sb.append(uri3);
+        sb.append("}");
+        return sb.toString();
+    }
 }

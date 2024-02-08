@@ -1,14 +1,12 @@
 package profiling.util;
 
-import java.time.Duration;
-import java.time.Instant;
 import java.util.ArrayList;
 
 public class MakeListMostImportantPropertiesOfClasses {
 	
 	// Création du modèle de description
 	public static ArrayList<UriAndUriAndUriListList>  makeList(ArrayList<String> listMostImportantClasses,ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaison, ArrayList<UriAndUriAndNumberListAndUriAndNumberListAndNumber> listPropertyMostUsedWithDatatypeAndClassRange) {
-		Instant start0 = Instant.now();	
+		//Instant start0 = Instant.now();	
 		ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClasses = new ArrayList<UriAndUriAndUriListList>();
 		
 		for (String treatedClass : listMostImportantClasses) {
@@ -50,8 +48,8 @@ public class MakeListMostImportantPropertiesOfClasses {
 			uriAndUriAndUriListList.setUriAndUriList(uriAndUriListList);
 			listMostImportantPropertiesOfClasses.add(uriAndUriAndUriListList);
 		}
-		Instant end0 = Instant.now();
-		System.out.println("Running time for listMostImportantPropertiesOfClasses: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
+		//Instant end0 = Instant.now();
+		//System.out.println("Running time for listMostImportantPropertiesOfClasses: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 		return listMostImportantPropertiesOfClasses;
 	}
 }

@@ -44,7 +44,7 @@ public class ProfilingPostProcessing{
 		String nameOfListPropertyOfInterest = "listPropertyOfInterest";
 		String nameOfListDatatypesOfInterest = "listOfDatatypesMostUsed";
 		String nameOfListOfNewClassWithPropertiesCombinaison = "listOfNewClassWithPropertiesCombinaison";
-		String nameOfListOfRelationshipsBetweenNewClasses = "listOfRelationshipsBetweenNewClasses";
+		// String nameOfListOfRelationshipsBetweenNewClasses = "listOfRelationshipsBetweenNewClasses";
 		String nameOfListOfRelationshipsDomain = "listOfRelationshipsDomain";
 		String nameOfListOfRelationshipsRange = "listOfRelationshipsRange";
 		String nameOfListMostImportantClasses = "listMostImportantClasses";
@@ -420,7 +420,7 @@ public class ProfilingPostProcessing{
 		}
 
 		ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonSource = new ArrayList<UriAndUriList>();
-		Path pathNamelistOfNewClassWithPropertiesCombinaisonSource = Paths.get(pathForTargetResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
+		Path pathNamelistOfNewClassWithPropertiesCombinaisonSource = Paths.get(pathForSourceResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
 	    try {
 			listOfNewClassWithPropertiesCombinaisonSource = ProfilingUtil.makeArrayListUriAndUriList(pathNamelistOfNewClassWithPropertiesCombinaisonSource.toString());
 		} catch (Exception e) {
@@ -435,24 +435,24 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesSource = new ArrayList<UriAndUriAndUriAndNumber>();
-		Path pathNameListOfRelationshipsBetweenNewClassesSource = Paths.get(pathForTargetResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
-	    try {
-			listOfRelationshipsBetweenNewClassesSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListOfRelationshipsBetweenNewClassesSource.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesSource = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Path pathNameListOfRelationshipsBetweenNewClassesSource = Paths.get(pathForTargetResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
+	    // try {
+		// 	listOfRelationshipsBetweenNewClassesSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListOfRelationshipsBetweenNewClassesSource.toString());
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
 		
-		ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTarget = new ArrayList<UriAndUriAndUriAndNumber>();
-		Path pathNameListOfRelationshipsBetweenNewClassesTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsBetweenNewClasses + ".json");
-	    try {
-			listOfRelationshipsBetweenNewClassesTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListOfRelationshipsBetweenNewClassesTarget.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTarget = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Path pathNameListOfRelationshipsBetweenNewClassesTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsBetweenNewClasses + ".json");
+	    // try {
+		// 	listOfRelationshipsBetweenNewClassesTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListOfRelationshipsBetweenNewClassesTarget.toString());
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
 
 		ArrayList<UriListAndUriList> listOfRelationshipsDomainSource = new ArrayList<UriListAndUriList>();
-		Path pathNameListOfRelationshipsDomainSource = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
+		Path pathNameListOfRelationshipsDomainSource = Paths.get(pathForSourceResults, nameOfListOfRelationshipsDomain + ".json");
 	    try {
 			listOfRelationshipsDomainSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNameListOfRelationshipsDomainSource.toString());
 		} catch (Exception e) {
@@ -468,7 +468,7 @@ public class ProfilingPostProcessing{
 		}
 
 		ArrayList<UriListAndUriList> listOfRelationshipsRangeSource = new ArrayList<UriListAndUriList>();
-		Path pathNamelistOfRelationshipsRangeSource = Paths.get(pathForTargetResults, nameOfListOfRelationshipsRange + ".json");
+		Path pathNamelistOfRelationshipsRangeSource = Paths.get(pathForSourceResults, nameOfListOfRelationshipsRange + ".json");
 	    try {
 			listOfRelationshipsRangeSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsRangeSource.toString());
 		} catch (Exception e) {
@@ -484,7 +484,7 @@ public class ProfilingPostProcessing{
 		}
 
 		ArrayList<String> listMostImportantClassesSource = new ArrayList<String>();
-		Path pathNameListMostImportantClassesSource = Paths.get(pathForTargetResults, nameOfListMostImportantClasses + ".json");
+		Path pathNameListMostImportantClassesSource = Paths.get(pathForSourceResults, nameOfListMostImportantClasses + ".json");
 	    try {
 			listMostImportantClassesSource = ProfilingUtil.makeArrayListString2(pathNameListMostImportantClassesSource.toString());
 		} catch (Exception e) {
@@ -499,24 +499,24 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 
-		ArrayList<String> listMostImportantRelationshipsBetweenClassesSource = new ArrayList<String>();
-		Path pathNameListMostImportantRelationshipsBetweenClassesSource = Paths.get(pathForTargetResults, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
+		ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClassesSource = new ArrayList<UriAndUriAndUri>();
+		Path pathNameListMostImportantRelationshipsBetweenClassesSource = Paths.get(pathForSourceResults, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
 	    try {
-			listMostImportantRelationshipsBetweenClassesSource = ProfilingUtil.makeArrayListString2(pathNameListMostImportantRelationshipsBetweenClassesSource.toString());
+			listMostImportantRelationshipsBetweenClassesSource = ProfilingUtil.makeArrayListUriAndUriAndUri(pathNameListMostImportantRelationshipsBetweenClassesSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ArrayList<String> listMostImportantRelationshipsBetweenClassesTarget = new ArrayList<String>();
+		ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClassesTarget = new ArrayList<UriAndUriAndUri>();
 		Path pathNameListMostImportantRelationshipsBetweenClassesTarget = Paths.get(pathForTargetResults, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
 	    try {
-			listMostImportantRelationshipsBetweenClassesTarget = ProfilingUtil.makeArrayListString2(pathNameListMostImportantRelationshipsBetweenClassesTarget.toString());
+			listMostImportantRelationshipsBetweenClassesTarget = ProfilingUtil.makeArrayListUriAndUriAndUri(pathNameListMostImportantRelationshipsBetweenClassesTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesSource = new ArrayList<UriAndUriAndUriListList>();
-		Path pathNameListMostImportantPropertiesOfClassesSource = Paths.get(pathForTargetResults, nameOfListMostImportantPropertiesOfClasses + ".json");
+		Path pathNameListMostImportantPropertiesOfClassesSource = Paths.get(pathForSourceResults, nameOfListMostImportantPropertiesOfClasses + ".json");
 	    try {
 			listMostImportantPropertiesOfClassesSource = ProfilingUtil.makeArrayListUriAndUriAndUriListList(pathNameListMostImportantPropertiesOfClassesSource.toString());
 		} catch (Exception e) {
@@ -577,7 +577,7 @@ public class ProfilingPostProcessing{
 		// Création fichier CSV pour ML                              //
 		///////////////////////////////////////////////////////////////
 		
-		Object[][] tableauDeuxD = new Object[40][3];
+		Object[][] tableauDeuxD = new Object[43][3];
 		tableauDeuxD = TraitResultsForML.makeResultsForML(idPair, resultsSource, resultsTarget,
 		listOfDatatypesSource, listOfDatatypesTarget,
 		listOfLanguagesPredicatSource, listOfLanguagesPredicatTarget,
@@ -588,7 +588,6 @@ public class ProfilingPostProcessing{
 		listPredicatVocabularySource, listPredicatVocabularyTarget,
 		listObjectVocabularySource, listObjectVocabularyTarget,
 		listOfNewClassWithPropertiesCombinaisonSource, listOfNewClassWithPropertiesCombinaisonTarget,
-		listOfRelationshipsBetweenNewClassesSource, listOfRelationshipsBetweenNewClassesTarget,
 		listOfRelationshipsDomainSource, listOfRelationshipsDomainTarget,
 		listOfRelationshipsRangeSource, listOfRelationshipsRangeTarget,
 		listMostImportantClassesSource, listMostImportantClassesTarget,
