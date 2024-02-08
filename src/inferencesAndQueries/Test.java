@@ -82,6 +82,6 @@ public class Test {
 		ProfilingUtil.ChangeDirectoryFiles(ProfilingConf.folderForTmp, pathForLptResults.toString());
 		
 		Instant end0 = Instant.now();
-		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		System.out.println("Total running time : " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 	}  
 }

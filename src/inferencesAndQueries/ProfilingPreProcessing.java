@@ -235,7 +235,7 @@ public class ProfilingPreProcessing {
 		ArrayList<UriListAndUriAndNumberListAndNumber> listClassSubjectByPropertyCombination = new ArrayList<UriListAndUriAndNumberListAndNumber>();
 		listClassSubjectByPropertyCombination = MakeListClassSubjectByPropertiesCombinations.makeList(model, nameOfListPropertyUsagePerObject);
 
-		System.out.println("Début traitement listClassAndPropertyOfInterestCount ");
+		
 		// Liste des classes les plus utilisées et leur connections avec d'autres classes.
 		String nameOfListClassAndPropertyOfInterestCount = "listClassAndPropertyOfInterestCount";
 		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCount = new ArrayList<UriAndUriAndUriAndNumber>();
@@ -285,14 +285,14 @@ public class ProfilingPreProcessing {
 		
 		// Création d'un model de description.
 		UriForDescriptionModel resultsForDescriptionModel = new UriForDescriptionModel();
-		String nameOfDescriptionModel = "descriptionModel";
-		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+		OntModel descriptionModelTemp = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		String nameOfListOfRelationshipsDomain = "listOfRelationshipsDomain";
 		ArrayList<UriListAndUriList> listOfRelationshipsDomain = new ArrayList<UriListAndUriList>();
 		String nameOfListOfRelationshipsRange = "listOfRelationshipsRange";
 		ArrayList<UriListAndUriList> listOfRelationshipsRange = new ArrayList<UriListAndUriList>();
 		resultsForDescriptionModel = MakeDescriptionModel.makeModel(listOfRelationshipsBetweenNewClasses);
-		descriptionModel = resultsForDescriptionModel.getDescriptionModel();
+		descriptionModelTemp = resultsForDescriptionModel.getDescriptionModel();
+		// System.out.println("descriptionModelTemp :" + descriptionModelTemp.size());
 		listOfRelationshipsDomain = resultsForDescriptionModel.getListOfRelationshipsDomain();
 		listOfRelationshipsRange = resultsForDescriptionModel.getListOfRelationshipsRange();
 
@@ -306,15 +306,29 @@ public class ProfilingPreProcessing {
 		ArrayList<String> listMostImportantRelationshipsBetweenClasses = new ArrayList<String>();
 		listMostImportantRelationshipsBetweenClasses = MakeListMostImportantRelationshipsBetweenClasses.makeList(listOfRelationshipsDomain, listOfRelationshipsRange);
 		
-		// Création d'un model de description.
-		String nameOfDescriptionModelWithMultipleProperties = "descriptionModelWithMultipleProperties";
-		OntModel descriptionModelWithMultipleProperties = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
-		descriptionModelWithMultipleProperties = MakeDescriptionModelWithMultipleProperties.makeModel(listOfRelationshipsBetweenNewClasses);
+		// Liste des relation entre classes les plus importantes.
+		String nameOfListMostImportantPropertiesOfClasses = "listMostImportantPropertiesOfClasses";
+		ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClasses = new ArrayList<UriAndUriAndUriListList>();
+		listMostImportantPropertiesOfClasses = MakeListMostImportantPropertiesOfClasses.makeList(listMostImportantClasses, listOfNewClassWithPropertiesCombinaison, listPropertyMostUsedWithDatatypeAndClassRange);
 
+		// Ajout au model de description des dataProperties.
+		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+		String nameOfDescriptionModel = "descriptionModel";
+		descriptionModel = MakeDescriptionModelWithDataProperties.makeModel(descriptionModelTemp, listMostImportantPropertiesOfClasses);
+		
+
+		// Création d'un model de description sans UnionOf.
+		OntModel descriptionModelWithoutUnionOFTemp = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+		descriptionModelWithoutUnionOFTemp = MakeDescriptionModelWithoutUnionOF.makeModel(listOfRelationshipsBetweenNewClasses);
+
+		// Ajout au model de description sans UnionOF des dataProperties.
+		String nameOfDescriptionModelWithoutUnionOF = "descriptionModelWithoutUnionOF";
+		OntModel descriptionModelWithoutUnionOF = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
+		descriptionModelWithoutUnionOF = MakeDescriptionModelWithDataPropertiesWithoutUnionOf.makeModel(descriptionModelWithoutUnionOFTemp, listMostImportantPropertiesOfClasses);
 
 		// TEST
-		ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
-		listOfTest = MakeTest.make(model);
+		// ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
+		// listOfTest = MakeTest.make(model);
 
 
 		//////////////////////////////////////////////
@@ -542,6 +556,12 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
+			ProfilingUtil.makeJsonUriAndUriAndUriListListFile(listMostImportantPropertiesOfClasses, nameOfListMostImportantPropertiesOfClasses + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		try {
 			ProfilingUtil.makeJsonUriListAndUriListFile(listOfRelationshipsDomain, nameOfListOfRelationshipsDomain + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -555,15 +575,15 @@ public class ProfilingPreProcessing {
 
 		try {
 		// Convertion du modèle de description en fichier JSON
-		System.out.println("Convert description model with multiple properties to file.....");
+		System.out.println("Convert description model without UnionOf to file.....");
 		// Récupération du chemin du fichier.
-		Path pathOut = Paths.get(ProfilingConf.folderForTmp, nameOfDescriptionModelWithMultipleProperties + ".owl");				
+		Path pathOut = Paths.get(ProfilingConf.folderForTmp, nameOfDescriptionModelWithoutUnionOF + ".owl");				
 		// Sortie fichier 
 		FileOutputStream outStream = new FileOutputStream(pathOut.toString());
 		// exporte le resultat dans un fichier
-		descriptionModelWithMultipleProperties.write(outStream, "RDF/XML");
+		descriptionModelWithoutUnionOF.write(outStream, "RDF/XML");
 		outStream.close();   
-		descriptionModelWithMultipleProperties.close();
+		descriptionModelWithoutUnionOF.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}				            	

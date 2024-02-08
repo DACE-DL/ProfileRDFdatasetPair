@@ -82,16 +82,17 @@ public class CreateInferedModel {
 		modelImports.close();
 
 		Instant end0 = Instant.now();
-		System.out.println("Runtime for loading models into memory: " + Duration.between(start0, end0).toMillis() + " millisecondes");
-		
-		System.out.println("Model size before addtional treatement:" + modelTemp.size());
+		System.out.println("Runtime for loading models into memory: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
+		Instant start1 = Instant.now();
+
+		System.out.println("Model size before addtional treatement: " + modelTemp.size() + " triples");
         ProfilingPreProcessing.makeTreatements(modelTemp);
-		System.out.println("Model size after addtional treatement:" + modelTemp.size());	
+		System.out.println("Model size after addtional treatement: " + modelTemp.size() + " triples");	
 		
 		Instant end1 = Instant.now();
-		System.out.println("Runtime for additional treatments: " + Duration.between(end0, end1).toMillis() + " millisecondes");
-
-		Instant start1 = Instant.now();
+		System.out.println("Runtime for additional treatments: " + ProfilingUtil.getDurationAsString(Duration.between(start1, end1).toMillis()));
+		Instant start2 = Instant.now();
+		
 
 		// create Pellet reasoner
 		final Reasoner reasoner = PelletReasonerFactory.theInstance().create();
@@ -171,7 +172,7 @@ public class CreateInferedModel {
 		//System.out.println("SIS_DATA = "  + System.getenv("SIS_DATA"));
 
 		Instant end2 = Instant.now();
-		System.out.println("Runtime for inferred model delivery: " + Duration.between(start1, end2).toMillis() + " millisecondes");
+		System.out.println("Runtime for inferred model delivery: " + ProfilingUtil.getDurationAsString(Duration.between(start2, end2).toMillis()));
 
 		return infModel;
 	}

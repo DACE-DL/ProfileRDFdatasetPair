@@ -23,10 +23,9 @@ public class MakeTest {
 		Query query = QueryFactory.create(prefix + 	  
 		
 		
-		"SELECT ?subject " +
+		"SELECT ?p ?o " +
 		" WHERE { " +
-				" ?subject rdf:type <http://dbkwik.webdatacommons.org/swtor.wikia.com/class/character> ." +	
-				" ?subject rdf:type dsp:Class-19 ." +
+				" <http://dbkwik.webdatacommons.org/swtor.wikia.com/property/race> ?p ?o ." +	
 		" } LIMIT 30 "
 		
  
@@ -41,7 +40,7 @@ public class MakeTest {
 			}
 		}
 		Instant end3 = Instant.now();
-		System.out.println("test running time : " + Duration.between(start3, end3).getSeconds() + " secondes");
+		System.out.println("test running time : " + ProfilingUtil.getDurationAsString(Duration.between(start3, end3).toMillis()));
 		
 		return ListResources;
 	}

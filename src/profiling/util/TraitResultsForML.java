@@ -18,8 +18,12 @@ public class TraitResultsForML {
 	List<String> listPredicatVocabularySource, List<String> listPredicatVocabularyTarget,
 	List<String> listObjectVocabularySource, List<String> listObjectVocabularyTarget,
 	ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonSource, ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaisonTarget,
+	ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesSource, ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTarget,
 	ArrayList<UriListAndUriList> listOfRelationshipsDomainSource, ArrayList<UriListAndUriList> listOfRelationshipsDomainTarget,
-	ArrayList<UriListAndUriList> listOfRelationshipsRangeSource, ArrayList<UriListAndUriList> listOfRelationshipsRangeTarget	
+	ArrayList<UriListAndUriList> listOfRelationshipsRangeSource, ArrayList<UriListAndUriList> listOfRelationshipsRangeTarget,	
+	ArrayList<String> listMostImportantClassesSource, ArrayList<String> listMostImportantClassesTarget,
+	ArrayList<String> listMostImportantRelationshipsBetweenClassesSource, ArrayList<String> listMostImportantRelationshipsBetweenClassesTarget,
+	ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesSource, ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesTarget
 	) {
 		// Déclaration et initialisation d'un tableau en deux dimensions avec des chiffres et des listes
         Object[][] tableauDeuxD = new Object[40][3];

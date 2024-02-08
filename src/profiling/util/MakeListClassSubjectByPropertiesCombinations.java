@@ -1,5 +1,7 @@
 package profiling.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -15,12 +17,11 @@ public class MakeListClassSubjectByPropertiesCombinations {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static ArrayList<UriListAndUriAndNumberListAndNumber> makeList(Model model, String nameOfList) {
-		
-		new ProfilingConf();
+		Instant start0 = Instant.now();
 		String prefix = ProfilingConf.queryPrefix;
 		String dsp = ProfilingConf.dsp;
 
-		ArrayList<UriListAndUriAndNumberListAndNumber> ListResources = new ArrayList<UriListAndUriAndNumberListAndNumber>();
+		ArrayList<UriListAndUriAndNumberListAndNumber> ListClassSubjectByPropertiesCombinations = new ArrayList<UriListAndUriAndNumberListAndNumber>();
 
 			Query query = QueryFactory.create(prefix + 
 			" SELECT ?propertyList (GROUP_CONCAT(DISTINCT ?classAndCount; separator=\"|\") AS ?classAndCountList) (SUM(?usageCount) AS ?instanceCombinaisonPropertyCount) " +
@@ -50,8 +51,7 @@ public class MakeListClassSubjectByPropertiesCombinations {
 			"    } " +	
 			" } " +		
 			" GROUP BY ?propertyList " +	
-			" ORDER BY DESC(?instanceCombinaisonPropertyCount) " +
-			" LIMIT 100 " 	  	  
+			" ORDER BY DESC(?instanceCombinaisonPropertyCount) "	  	  
 			);
 		
 			//System.out.println("Query : " + query.toString()); 
@@ -84,11 +84,13 @@ public class MakeListClassSubjectByPropertiesCombinations {
 					uriListAndUriAndNumberListAndNumber.setUriList(ListProperty);
 					uriListAndUriAndNumberListAndNumber.setUriAndNumberList(ListClass);
 					uriListAndUriAndNumberListAndNumber.setNumber(querySolution.getLiteral("?instanceCombinaisonPropertyCount").getInt());
-					ListResources.add(uriListAndUriAndNumberListAndNumber) ;
+					ListClassSubjectByPropertiesCombinations.add(uriListAndUriAndNumberListAndNumber) ;
 				}
 			}
-		
-		return ListResources;
+
+		Instant end0 = Instant.now();
+		System.out.println("Running time for ListClassSubjectByPropertiesCombinations: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
+		return ListClassSubjectByPropertiesCombinations;
 	}
 	
 	static class UriComparator implements java.util.Comparator<Uri> {

@@ -66,7 +66,7 @@ public class ProfilingPelletInferences {
 				System.out.println("Validation du modèle inféré OK");
 				
 				Instant end = Instant.now();
-				System.out.println("Durée d'exécution pour les inférences: " + Duration.between(start, end).getSeconds() + " secondes");
+				System.out.println("Durée d'exécution pour les inférences: " + ProfilingUtil.getDurationAsString(Duration.between(start, end).toMillis()));
 		         
 				// exporte le resultat dans un fichier au format RDF/JSON
 		    	StringWriter out = new StringWriter();
@@ -129,7 +129,7 @@ public class ProfilingPelletInferences {
 				System.out.println("Validation du modèle inféré OK");
 
 				Instant end = Instant.now();
-				System.out.println("Durée d'exécution pour les inférences: " + Duration.between(start, end).getSeconds() + " secondes");
+				System.out.println("Durée d'exécution pour les inférences: " + ProfilingUtil.getDurationAsString(Duration.between(start, end).toMillis()));
 
 			} else {
 				System.out.println("Validation du modèle inféré KO ! ");
@@ -173,7 +173,7 @@ public class ProfilingPelletInferences {
 		}	
 
 		//Instant end = Instant.now();
-		//System.out.println("Durée d'exécution pour les inférences: " + Duration.between(start, end).getSeconds() + " secondes");
+		//System.out.println("Durée d'exécution pour les inférences: " + ProfilingUtil.getDurationAsString(Duration.between(start, end).toMillis()));
 
 		return inferedModel;
 	}
@@ -205,7 +205,7 @@ public class ProfilingPelletInferences {
 		}	
 
 		//Instant end = Instant.now();
-		//System.out.println("Durée d'exécution pour les inférences: " + Duration.between(start, end).getSeconds() + " secondes");
+		//System.out.println("Durée d'exécution pour les inférences: " + ProfilingUtil.getDurationAsString(Duration.between(start, end).toMillis()));
 
 		return infModel;
 	}
@@ -268,7 +268,7 @@ public class ProfilingPelletInferences {
 				System.out.println("Validation du modèle inféré OK");
 				
 				Instant end = Instant.now();
-				System.out.println("Durée d'exécution pour les inférences: " + Duration.between(start, end).getSeconds() + " secondes");
+				System.out.println("Durée d'exécution pour les inférences: " + ProfilingUtil.getDurationAsString(Duration.between(start, end).toMillis()));
 		         
 				// exporte le resultat dans un fichier OutputStream
 				infModel.write(jsonOut, "RDF/JSON");			

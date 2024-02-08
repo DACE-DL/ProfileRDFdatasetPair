@@ -80,7 +80,7 @@ public class MakeListClassAndPropertyOfInterestCount {
 		}
 							
 		Instant end4 = Instant.now();
-		System.out.println("All Class Subjet and Object and properties running time : " + Duration.between(start4, end4).toMillis() + " millisecondes");
+		System.out.println("All Class Subjet and Object and properties running time : " + ProfilingUtil.getDurationAsString(Duration.between(start4, end4).toMillis()));
 
 		// Collections.sort(ListResources, new UriAndUriAndUriAndNumberComparator());
 		

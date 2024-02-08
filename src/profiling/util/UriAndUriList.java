@@ -1,6 +1,7 @@
 package profiling.util;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UriAndUriList {
 	
@@ -44,4 +45,23 @@ public class UriAndUriList {
         sb.append("]}");
         return sb.toString();
     }
+
+	@Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        UriAndUriList that = (UriAndUriList) obj;
+        return  Objects.equals(uriList, that.uriList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uriList);
+    }
+
+	
 }

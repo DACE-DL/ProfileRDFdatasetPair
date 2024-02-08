@@ -68,7 +68,7 @@ public class ConvertXMLfileToJSONLD {
 					//dataset.removeNamedModel(nameForGraphURI);
 					System.out.println("delete of TDB graph OK");
 					Instant end1 = Instant.now();
-					System.out.println("Running time : " + Duration.between(start0, end1).getSeconds() + " secondes");
+					System.out.println("Running time : " + ProfilingUtil.getDurationAsString(Duration.between(start0, end1).toMillis()));
 				
 					InputStream is = new FileInputStream(pathFileDataset.toString());
 				
@@ -80,7 +80,7 @@ public class ConvertXMLfileToJSONLD {
 
 					System.out.println("The graph is loaded into TDB.....");
 					Instant end2 = Instant.now();
-					System.out.println("Running time : " + Duration.between(end1, end2).getSeconds() + " secondes");
+					System.out.println("Running time : " + ProfilingUtil.getDurationAsString(Duration.between(end1, end2).toMillis()));
 					System.out.println("Graph size " + nameForGraphURI + " : " + model.size());
 				    
 					// Convertion en fichier JSON
@@ -97,7 +97,7 @@ public class ConvertXMLfileToJSONLD {
 
 					System.out.println("The file " + pathOut.toString() + " is created");
 					Instant end3 = Instant.now();
-					System.out.println("Running time : " + Duration.between(end2, end3).getSeconds() + " secondes");
+					System.out.println("Running time : " + ProfilingUtil.getDurationAsString(Duration.between(end2, end3).toMillis()));
 				
 				} catch (FileNotFoundException e) {
 					System.out.println("File not found : " + e);
@@ -114,6 +114,6 @@ public class ConvertXMLfileToJSONLD {
 
 		System.out.println("End of XML to JSON-LD file conversion");
 		Instant end0 = Instant.now();
-		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		System.out.println("Total running time : " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 	}  
 }

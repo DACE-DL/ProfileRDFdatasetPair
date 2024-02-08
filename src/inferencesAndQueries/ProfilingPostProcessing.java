@@ -44,8 +44,14 @@ public class ProfilingPostProcessing{
 		String nameOfListPropertyOfInterest = "listPropertyOfInterest";
 		String nameOfListDatatypesOfInterest = "listOfDatatypesMostUsed";
 		String nameOfListOfNewClassWithPropertiesCombinaison = "listOfNewClassWithPropertiesCombinaison";
+		String nameOfListOfRelationshipsBetweenNewClasses = "listOfRelationshipsBetweenNewClasses";
 		String nameOfListOfRelationshipsDomain = "listOfRelationshipsDomain";
 		String nameOfListOfRelationshipsRange = "listOfRelationshipsRange";
+		String nameOfListMostImportantClasses = "listMostImportantClasses";
+		String nameOfListMostImportantRelationshipsBetweenClasses = "listMostImportantRelationshipsBetweenClasses";
+		String nameOfListMostImportantPropertiesOfClasses = "listMostImportantPropertiesOfClasses";
+		
+		
 		
 		
 		
@@ -428,19 +434,35 @@ public class ProfilingPostProcessing{
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		
+		ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesSource = new ArrayList<UriAndUriAndUriAndNumber>();
+		Path pathNameListOfRelationshipsBetweenNewClassesSource = Paths.get(pathForTargetResults, nameOfListOfNewClassWithPropertiesCombinaison + ".json");
+	    try {
+			listOfRelationshipsBetweenNewClassesSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListOfRelationshipsBetweenNewClassesSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTarget = new ArrayList<UriAndUriAndUriAndNumber>();
+		Path pathNameListOfRelationshipsBetweenNewClassesTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsBetweenNewClasses + ".json");
+	    try {
+			listOfRelationshipsBetweenNewClassesTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListOfRelationshipsBetweenNewClassesTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		ArrayList<UriListAndUriList> listOfRelationshipsDomainSource = new ArrayList<UriListAndUriList>();
-		Path pathNamelistOfRelationshipsDomainSource = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
+		Path pathNameListOfRelationshipsDomainSource = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
 	    try {
-			listOfRelationshipsDomainSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsDomainSource.toString());
+			listOfRelationshipsDomainSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNameListOfRelationshipsDomainSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
 		ArrayList<UriListAndUriList> listOfRelationshipsDomainTarget = new ArrayList<UriListAndUriList>();
-		Path pathNamelistOfRelationshipsDomainTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
+		Path pathNameListOfRelationshipsDomainTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsDomain + ".json");
 	    try {
-			listOfRelationshipsDomainTarget = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsDomainTarget.toString());
+			listOfRelationshipsDomainTarget = ProfilingUtil.makeArrayListUriListAndUriList(pathNameListOfRelationshipsDomainTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -457,6 +479,54 @@ public class ProfilingPostProcessing{
 		Path pathNamelistOfRelationshipsRangeTarget = Paths.get(pathForTargetResults, nameOfListOfRelationshipsRange + ".json");
 	    try {
 			listOfRelationshipsRangeTarget = ProfilingUtil.makeArrayListUriListAndUriList(pathNamelistOfRelationshipsRangeTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<String> listMostImportantClassesSource = new ArrayList<String>();
+		Path pathNameListMostImportantClassesSource = Paths.get(pathForTargetResults, nameOfListMostImportantClasses + ".json");
+	    try {
+			listMostImportantClassesSource = ProfilingUtil.makeArrayListString2(pathNameListMostImportantClassesSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<String> listMostImportantClassesTarget = new ArrayList<String>();
+		Path pathNameListMostImportantClassesTarget = Paths.get(pathForTargetResults, nameOfListMostImportantClasses + ".json");
+	    try {
+			listMostImportantClassesTarget = ProfilingUtil.makeArrayListString2(pathNameListMostImportantClassesTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<String> listMostImportantRelationshipsBetweenClassesSource = new ArrayList<String>();
+		Path pathNameListMostImportantRelationshipsBetweenClassesSource = Paths.get(pathForTargetResults, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
+	    try {
+			listMostImportantRelationshipsBetweenClassesSource = ProfilingUtil.makeArrayListString2(pathNameListMostImportantRelationshipsBetweenClassesSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<String> listMostImportantRelationshipsBetweenClassesTarget = new ArrayList<String>();
+		Path pathNameListMostImportantRelationshipsBetweenClassesTarget = Paths.get(pathForTargetResults, nameOfListMostImportantRelationshipsBetweenClasses + ".json");
+	    try {
+			listMostImportantRelationshipsBetweenClassesTarget = ProfilingUtil.makeArrayListString2(pathNameListMostImportantRelationshipsBetweenClassesTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesSource = new ArrayList<UriAndUriAndUriListList>();
+		Path pathNameListMostImportantPropertiesOfClassesSource = Paths.get(pathForTargetResults, nameOfListMostImportantPropertiesOfClasses + ".json");
+	    try {
+			listMostImportantPropertiesOfClassesSource = ProfilingUtil.makeArrayListUriAndUriAndUriListList(pathNameListMostImportantPropertiesOfClassesSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesTarget = new ArrayList<UriAndUriAndUriListList>();
+		Path pathNameListMostImportantPropertiesOfClassesTarget = Paths.get(pathForTargetResults, nameOfListMostImportantPropertiesOfClasses + ".json");
+	    try {
+			listMostImportantPropertiesOfClassesTarget = ProfilingUtil.makeArrayListUriAndUriAndUriListList(pathNameListMostImportantPropertiesOfClassesTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -518,8 +588,12 @@ public class ProfilingPostProcessing{
 		listPredicatVocabularySource, listPredicatVocabularyTarget,
 		listObjectVocabularySource, listObjectVocabularyTarget,
 		listOfNewClassWithPropertiesCombinaisonSource, listOfNewClassWithPropertiesCombinaisonTarget,
+		listOfRelationshipsBetweenNewClassesSource, listOfRelationshipsBetweenNewClassesTarget,
 		listOfRelationshipsDomainSource, listOfRelationshipsDomainTarget,
-		listOfRelationshipsRangeSource, listOfRelationshipsRangeTarget
+		listOfRelationshipsRangeSource, listOfRelationshipsRangeTarget,
+		listMostImportantClassesSource, listMostImportantClassesTarget,
+		listMostImportantRelationshipsBetweenClassesSource, listMostImportantRelationshipsBetweenClassesTarget,
+		listMostImportantPropertiesOfClassesSource, listMostImportantPropertiesOfClassesTarget
 		);
 		String nameOfResultsForMLfile = "resultsForMLfile";
 		ProfilingUtil.saveTwoDimensionalTableInCSV(tableauDeuxD, nameOfResultsForMLfile + ".csv");

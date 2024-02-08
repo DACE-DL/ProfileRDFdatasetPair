@@ -33,7 +33,7 @@ public class AgroportalApiUtil {
             System.out.println(resource);
         }
 		Instant end0 = Instant.now();
-    	System.out.println("Durée d'exécution Totale: " + Duration.between(start0, end0).getSeconds() + " secondes");    
+    	System.out.println("Durée d'exécution Totale: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));    
     }
 
     public static ArrayList<String> resourceAndDecendants(String term) throws JsonProcessingException {

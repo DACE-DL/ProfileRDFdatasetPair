@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingQueryObject;
+import profiling.util.ProfilingUtil;
 
 
 public class StartTestProfiling {
@@ -804,6 +805,6 @@ public class StartTestProfiling {
 		CreateInferredModelAndRunQueries.InferencesAndQuery(idPair, listDatasets, listRules, topSpatial, listQuery, consoleOutput, fileNameTestResult);
 		
 		Instant end0 = Instant.now();
-		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		System.out.println("Total running time : " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 	}  
 }

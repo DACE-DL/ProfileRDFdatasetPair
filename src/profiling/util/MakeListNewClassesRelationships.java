@@ -14,7 +14,7 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 
 public class MakeListNewClassesRelationships {
-	// Création de Classes pour chaque combinaison de propriétés
+	// Détermination des relations entre les classes
 	public static ArrayList<UriAndUriAndUriAndNumber> makeList(Model model, ArrayList<UriAndUriList> listOfNewClassWithPropertiesCombinaison) {
 		
 		new ProfilingConf();
@@ -77,7 +77,7 @@ public class MakeListNewClassesRelationships {
 
 		
 		Instant end0 = Instant.now();
-		System.out.println("Running time for classes relationships : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		System.out.println("Running time for classes relationships: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 		return ReducedListOfRelationshipsBetweenNewClasses;
 	}
 	static class UriAndUriAndUriAndNumberComparator implements java.util.Comparator<UriAndUriAndUriAndNumber> {

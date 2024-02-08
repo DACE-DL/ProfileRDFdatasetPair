@@ -21,7 +21,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 public class MakeListNewClassesWithPropertiesCombinaisons {
 	static boolean alreadyProcessed = false; 
 	// Création de Classes pour chaque combinaison de propriétés
-	public static ArrayList<UriAndUriList> makeClasses(Model model, ArrayList<UriListAndUriAndNumberListAndNumber> ListResources) {
+	public static ArrayList<UriAndUriList> makeClasses(Model model, ArrayList<UriListAndUriAndNumberListAndNumber> cleanedAndReducedListClassSubjectByPropertyCombinationTemp) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -41,10 +41,10 @@ public class MakeListNewClassesWithPropertiesCombinaisons {
 		Instant start0 = Instant.now();	
 		
 		// Tri de la liste pour que les combinaisons les plus grandes en nombre passe en priorité
-		Collections.sort(ListResources, new UriListAndUriAndNumberListAndNumberComparator()); 	
+		Collections.sort(cleanedAndReducedListClassSubjectByPropertyCombinationTemp, new UriListAndUriAndNumberListAndNumberComparator()); 	
 		
 		n = 0;
-		for (UriListAndUriAndNumberListAndNumber resource : ListResources) {
+		for (UriListAndUriAndNumberListAndNumber resource : cleanedAndReducedListClassSubjectByPropertyCombinationTemp) {
         	n++;
 			ArrayList<Uri> ListCombinaisonProperties = resource.getUriList();
 			ArrayList<UriAndNumber> ListClassesForCombinaison = resource.getUriAndNumberList();
@@ -77,18 +77,10 @@ public class MakeListNewClassesWithPropertiesCombinaisons {
 						Resource ci = null;
 						Selector selector1 = new SimpleSelector(s, p, ci) ;
 						StmtIterator stmtIte1 = model.listStatements(selector1);
+						// On vérifit que les instances concernées n'appartiennent pas déjà
+						// à une classe
 						if (!stmtIte1.hasNext()) {
 							model.add(s, p, o);
-						} else {
-							// alreadyProcessed = false; 
-							// stmtIte1.forEach((stmObj) -> {
-							// 	if (stmObj.getObject().toString().contains(dsp)) {
-							// 		alreadyProcessed = true;
-							// 	}
-							// });
-							// if (!alreadyProcessed) {
-							// 	model.add(s, p, o);
-							// }
 						}
 					}
 					ListInstancesOfCombinaisonProperties.clear();
@@ -96,7 +88,7 @@ public class MakeListNewClassesWithPropertiesCombinaisons {
 			}
 		}
 		Instant end0 = Instant.now();
-		System.out.println("Running time for classes with properties combinaisons : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		System.out.println("Running time for classes with properties combinaisons: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 		return ListNewClassesAndTheirProperties;
 	}
 
@@ -109,26 +101,8 @@ public class MakeListNewClassesWithPropertiesCombinaisons {
 			x++;
             queryBuilder.append("?subject <").append(property.getUri().toString()).append("> ?object").append(x).append(" . ");
         }
-		// queryBuilder.append("FILTER NOT EXISTS { " +
-		// " ?subject rdf:type ?existingClass . ");
-		// queryBuilder.append("}");  
-
-		// queryBuilder.append("FILTER NOT EXISTS { " +
-		// " ?subject ?otherProperty ?otherObject . " +
-		// " FILTER (");
-		// boolean first = true;
-		// for (Uri property : properties) {
-		// 	if (first) {
-		// 		first = false;
-		// 	} else {
-		// 		queryBuilder.append(" && " );
-		// 	}; 
-        //     queryBuilder.append(" ?otherProperty != <").append(property.getUri().toString()).append(">");
-        // }
-		// queryBuilder.append(")}");  
         queryBuilder.append("}");
         // Retourne la requête en tant que chaîne de caractères
-		// System.out.println(queryBuilder.toString());
         return queryBuilder.toString();
     }
 	static class UriListAndUriAndNumberListAndNumberComparator implements java.util.Comparator<UriListAndUriAndNumberListAndNumber> {

@@ -60,7 +60,7 @@ public class MakeListUriAndUriAndUriAndNumberMostUsed {
 		// }
 		
 		// Instant end3 = Instant.now();
-		// System.out.println("Running time : " + Duration.between(start3, end3).getSeconds() + " secondes");
+		// System.out.println("Running time: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 
 		// Collections.sort(ListResources, new UriAndUriAndUriAndNumberComparator());
 

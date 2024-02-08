@@ -599,6 +599,32 @@ public class ProfilingUtil {
 		return listObjects;
 	}
 
+	//  Créé un fichier JSON partir d'un tableau (arrayList) de string
+	public static void makeJsonStringFile2(ArrayList<String> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	// Retourne un tableau de string (arrayList) à partir d'un fichier JSON
+	public static ArrayList<String> makeArrayListString2(String nameJsonObjectFile) throws Exception {
+		ArrayList<String> listObjects = new ArrayList<String>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<String>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+
 	//  Créé un fichier JSON partir d'un object de type ProfilingResultsObjet
 	public static void makeJsonResultsFile(ProfilingResultsObject profilingResultsObject, String nameJsonObjectFile) throws Exception {
 		// Récupération du chemin du fichier.
@@ -680,6 +706,33 @@ public class ProfilingUtil {
 		return listObjects;
 	}
 
+	//  Créé un fichier JSON partir d'un tableau d'objects
+	public static void makeJsonUriAndUriAndUriListListFile(ArrayList<UriAndUriAndUriListList> listObject, String nameJsonObjectFile) throws Exception {
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+        //System.out.println(pathOfTheFile.toString());
+		ObjectMapper objectMapper = new ObjectMapper();	
+		objectMapper.writeValue(file, listObject);		
+	}
+	
+	// Retourne un tableau d'objects à partir d'un fichier JSON
+	public static ArrayList<UriAndUriAndUriListList> makeArrayListUriAndUriAndUriListList(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriAndUriAndUriListList> listObjects = new ArrayList<UriAndUriAndUriListList>();
+		// Récupération du chemin du fichier.
+		Path pathOfTheFile = Paths.get(nameJsonObjectFile);
+		File file  = new File(pathOfTheFile.toString());
+		if (file.exists()) {
+		   //on récupère les objects à traiter dans le fichier JSON
+			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndUriAndUriListList>>(){});	 
+		} else {
+			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+		}	
+		return listObjects;
+	}
+	
 	// Méthode pour sauvegarder un tableau de deux dimensions en CSV
     public static void saveTwoDimensionalTableInCSV(Object[][] tableau, String nameFile) {
 		// Récupération du chemin du fichier.
@@ -723,6 +776,23 @@ public class ProfilingUtil {
             } catch (IllegalAccessException e) {
                 values.add("N/A");
             }
+        }
+    }
+
+	public static String getDurationAsString(long milliseconds) {
+        long hours = milliseconds / 3600000;
+        long minutes = (milliseconds % 3600000) / 60000;
+        long seconds = ((milliseconds % 3600000) % 60000) / 1000;
+        long remainingMilliseconds = milliseconds % 1000;
+
+        if (hours > 0) {
+            return hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
+        } else if (minutes > 0) {
+            return minutes + " minutes, " + seconds + " seconds";
+        } else if (seconds > 0) {
+            return seconds + " seconds";
+        } else {
+            return remainingMilliseconds + " milliseconds";
         }
     }
 }

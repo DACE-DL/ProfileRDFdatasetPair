@@ -5,6 +5,8 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
+import profiling.util.ProfilingUtil;
+
 public class StartProfiling {
 
 	// Lancement initial pour création modèle inferé et traitement des requêtes
@@ -23,6 +25,6 @@ public class StartProfiling {
 		CreateInferredModelAndRunQueries.InferencesAndQuery();
 		
 		Instant end0 = Instant.now();
-		System.out.println("Total running time : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		System.out.println("Total running time : " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 	}  
 }

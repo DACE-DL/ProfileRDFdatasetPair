@@ -38,7 +38,7 @@ public class MakeDescriptionModel {
 		descriptionModel.removeAll(descriptionModel.getUnionClass(dsp + "anonymous"), null, (RDFNode) null);
 		Integer n = 1;
 		
-		Instant start0 = Instant.now();	
+		// Instant start0 = Instant.now();	
 	    
 		listOfRelationshipsBetweenNewClassesTemp.addAll(listOfRelationshipsBetweenNewClasses);
 
@@ -148,8 +148,8 @@ public class MakeDescriptionModel {
 		results.setListOfRelationshipsDomain(listOfRelationshipsDomainWithoutDuplicates);
 		results.setListOfRelationshipsRange(listOfRelationshipsRangeWithoutDuplicates);
 		
-		Instant end0 = Instant.now();
-		System.out.println("Running time for making description model : " + Duration.between(start0, end0).getSeconds() + " secondes");
+		// Instant end0 = Instant.now();
+		// System.out.println("Running time for making description model: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 		return results;
 	}
 	
