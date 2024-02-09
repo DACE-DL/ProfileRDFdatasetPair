@@ -14,7 +14,7 @@ import org.apache.jena.rdf.model.Resource;
 public class MakeListPropertyOfInterest {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfListIn, String nameOfListOut) {
+	public static ArrayList<UriAndNumber> makeList(Model model, String nameOfListClassAndPropertyOfInterestMostUsed, String nameOfListPropertyOfInterest) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -35,7 +35,7 @@ public class MakeListPropertyOfInterest {
 		Query query = QueryFactory.create(prefix + 
 		" SELECT  ?property (COUNT(*) AS ?usage)" +
 		" WHERE { " +
-		" dsp:" + nameOfListIn + " rdf:rest*/rdf:first ?element ." +
+		" dsp:" + nameOfListClassAndPropertyOfInterestMostUsed + " rdf:rest*/rdf:first ?element ." +
 		" ?element dsp:asURI2 ?property ." +
 		" } GROUP BY ?property ORDER BY DESC(?usage) "
 		);
@@ -51,7 +51,7 @@ public class MakeListPropertyOfInterest {
 
 		for (UriAndNumber resource : ListResources) {
 			if (n == 0) {
-				s = model.createResource(dsp + nameOfListOut);
+				s = model.createResource(dsp + nameOfListPropertyOfInterest);
 				p = model.createProperty(rdf + "first");
 				
 				b = model.createResource();
@@ -62,7 +62,7 @@ public class MakeListPropertyOfInterest {
 				model.add(s, p, b);
 				n = n + 1;
 			} else {
-				s = model.createResource(dsp + nameOfListOut + n);
+				s = model.createResource(dsp + nameOfListPropertyOfInterest + n);
 				p = model.createProperty(rdf + "first");
 				
 				b = model.createResource();
@@ -72,15 +72,15 @@ public class MakeListPropertyOfInterest {
 		
 				model.add(s, p, b);
 				if (n == 1) {
-					s = model.createResource(dsp + nameOfListOut);
+					s = model.createResource(dsp + nameOfListPropertyOfInterest);
 					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListOut + n);
+					o = model.createResource(dsp + nameOfListPropertyOfInterest + n);
 					model.add(s, p, o);
 					n = n + 1;
 				} else {
-					s = model.createResource(dsp + nameOfListOut + (n - 1));
+					s = model.createResource(dsp + nameOfListPropertyOfInterest + (n - 1));
 					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListOut + n);
+					o = model.createResource(dsp + nameOfListPropertyOfInterest + n);
 					model.add(s, p, o);
 					n = n + 1;
 				}
@@ -90,17 +90,17 @@ public class MakeListPropertyOfInterest {
 		if (n > 0) {
 
 			if (n == 1) {
-				s = model.createResource(dsp + nameOfListOut);
+				s = model.createResource(dsp + nameOfListPropertyOfInterest);
 				p = model.createProperty(rdf + "rest");
 				o = model.createResource(rdf + "nil");
 				model.add(s, p, o);
 			} else {
-				s = model.createResource(dsp + nameOfListOut + (n - 1));
+				s = model.createResource(dsp + nameOfListPropertyOfInterest + (n - 1));
 				p = model.createProperty(rdf + "rest");
 				o = model.createResource(rdf + "nil");
 				model.add(s, p, o);
 			}
-			s = model.createResource(dsp + nameOfListOut);
+			s = model.createResource(dsp + nameOfListPropertyOfInterest);
 			p = model.createProperty(rdf + "type");
 			o = model.createResource(rdf + "List");
 			model.add(s, p, o);

@@ -172,12 +172,12 @@ public class ProfilingPreProcessing {
 
 		// Liste des 100 premiéres propriétés les plus utilisées.
 		String nameOfListPropertyUsagePerSubject = "listPropertyUsagePerSubject";
-		ArrayList<UriAndNumberAndNumber> listPropertyUsagePerSubject = new ArrayList<UriAndNumberAndNumber>();
+		ArrayList<UriAndNumberAndNumberAndNumber> listPropertyUsagePerSubject = new ArrayList<UriAndNumberAndNumberAndNumber>();
 		listPropertyUsagePerSubject = MakeListPropertyUsagePerSubject.makeList(model, nameOfListPropertyMostUsed, nameOfListPropertyUsagePerSubject);
 
 		// Liste des 100 premiéres propriétés les plus utilisées.
 		String nameOfListPropertyUsagePerObject = "listPropertyUsagePerObject";
-		ArrayList<UriAndNumberAndNumber> listPropertyUsagePerObject = new ArrayList<UriAndNumberAndNumber>();
+		ArrayList<UriAndNumberAndNumberAndNumber> listPropertyUsagePerObject = new ArrayList<UriAndNumberAndNumberAndNumber>();
 		listPropertyUsagePerObject = MakeListPropertyUsagePerObject.makeList(model, nameOfListPropertyMostUsed, nameOfListPropertyUsagePerObject);
 
 		//// For the Classes ////
@@ -433,13 +433,13 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriAndNumberAndNumberFile(listPropertyUsagePerSubject, nameOfListPropertyUsagePerSubject + ".json");
+			ProfilingUtil.makeJsonUriAndNumberAndNumberAndNumberFile(listPropertyUsagePerSubject, nameOfListPropertyUsagePerSubject + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriAndNumberAndNumberFile(listPropertyUsagePerObject, nameOfListPropertyUsagePerObject + ".json");
+			ProfilingUtil.makeJsonUriAndNumberAndNumberAndNumberFile(listPropertyUsagePerObject, nameOfListPropertyUsagePerObject + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

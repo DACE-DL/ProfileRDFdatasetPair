@@ -17,14 +17,14 @@ import org.apache.jena.rdf.model.ResourceFactory;
 public class MakeListPropertyUsagePerObject {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndNumberAndNumber> makeList(Model model, String nameOfListIn, String nameOfListOut) {
+	public static ArrayList<UriAndNumberAndNumberAndNumber> makeList(Model model, String nameOfListIn, String nameOfListOut) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
 
-		ArrayList<UriAndNumberAndNumber> ListResources = new ArrayList<UriAndNumberAndNumber>();
+		ArrayList<UriAndNumberAndNumberAndNumber> ListResources = new ArrayList<UriAndNumberAndNumberAndNumber>();
 	
 		Integer n = 0;
 		Resource s = model.createResource(dsp + "sujet");
@@ -52,14 +52,18 @@ public class MakeListPropertyUsagePerObject {
 		if (result.hasNext()) {
 			while( result.hasNext() ) {
 				QuerySolution querySolution = result.next() ;
-				ListResources.add(new UriAndNumberAndNumber(querySolution.getResource("property").toString(), querySolution.getLiteral("usage").getInt(), querySolution.getLiteral("usage2").getInt())) ;
+				ListResources.add(new UriAndNumberAndNumberAndNumber(querySolution.getResource("property").toString(),
+				 querySolution.getLiteral("usage").getInt(),
+				 querySolution.getLiteral("usage2").getInt(),
+				 querySolution.getLiteral("usage").getInt()/querySolution.getLiteral("usage2").getInt()
+				 )) ;
 			}
 		}
 		
 		
 		Collections.sort(ListResources, new UriAndNumberAndNumberComparator());
 
-		for (UriAndNumberAndNumber resource : ListResources) {
+		for (UriAndNumberAndNumberAndNumber resource : ListResources) {
 			if (n == 0) {
 				s = model.createResource(dsp + nameOfListOut);
 				p = model.createProperty(rdf + "first");
@@ -124,9 +128,9 @@ public class MakeListPropertyUsagePerObject {
 		return ListResources;
 	}
 
-	static class UriAndNumberAndNumberComparator implements java.util.Comparator<UriAndNumberAndNumber> {
+	static class UriAndNumberAndNumberComparator implements java.util.Comparator<UriAndNumberAndNumberAndNumber> {
 		@Override
-		public int compare(UriAndNumberAndNumber a, UriAndNumberAndNumber b) {
+		public int compare(UriAndNumberAndNumberAndNumber a, UriAndNumberAndNumberAndNumber b) {
 			if (!(b.getNumber() - a.getNumber() == 0)) {
 				return b.getNumber() - a.getNumber();
 			} else {

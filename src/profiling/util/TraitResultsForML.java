@@ -21,10 +21,14 @@ public class TraitResultsForML {
 	ArrayList<UriListAndUriList> listOfRelationshipsRangeSource, ArrayList<UriListAndUriList> listOfRelationshipsRangeTarget,	
 	ArrayList<String> listMostImportantClassesSource, ArrayList<String> listMostImportantClassesTarget,
 	ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClassesSource, ArrayList<UriAndUriAndUri> listMostImportantRelationshipsBetweenClassesTarget,
-	ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesSource, ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesTarget
+	ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesSource, ArrayList<UriAndUriAndUriListList> listMostImportantPropertiesOfClassesTarget,
+	ArrayList<UriAndNumberAndNumberAndNumber> listPropertyUsagePerObjectSource, ArrayList<UriAndNumberAndNumberAndNumber> listPropertyUsagePerObjectTarget,
+	ArrayList<UriAndNumberAndNumberAndNumber> listPropertyUsagePerSubjectSource, ArrayList<UriAndNumberAndNumberAndNumber> listPropertyUsagePerSubjectTarget,
+	ArrayList<UriAndUri> listClassAndSubclassSource, ArrayList<UriAndUri> listClassAndSubclassTarget,
+	ArrayList<UriAndUri> listPropertyAndSubpropertySource, ArrayList<UriAndUri> listPropertyAndSubpropertyTarget
 	) {
 		// Déclaration et initialisation d'un tableau en deux dimensions avec des chiffres et des listes
-        Object[][] tableauDeuxD = new Object[43][3];
+        Object[][] tableauDeuxD = new Object[47][3];
 		Integer numberLine = 0;
 		ArrayList<String> characteristics = new ArrayList<>();
         ArrayList<Object> values = new ArrayList<>();
@@ -159,6 +163,38 @@ public class TraitResultsForML {
 			aList.add(element.toString());
 		}
 		tableauDeuxD[numberLine + 13][1] = new ArrayList<>(aList);
+
+		tableauDeuxD[numberLine + 14][0] = "List of properties usage per Subject";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndNumberAndNumberAndNumber element : listPropertyUsagePerSubjectSource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 14][1] = new ArrayList<>(aList);
+
+		tableauDeuxD[numberLine + 15][0] = "List of properties usage per Object";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndNumberAndNumberAndNumber element : listPropertyUsagePerObjectSource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 15][1] = new ArrayList<>(aList);
+
+		tableauDeuxD[numberLine + 16][0] = "List of properties and subproperties";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUri element : listPropertyAndSubpropertySource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 16][1] = new ArrayList<>(aList);
+
+		tableauDeuxD[numberLine + 17][0] = "List of classes and subclasses";
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUri element : listClassAndSubclassSource) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 17][1] = new ArrayList<>(aList);
 		
 		// Pour le dataset target 
 		values.clear();
@@ -195,16 +231,12 @@ public class TraitResultsForML {
 		}
 		tableauDeuxD[numberLine + 3][2] = new ArrayList<>(aList);
 
-		aListOfList.clear();
-		aListOfList = new ArrayList<>();
+		aList.clear();
+		aList = new ArrayList<>();
 		for (UriAndUri element : listLinksTarget) {
-			aList.clear();
-			aList = new ArrayList<>();
-			aList.add(element.getUri1());
-			aList.add(element.getUri2());
-			aListOfList.add(new ArrayList<>(aList));
+			aList.add(element.toString());
 		}
-		tableauDeuxD[numberLine + 4][2] = new ArrayList<>(aListOfList);
+		tableauDeuxD[numberLine + 4][2] = new ArrayList<>(aList);
 
 		aList.clear();
 		aList = new ArrayList<>();
@@ -268,6 +300,34 @@ public class TraitResultsForML {
 			aList.add(element.toString());
 		}
 		tableauDeuxD[numberLine + 13][2] = new ArrayList<>(aList);
+
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndNumberAndNumberAndNumber element : listPropertyUsagePerSubjectTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 14][2] = new ArrayList<>(aList);
+
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndNumberAndNumberAndNumber element : listPropertyUsagePerObjectTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 15][2] = new ArrayList<>(aList);
+
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUri element : listPropertyAndSubpropertyTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 16][2] = new ArrayList<>(aList);
+
+		aList.clear();
+		aList = new ArrayList<>();
+		for (UriAndUri element : listClassAndSubclassTarget) {
+			aList.add(element.toString());
+		}
+		tableauDeuxD[numberLine + 17][2] = new ArrayList<>(aList);
 
 		return tableauDeuxD;
 	}

@@ -45,4 +45,16 @@ public class UriAndUri {
         return Objects.hash(uri1, uri2);
     }
 	
+	// Méthode toString()
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{");
+        sb.append(uri1);
+		sb.append(",");
+		sb.append(uri2);
+        sb.append("}");
+        return sb.toString();
+    }
+
 }
