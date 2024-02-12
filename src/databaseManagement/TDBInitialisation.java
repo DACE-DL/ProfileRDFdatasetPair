@@ -1,10 +1,22 @@
 package databaseManagement;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -107,7 +119,9 @@ public class TDBInitialisation {
 
 			Path pathFileDataset = Paths.get(mainDirectoryForDatasets, idPair, fileName);
 			
-			System.out.println("The dataset " + pathFileDataset.toString() + " is being loaded");   
+			System.out.println("The dataset " + pathFileDataset.toString() + " is being loaded");  
+			// correction des erreurs du fichier
+			modifyFile(pathFileDataset.toString()); 
 			
 			String typeOfSerialization = null;
 			// Si le fichier à l'extention .json 
@@ -174,6 +188,40 @@ public class TDBInitialisation {
 			}
 	    }   
 	}	
+	public static void modifyFile(String filePath) {
+		try {
+			// Ouverture du fichier d'entrée et du fichier temporaire de sortie
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath + ".tmp"), StandardCharsets.UTF_8));
+	
+			// Lecture et modification ligne par ligne
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String modifiedLine = line.replaceAll("http:///", "http://")
+				.replaceAll("https:///", "https://")
+				.replaceAll("%5D%5(?!D)", "%5D%5D")
+				.replaceAll("xmlns:ns3=\"http://dbkwik.webdatacommons.org/marvel.wikia.com/property/%3\"", "") // dbkwik.webdatacommons.org/marvel.wikia.com
+				.replaceAll("ns3:CdivAlign", "ns1:divAlign") // dbkwik.webdatacommons.org/marvel.wikia.com
+				.replaceAll("http://www.wikipedia.com:secrets_of_spiderman_revealed", "http://www.wikipedia.com/secrets_of_spiderman_revealed") // dbkwik.webdatacommons.org/marvel.wikia.com
+				;
+				writer.write(modifiedLine + "\n");
+			}
+	
+			// Fermeture des flux
+			reader.close();
+			writer.close();
+	
+			// Suppression du fichier d'origine
+            Files.deleteIfExists(Paths.get(filePath));
+
+            // Renommer le fichier temporaire en fichier d'origine
+            Files.move(Paths.get(filePath + ".tmp"), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+	
+			System.out.println("Le fichier a été modifié avec succès.");
+		} catch (IOException e) {
+			System.out.println("Une erreur s'est produite lors de la modification du fichier : " + e.getMessage());
+		}
+	}
 }
 
 
