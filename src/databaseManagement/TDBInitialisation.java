@@ -203,6 +203,8 @@ public class TDBInitialisation {
 				.replaceAll("xmlns:ns3=\"http://dbkwik.webdatacommons.org/marvel.wikia.com/property/%3\"", "") // dbkwik.webdatacommons.org/marvel.wikia.com
 				.replaceAll("ns3:CdivAlign", "ns1:divAlign") // dbkwik.webdatacommons.org/marvel.wikia.com
 				.replaceAll("http://www.wikipedia.com:secrets_of_spiderman_revealed", "http://www.wikipedia.com/secrets_of_spiderman_revealed") // dbkwik.webdatacommons.org/marvel.wikia.com
+				.replaceAll("OntologyID\\(Anonymous-2\\)module1", "http://OntologyID/Anonymous_2/module1") // OM-2023-taxrefldPlantae-ncbitaxonPlantae
+				
 				;
 				writer.write(modifiedLine + "\n");
 			}

@@ -44,6 +44,7 @@ public class GiveClassHierarchyDeep {
 			String subclassName ="";
 			String classNameTemp ="";
 			Boolean infiniteLoopTemp = false;
+			Boolean infiniteLoop = false;
 			
 			if (result.hasNext()) {
 				// If there is a list, it means that there is already a first level of hierarchy
@@ -55,7 +56,7 @@ public class GiveClassHierarchyDeep {
 				// Finding the maximum hierarchical depth
 				
 				// Duplication of the list for searches
-				ListResourcesTemp = ListResources ;
+				ListResourcesTemp.addAll(ListResources) ;
 				// Each line of the list of classes and their subclasses is processed
 				for (UriAndUri resource : ListResources) {
 				    maxDeepTemp = 1;
@@ -72,27 +73,29 @@ public class GiveClassHierarchyDeep {
 						}	
 					}
 					
-					while (!ListResourcesTemp1.isEmpty()) {	
+					// Create a temporary list to store items to be deleted
+					ArrayList<UriAndUri> elementsToDelete = new ArrayList<>();
+
+					while (!ListResourcesTemp1.isEmpty()) {   
 						maxDeepTemp = maxDeepTemp + 1;
 						ListResourcesTemp2.clear();
 						for (UriAndUri resourceTemp1 : ListResourcesTemp1) {
-							// We are looking for an Infinite Loop
 							if (resourceTemp1.getUri2().equals(className)) {
 								infiniteLoopTemp = true;
-								// We break the processing of the loop
-								ListResourcesTemp1.clear();
+								// System.out.println("className : " + className);
+								// Ajoutez l'élément à supprimer à la liste temporaire
+								elementsToDelete.add(resourceTemp1);
 							} 
-
+					
 							for (UriAndUri resourceTemp : ListResourcesTemp) {
 								if (resourceTemp.getUri1().equals(resourceTemp1.getUri2())) {
-									ListResourcesTemp2.add(new UriAndUri(resourceTemp.getUri1(), resourceTemp.getUri2())) ;
-								}	
+									ListResourcesTemp2.add(new UriAndUri(resourceTemp.getUri1(), resourceTemp.getUri2()));
+								}   
 							}
-						}	
-						
+						}   
 						if (!ListResourcesTemp2.isEmpty()) {
 							if (!infiniteLoopTemp) {
-								ListResourcesTemp1 = ListResourcesTemp2;
+								ListResourcesTemp1.addAll(ListResourcesTemp2);
 							} else {
 								ListResourcesTemp1.clear();
 							}
@@ -100,7 +103,11 @@ public class GiveClassHierarchyDeep {
 							ListResourcesTemp1.clear();
 						}
 					}
+					// Delete items from the main list
+					ListResourcesTemp1.removeAll(elementsToDelete);
+
 					if (infiniteLoopTemp) {
+						infiniteLoop = true;
 						infiniteLoopTemp = false;
 					}
 					if (maxDeepTemp > maxDeep) {
@@ -111,7 +118,7 @@ public class GiveClassHierarchyDeep {
 			}	
 			// The output parameter
 			hierarchyDeepAndLoop.setHierarchyDeep(nNumber);
-			hierarchyDeepAndLoop.setLoop(infiniteLoopTemp);
+			hierarchyDeepAndLoop.setLoop(infiniteLoop);
 
 		return hierarchyDeepAndLoop;
 	}	

@@ -56,8 +56,13 @@ public class MakeListMaxPerProperty {
 				// System.out.println("datatype : " + querySolution.get("datatype"));
 				// System.out.println("usage : " + querySolution.getLiteral("usage"));
 				if (querySolution.getLiteral("usage") != null) {
-					ListResources.add(new UriAndStringAndBigNumber(querySolution.get("property").toString(),
+					if (querySolution.get("datatype").toString().equals("http://www.w3.org/2001/XMLSchema#dateTime")) {
+						// ListResources.add(new UriAndStringAndBigNumber(querySolution.get("property").toString(),
+						// 	querySolution.get("datatype").toString(), (long) 0));
+					} else {
+						ListResources.add(new UriAndStringAndBigNumber(querySolution.get("property").toString(),
 							querySolution.get("datatype").toString(), querySolution.getLiteral("usage").getLong()));
+					}
 				}
 			}
 		}

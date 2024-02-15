@@ -67,7 +67,7 @@ public class ProfilingPreProcessing {
 		hierarchyDeepAndLoop = GivePropertyHierarchyDeep.giveHierarchyDeepAndLoop(model, nameOfListPropertyAndSubproperty);
 		results.setPropertyHierarchyDeep(hierarchyDeepAndLoop.getHierarchyDeep());
 		results.setPropertyHierarchyLoop(hierarchyDeepAndLoop.getLoop());
-		
+
 		// SubclassUsage
 		Integer numberOfSubclassUsage = GiveSubclassUsage.giveUsage(model);
 		results.setSubclassUsage(numberOfSubclassUsage);
@@ -127,11 +127,14 @@ public class ProfilingPreProcessing {
 		Integer numberOfSameAs = GiveSameAs.giveNumber(model);
 		results.setNumberSameAs(numberOfSameAs);
 
+		System.out.println("OK 1");
+
 		// List of links between domain names. A optimiser
 		String nameOfListLinks = "listLinks";
 		ArrayList<UriAndUri> listLinks = new ArrayList<UriAndUri>();
 		listLinks = MakeListLinks.makeList(model, nameOfListPropertyUsageCount, nameOfListLinks);
 
+		
 		// List of Max per Property.
 		String nameOfListMaxPerProperty = "listMaxPerProperty"; 
 		ArrayList<UriAndStringAndBigNumber> listMaxPerProperty = new ArrayList<UriAndStringAndBigNumber>();
@@ -141,29 +144,38 @@ public class ProfilingPreProcessing {
 		String nameOfListPerProperty = "listPerProperty"; 
 		ArrayList<UriAndStringAndBigNumber> listPerProperty = new ArrayList<UriAndStringAndBigNumber>();
 		listPerProperty = MakeListPerProperty.makeList(model, nameOfListPerProperty);
-
+		
+		System.out.println("OK 2");
+		
 		// Lists of vocabularies.
 		String nameOfListSvocabulary = "listSubjectVocabulary"; 
 		String nameOfListPvocabulary = "listPredicatVocabulary"; 
 		String nameOfListOvocabulary = "listObjectVocabulary"; 
 		ArrayList<List<String>> listResourcesSPO = new ArrayList<List<String>>(3);
-		listResourcesSPO = MakeListSPOvocabularies.makeList(model, listPropertyUsageCount, nameOfListSvocabulary, nameOfListPvocabulary, nameOfListOvocabulary);
+		//listResourcesSPO = MakeListSPOvocabularies.makeList(model, listPropertyUsageCount, nameOfListSvocabulary, nameOfListPvocabulary, nameOfListOvocabulary);
 		List<String> listDistinctSubjectVocabularies = new ArrayList<>();
 		List<String> listDistinctPredicatVocabularies = new ArrayList<>();
 		List<String> listDistinctObjectVocabularies = new ArrayList<>();
-		listDistinctSubjectVocabularies = listResourcesSPO.get(0);
-		listDistinctPredicatVocabularies = listResourcesSPO.get(1);
-		listDistinctObjectVocabularies = listResourcesSPO.get(2);
+		// listDistinctSubjectVocabularies = listResourcesSPO.get(0);
+		// listDistinctPredicatVocabularies = listResourcesSPO.get(1);
+		// listDistinctObjectVocabularies = listResourcesSPO.get(2);
         
+		System.out.println("OK 3");
+
+
 		// Lists of vocabularies.
 		String nameOfListSharedPartSubjectVocabulary = "listSharedPartSubjectVocabulary"; 
 		List<String> listSharedPartSubjectVocabulary = new ArrayList<String>();
 		listSharedPartSubjectVocabulary = MakeListSharedPartSubjectVocabulary.makeList(model, listDistinctSubjectVocabularies, nameOfListSharedPartSubjectVocabulary);
 		
+		System.out.println("OK 4");
+
 		// Liste des 100 premiéres propriétés les plus utilisées.
 		String nameOfListPropertyMostUsed = "listPropertyMostUsed";
 		ArrayList<UriAndNumber> listPropertyMostUsed = new ArrayList<UriAndNumber>();
 		listPropertyMostUsed = MakeListPropertyMostUsed.makeList(model, nameOfListPropertyMostUsed);
+
+		
 
 		// Liste des 100 premiéres propriétés les plus utilisées avec datatypes et classes range.
 		String nameOfListPropertyMostUsedWithDatatypeAndClassRange = "listPropertyMostUsedWithDatatypeAndClassRange";
@@ -202,6 +214,7 @@ public class ProfilingPreProcessing {
 		ArrayList<Uri> listOfClassNotDefined = new ArrayList<Uri>();
 		listOfClassNotDefined = MakeListClassNotDefined.makeList(model, nameOfListClassNotDefined);
 
+		
 		// Liste des classes et des sous-classes.
 		String nameOfListClassAndSubclass = "listClassAndSubclass";
 		ArrayList<UriAndUri> listClassAndSubclass = new ArrayList<UriAndUri>();
@@ -212,6 +225,7 @@ public class ProfilingPreProcessing {
 		ClassHierarchyDeepAndLoop = GiveClassHierarchyDeep.giveHierarchyDeepAndLoop(model, nameOfListClassAndSubclass);
 		results.setClassHierarchyDeep(ClassHierarchyDeepAndLoop.getHierarchyDeep());
 		results.setClassHierarchyLoop(ClassHierarchyDeepAndLoop.getLoop());
+
 
 		// Construction d'un vecteur pour l'usage des classes.
 		String vectorUsageClass = "c(0.0)";

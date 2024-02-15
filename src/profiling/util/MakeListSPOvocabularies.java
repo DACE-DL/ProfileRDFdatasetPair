@@ -81,153 +81,153 @@ public class MakeListSPOvocabularies {
 		ListResourcesSPO.add(listDistinctPredicatVocabularies);
 		ListResourcesSPO.add(listDistinctObjectVocabularies);
 
-		for (String vocabulary : listDistinctSubjectVocabularies) {
-			if (n == 0) {
-				s = model.createResource(dsp + nameOfListS);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(vocabulary.toString());
-				model.add(s, p, v);
-				n = n + 1;
-			} else {
-				s = model.createResource(dsp + nameOfListS + n);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(vocabulary.toString());
-				model.add(s, p, v);
+		// for (String vocabulary : listDistinctSubjectVocabularies) {
+		// 	if (n == 0) {
+		// 		s = model.createResource(dsp + nameOfListS);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(vocabulary.toString());
+		// 		model.add(s, p, v);
+		// 		n = n + 1;
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListS + n);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(vocabulary.toString());
+		// 		model.add(s, p, v);
 
-				if (n == 1) {
-					s = model.createResource(dsp + nameOfListS);
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListS + n);
-					model.add(s, p, o);
-					n = n + 1;
-				} else {
-					s = model.createResource(dsp + nameOfListS + (n - 1));
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListS + n);
-					model.add(s, p, o);
-					n = n + 1;
-				}
-			}
-		}
+		// 		if (n == 1) {
+		// 			s = model.createResource(dsp + nameOfListS);
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListS + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		} else {
+		// 			s = model.createResource(dsp + nameOfListS + (n - 1));
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListS + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		}
+		// 	}
+		// }
 
-		if (n > 0) {
+		// if (n > 0) {
 
-			if (n == 1) {
-				s = model.createResource(dsp + nameOfListS);
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			} else {
-				s = model.createResource(dsp + nameOfListS + (n - 1));
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			}
-			s = model.createResource(dsp + nameOfListS);
-			p = model.createProperty(rdf + "type");
-			o = model.createResource(rdf + "List");
-			model.add(s, p, o);
-		}
+		// 	if (n == 1) {
+		// 		s = model.createResource(dsp + nameOfListS);
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListS + (n - 1));
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	}
+		// 	s = model.createResource(dsp + nameOfListS);
+		// 	p = model.createProperty(rdf + "type");
+		// 	o = model.createResource(rdf + "List");
+		// 	model.add(s, p, o);
+		// }
 
-		n = 0;
+		// n = 0;
 
-		for (String vocabulary : listDistinctPredicatVocabularies) {
-			if (n == 0) {
-				s = model.createResource(dsp + nameOfListP);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(vocabulary.toString());
-				model.add(s, p, v);
-				n = n + 1;
-			} else {
-				s = model.createResource(dsp + nameOfListP + n);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(vocabulary.toString());
-				model.add(s, p, v);
+		// for (String vocabulary : listDistinctPredicatVocabularies) {
+		// 	if (n == 0) {
+		// 		s = model.createResource(dsp + nameOfListP);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(vocabulary.toString());
+		// 		model.add(s, p, v);
+		// 		n = n + 1;
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListP + n);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(vocabulary.toString());
+		// 		model.add(s, p, v);
 
-				if (n == 1) {
-					s = model.createResource(dsp + nameOfListP);
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListP + n);
-					model.add(s, p, o);
-					n = n + 1;
-				} else {
-					s = model.createResource(dsp + nameOfListP + (n - 1));
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListP + n);
-					model.add(s, p, o);
-					n = n + 1;
-				}
-			}
-		}
+		// 		if (n == 1) {
+		// 			s = model.createResource(dsp + nameOfListP);
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListP + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		} else {
+		// 			s = model.createResource(dsp + nameOfListP + (n - 1));
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListP + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		}
+		// 	}
+		// }
 
-		if (n > 0) {
+		// if (n > 0) {
 
-			if (n == 1) {
-				s = model.createResource(dsp + nameOfListP);
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			} else {
-				s = model.createResource(dsp + nameOfListP + (n - 1));
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			}
-			s = model.createResource(dsp + nameOfListP);
-			p = model.createProperty(rdf + "type");
-			o = model.createResource(rdf + "List");
-			model.add(s, p, o);
-		}
+		// 	if (n == 1) {
+		// 		s = model.createResource(dsp + nameOfListP);
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListP + (n - 1));
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	}
+		// 	s = model.createResource(dsp + nameOfListP);
+		// 	p = model.createProperty(rdf + "type");
+		// 	o = model.createResource(rdf + "List");
+		// 	model.add(s, p, o);
+		// }
 
-		n = 0;
+		// n = 0;
 
-		for (String vocabulary : listDistinctObjectVocabularies) {
-			if (n == 0) {
-				s = model.createResource(dsp + nameOfListO);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(vocabulary.toString());
-				model.add(s, p, v);
-				n = n + 1;
-			} else {
-				s = model.createResource(dsp + nameOfListO + n);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(vocabulary.toString());
-				model.add(s, p, v);
+		// for (String vocabulary : listDistinctObjectVocabularies) {
+		// 	if (n == 0) {
+		// 		s = model.createResource(dsp + nameOfListO);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(vocabulary.toString());
+		// 		model.add(s, p, v);
+		// 		n = n + 1;
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListO + n);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(vocabulary.toString());
+		// 		model.add(s, p, v);
 
-				if (n == 1) {
-					s = model.createResource(dsp + nameOfListO);
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListO + n);
-					model.add(s, p, o);
-					n = n + 1;
-				} else {
-					s = model.createResource(dsp + nameOfListO + (n - 1));
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListO + n);
-					model.add(s, p, o);
-					n = n + 1;
-				}
-			}
-		}
+		// 		if (n == 1) {
+		// 			s = model.createResource(dsp + nameOfListO);
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListO + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		} else {
+		// 			s = model.createResource(dsp + nameOfListO + (n - 1));
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListO + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		}
+		// 	}
+		// }
 
-		if (n > 0) {
+		// if (n > 0) {
 
-			if (n == 1) {
-				s = model.createResource(dsp + nameOfListO);
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			} else {
-				s = model.createResource(dsp + nameOfListO + (n - 1));
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			}
-			s = model.createResource(dsp + nameOfListO);
-			p = model.createProperty(rdf + "type");
-			o = model.createResource(rdf + "List");
-			model.add(s, p, o);
-		}
+		// 	if (n == 1) {
+		// 		s = model.createResource(dsp + nameOfListO);
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListO + (n - 1));
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	}
+		// 	s = model.createResource(dsp + nameOfListO);
+		// 	p = model.createProperty(rdf + "type");
+		// 	o = model.createResource(rdf + "List");
+		// 	model.add(s, p, o);
+		// }
 		
 		return ListResourcesSPO;
 	}

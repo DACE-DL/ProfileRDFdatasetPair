@@ -39,6 +39,7 @@ public class GivePropertyHierarchyDeep {
 			String propertyName ="";
 			String subpropertyName ="";
 			String propertyNameTemp ="";
+			Boolean infiniteLoop = false;
 			Boolean infiniteLoopTemp = false;
 			
 			if (result.hasNext()) {
@@ -68,6 +69,9 @@ public class GivePropertyHierarchyDeep {
 						}	
 					}
 					
+					// Create a temporary list to store items to be deleted
+					ArrayList<UriAndUri> elementsToDelete = new ArrayList<>();
+
 					while (!ListResourcesTemp1.isEmpty()) {	
 						maxDeepTemp = maxDeepTemp + 1;
 						ListResourcesTemp2.clear();
@@ -75,8 +79,8 @@ public class GivePropertyHierarchyDeep {
 							// We are looking for an Infinite Loop
 							if (resourceTemp1.getUri2().equals(propertyName)) {
 								infiniteLoopTemp = true;
-								// We break the processing of the loop
-								ListResourcesTemp1.clear();
+								// Ajoutez l'élément à supprimer à la liste temporaire
+								elementsToDelete.add(resourceTemp1);
 							} 
 
 							for (UriAndUri resourceTemp : ListResourcesTemp) {
@@ -96,7 +100,11 @@ public class GivePropertyHierarchyDeep {
 							ListResourcesTemp1.clear();
 						}
 					}
+					// Delete items from the main list
+					ListResourcesTemp1.removeAll(elementsToDelete);
+
 					if (infiniteLoopTemp) {
+						infiniteLoop = true;
 						infiniteLoopTemp = false;
 					}
 					if (maxDeepTemp > maxDeep) {
@@ -107,7 +115,7 @@ public class GivePropertyHierarchyDeep {
 			}	
 			// The output parameter
 			hierarchyDeepAndLoop.setHierarchyDeep(nNumber);
-			hierarchyDeepAndLoop.setLoop(infiniteLoopTemp);
+			hierarchyDeepAndLoop.setLoop(infiniteLoop);
 
 		return hierarchyDeepAndLoop;
 	}	

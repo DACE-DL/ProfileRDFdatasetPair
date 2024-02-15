@@ -38,53 +38,53 @@ public class MakeListSharedPartSubjectVocabulary {
 
 		};
 
-		for (String sharedPart : ListResources) {
-			if (n == 0) {
-				s = model.createResource(dsp + nameOfListOut);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(sharedPart.toString());
-				model.add(s, p, v);
-				n = n + 1;
-			} else {
-				s = model.createResource(dsp + nameOfListOut + n);
-				p = model.createProperty(rdf + "first");
-				v = model.createLiteral(sharedPart.toString());
-				model.add(s, p, v);
+		// for (String sharedPart : ListResources) {
+		// 	if (n == 0) {
+		// 		s = model.createResource(dsp + nameOfListOut);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(sharedPart.toString());
+		// 		model.add(s, p, v);
+		// 		n = n + 1;
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListOut + n);
+		// 		p = model.createProperty(rdf + "first");
+		// 		v = model.createLiteral(sharedPart.toString());
+		// 		model.add(s, p, v);
 
-				if (n == 1) {
-					s = model.createResource(dsp + nameOfListOut);
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListOut + n);
-					model.add(s, p, o);
-					n = n + 1;
-				} else {
-					s = model.createResource(dsp + nameOfListOut + (n - 1));
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfListOut + n);
-					model.add(s, p, o);
-					n = n + 1;
-				}
-			}
-		}
+		// 		if (n == 1) {
+		// 			s = model.createResource(dsp + nameOfListOut);
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListOut + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		} else {
+		// 			s = model.createResource(dsp + nameOfListOut + (n - 1));
+		// 			p = model.createProperty(rdf + "rest");
+		// 			o = model.createResource(dsp + nameOfListOut + n);
+		// 			model.add(s, p, o);
+		// 			n = n + 1;
+		// 		}
+		// 	}
+		// }
 
-		if (n > 0) {
+		// if (n > 0) {
 
-			if (n == 1) {
-				s = model.createResource(dsp + nameOfListOut);
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			} else {
-				s = model.createResource(dsp + nameOfListOut + (n - 1));
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			}
-			s = model.createResource(dsp + nameOfListOut);
-			p = model.createProperty(rdf + "type");
-			o = model.createResource(rdf + "List");
-			model.add(s, p, o);
-		}
+		// 	if (n == 1) {
+		// 		s = model.createResource(dsp + nameOfListOut);
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	} else {
+		// 		s = model.createResource(dsp + nameOfListOut + (n - 1));
+		// 		p = model.createProperty(rdf + "rest");
+		// 		o = model.createResource(rdf + "nil");
+		// 		model.add(s, p, o);
+		// 	}
+		// 	s = model.createResource(dsp + nameOfListOut);
+		// 	p = model.createProperty(rdf + "type");
+		// 	o = model.createResource(rdf + "List");
+		// 	model.add(s, p, o);
+		// }
 
 		return ListResources;
 	}
