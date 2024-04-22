@@ -12,53 +12,19 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
-import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 
 public class MakeListLinks {
 	
-	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndUri> makeList(Model model, String nameOfPropertyList, String nameOfList) {
+	// Création d'une liste des liens dans un triplet
+	public static ArrayList<UriAndUri> makeList(Model model, ArrayList<UriAndNumber> listPropertyUsageCount) {
 		
-		new ProfilingConf();
-		String dsp = ProfilingConf.dsp;
-		String rdf = ProfilingConf.rdf;
 		String prefix = ProfilingConf.queryPrefix;
 
 		ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
 		List<String> listResourcesString = new ArrayList<>();
-		ArrayList<Uri> listProperties = new ArrayList<Uri>();
-
-		Integer n = 0;
-		Resource s = model.createResource(dsp + "sujet");
-		Property p = model.createProperty(dsp + "predicat");
-		Resource o = model.createResource(dsp + "objet");
-		Resource b = model.createResource();
-		Resource u1 = model.createResource(dsp + "property");
-		Resource u2 = model.createResource(dsp + "subproperty");
-		Property pu1 = model.createProperty(dsp + "asNamespaceSubject");
-		Property pu2 = model.createProperty(dsp + "asNamespaceObject");
-	
-		//System.out.println("Begin time : " + Instant.now().toString()); 
-
-		Query query = QueryFactory.create(prefix + 
-			"SELECT (?uri AS ?property) WHERE { " +
-			" dsp:" + nameOfPropertyList + " rdf:rest*/rdf:first ?element ." +
-			" ?element dsp:asURI ?uri ." +
-			" ?element dsp:asValue ?val ." +
-			" } ORDER BY DESC (?val)"
-		);			
-		QueryExecution qe = QueryExecutionFactory.create(query, model);		
-		ResultSet result = qe.execSelect();
-		if (result.hasNext()) {
-			while( result.hasNext() ) {
-				QuerySolution querySolution = result.next() ;
-				listProperties.add(new Uri(querySolution.getResource("property").toString())) ;
-			}
-		}
-		//System.out.println("List size : " + listProperties.size());
-		//Instant start4 = Instant.now();
-		listProperties.forEach((property) -> {
+		
+		listPropertyUsageCount.forEach((property) -> {
 			//System.out.println("property : " + property.getUri().toString());
 			Query query2 = QueryFactory.create(prefix +
 				" SELECT ?s (<" + property.getUri().toString() + "> AS ?property) ?o WHERE { " +
@@ -116,67 +82,7 @@ public class MakeListLinks {
 				}
 			}
 		});
-		//Instant end4 = Instant.now();
-		//System.out.println("All Links running time : " + Duration.between(start4, end4).getSeconds() + " secondes");
-
-		for (UriAndUri resource : ListResources) {
-			if (n == 0) {
-				s = model.createResource(dsp + nameOfList);
-				p = model.createProperty(rdf + "first");
-				
-				b = model.createResource();
-				u1 = model.createResource(resource.getUri1().toString());
-				u2 = model.createResource(resource.getUri2().toString());
-				model.add(b, pu1, u1);
-				model.add(b, pu2, u2);
-
-				model.add(s, p, b);
-				n = n + 1;
-			} else {
-				s = model.createResource(dsp + nameOfList + n);
-				p = model.createProperty(rdf + "first");
-				
-				b = model.createResource();
-				u1 = model.createResource(resource.getUri1().toString());
-				u2 = model.createResource(resource.getUri2().toString());
-				model.add(b, pu1, u1);
-				model.add(b, pu2, u2);
-
-				model.add(s, p, b);
-				if (n == 1) {
-					s = model.createResource(dsp + nameOfList);
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfList + n);
-					model.add(s, p, o);
-					n = n + 1;
-				} else {
-					s = model.createResource(dsp + nameOfList + (n - 1));
-					p = model.createProperty(rdf + "rest");
-					o = model.createResource(dsp + nameOfList + n);
-					model.add(s, p, o);
-					n = n + 1;
-				}
-			}
-		}
-
-		if (n > 0) {
-
-			if (n == 1) {
-				s = model.createResource(dsp + nameOfList);
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			} else {
-				s = model.createResource(dsp + nameOfList + (n - 1));
-				p = model.createProperty(rdf + "rest");
-				o = model.createResource(rdf + "nil");
-				model.add(s, p, o);
-			}
-			s = model.createResource(dsp + nameOfList);
-			p = model.createProperty(rdf + "type");
-			o = model.createResource(rdf + "List");
-			model.add(s, p, o);
-		}
+		
 		return ListResources;
 	}
 }

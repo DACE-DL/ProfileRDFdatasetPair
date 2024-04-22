@@ -49,15 +49,13 @@ public class AgrovocApiUtil {
     	System.out.println("Durée d'exécution Totale: " + Duration.between(start2, end2).getSeconds() + " secondes");    
 
     	
-    	Instant start3 = Instant.now();	
     	ListResources = resourcesAndCloseMatch("Juglandaceae");
     	System.out.println("CloseMatch");
 		for (String resource : ListResources) {
 			System.out.println(writer.writeValueAsString(resource));
 		}
 		
-		Instant end3 = Instant.now();
-    	System.out.println("Durée d'exécution Totale: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));    
+		System.out.println("Durée d'exécution Totale: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));    
 
     	Instant start4 = Instant.now();	
     	ListResources = resourcesAndNarrower("Juglandaceae");

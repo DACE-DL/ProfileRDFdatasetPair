@@ -6,6 +6,20 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CommonPartFinder",
+            "request": "launch",
+            "mainClass": "profiling.util.CommonPartFinder",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
+            "name": "MakeIndividualTest",
+            "request": "launch",
+            "mainClass": "profiling.util.MakeIndividualTest",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
             "name": "TDBVerification",
             "request": "launch",
             "mainClass": "databaseManagement.TDBVerification",

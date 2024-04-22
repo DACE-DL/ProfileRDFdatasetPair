@@ -28,8 +28,6 @@ public class GivePropertyUsageDistinctPerObject {
 			" WHERE { " +
 				"{ SELECT DISTINCT (?o AS ?object) (COUNT(DISTINCT ?property) AS ?usage) " +
 				" WHERE { " +
-				"dsp:listPropertyUsageCount rdf:rest*/rdf:first ?element ." +
-				"?element dsp:asURI ?property ." +
 				" ?s ?property ?o ." +
 				" FILTER isIRI(?s) " +
 				" } GROUP BY ?o }" +

@@ -173,7 +173,7 @@ public class StartTestProfiling {
 // 		commentQuery = "";
 // 		iDquery = 4;
 // 		typeQuery = "SELECT";
-// 		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
+// 		stringQuery = prefix + "SELECT (?uri AS ?Property) (?val AS ?usage) WHERE { dsp:listMostUsedProperty rdf:rest*/rdf:first ?element ." +
 // 							" ?element dsp:asURI ?uri ." +
 // 							" ?element dsp:asValue ?val ." +
 // 							" } LIMIT 20";

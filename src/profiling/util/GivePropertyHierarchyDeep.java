@@ -1,36 +1,15 @@
 package profiling.util;
 
 import java.util.ArrayList;
-
-import org.apache.jena.query.Query;
-import org.apache.jena.query.QueryExecution;
-import org.apache.jena.query.QueryExecutionFactory;
-import org.apache.jena.query.QueryFactory;
-import org.apache.jena.query.QuerySolution;
-import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 
 public class GivePropertyHierarchyDeep {
 	
-	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static HierarchyDeepAndLoop giveHierarchyDeepAndLoop(Model model, String nameOfList) {
+	public static HierarchyDeepAndLoop giveHierarchyDeepAndLoop(Model model, ArrayList<UriAndUri> listPropertyAndSubproperty ) {
 		HierarchyDeepAndLoop hierarchyDeepAndLoop = new HierarchyDeepAndLoop();
 		
-		new ProfilingConf();
-		String prefix = ProfilingConf.queryPrefix;
 
-			Query query = QueryFactory.create(prefix + 
-			"SELECT ?Property ?Subproperty WHERE { <" + nameOfList + "> rdf:rest*/rdf:first ?element ." +
-			" ?element dsp:asProperty ?Property ." +
-			" ?element dsp:asSubproperty ?Subproperty ." +		
-			" } " 
-			);
-
-			QueryExecution qe = QueryExecutionFactory.create(query, model);		
-			ResultSet result = qe.execSelect();
-			// ResultSetFormatter.out(System.out, result);
 			Integer nNumber = 0;
-			ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
 			ArrayList<UriAndUri> ListResourcesTemp = new ArrayList<UriAndUri>();
 			ArrayList<UriAndUri> ListResourcesTemp1 = new ArrayList<UriAndUri>();
 			ArrayList<UriAndUri> ListResourcesTemp2 = new ArrayList<UriAndUri>();
@@ -41,20 +20,20 @@ public class GivePropertyHierarchyDeep {
 			String propertyNameTemp ="";
 			Boolean infiniteLoop = false;
 			Boolean infiniteLoopTemp = false;
-			
-			if (result.hasNext()) {
+			Integer n = 0;
+        	Integer nMax = 100;        
+        	if (listPropertyAndSubproperty.size() > nMax) {
+            	System.out.println("Due to the large size of the list of properties and their subproperties (" + listPropertyAndSubproperty.size() + "), the hierarchy depth search and infinite loop processing will be limited.");
+        	}
+			if (listPropertyAndSubproperty.size() > 0) {
 				// If there is a list, it means that there is already a first level of hierarchy
 				maxDeep = 1;
-				while( result.hasNext() ) {
-					QuerySolution querySolution = result.next() ;
-					ListResources.add(new UriAndUri(querySolution.getResource("Property").toString(), querySolution.getResource("Subproperty").toString())) ;
-				}
 				// Finding the maximum hierarchical depth
 				
 				// Duplication of the list for searches
-				ListResourcesTemp = ListResources ;
+				ListResourcesTemp = listPropertyAndSubproperty ;
 				// Each line of the list of propertyes and their subpropertyes is processed
-				for (UriAndUri resource : ListResources) {
+				for (UriAndUri resource : listPropertyAndSubproperty) {
 				    maxDeepTemp = 1;
 					propertyName = resource.getUri1();
 					subpropertyName = resource.getUri2();
@@ -92,7 +71,7 @@ public class GivePropertyHierarchyDeep {
 						
 						if (!ListResourcesTemp2.isEmpty()) {
 							if (!infiniteLoopTemp) {
-								ListResourcesTemp1 = ListResourcesTemp2;
+								ListResourcesTemp1.addAll(ListResourcesTemp2);
 							} else {
 								ListResourcesTemp1.clear();
 							}
@@ -109,6 +88,9 @@ public class GivePropertyHierarchyDeep {
 					}
 					if (maxDeepTemp > maxDeep) {
 						maxDeep = maxDeepTemp;
+					}
+					if (n > nMax) {
+						break;
 					}	
 				}	
 				nNumber = maxDeep;

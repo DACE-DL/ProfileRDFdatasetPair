@@ -45,7 +45,16 @@ public class ProfilingResultsObject {
 
 	private Integer classHierarchyDeep;
 	private boolean classHierarchyLoop;
+	private long runningTimeInSecond;
 	
+	public long getRunningTimeInSecond() {
+		return runningTimeInSecond;
+	}
+
+	public void setRunningTimeInSecond(long l) {
+		this.runningTimeInSecond = l;
+	}
+
 	public Integer getNumberOfTriples() {
 		return NumberOfTriples;
 	}

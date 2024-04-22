@@ -16,20 +16,53 @@ public class MakeTest {
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static ArrayList<UriAndUriAndUri> make(Model model) {
 	
+		String dsp = ProfilingConf.dsp;
 		String prefix = ProfilingConf.queryPrefix;
 		
 		ArrayList<UriAndUriAndUri> ListResources = new ArrayList<UriAndUriAndUri>();
 		Instant start3 = Instant.now();
-		Query query = QueryFactory.create(prefix + 	  
-		
-		
-		"SELECT ?p ?o " +
-		" WHERE { " +
-				" <http://dbkwik.webdatacommons.org/swtor.wikia.com/property/race> ?p ?o ." +	
-		" } LIMIT 30 "
-		
- 
-
+		Query query = QueryFactory.create(prefix + 	 
+		" SELECT ?propertyList " +
+		" (GROUP_CONCAT(?classListAndCount; separator=\"*\") AS ?classListAndCountList)  "	+ 
+		" (SUM(?usageCount) AS ?instanceCombinaisonPropertyCount) " +
+		" WHERE {      " +
+		"	  { " +
+		" 		SELECT ?propertyList " +
+		" 		((CONCAT(?classList, ';', STR(?usageCount))) AS ?classListAndCount)  "	+ 
+		"       ?usageCount  " +
+		" 		WHERE {      " +
+		" 			{ " +
+		"	 		  SELECT ?propertyList ?classList " +
+		" 			  (COUNT(?subject) AS ?usageCount) " +
+		"		   	  WHERE {      " +
+		"			   	  { " +
+		"				    SELECT ?subject (GROUP_CONCAT(DISTINCT ?property; separator=\"|\") AS ?propertyList) " +
+		"       			(GROUP_CONCAT(DISTINCT ?class; separator=\"|\") AS ?classList) "	+ 
+		"  			        { " +	
+		"			    	SELECT ?subject ?property ?class" +	
+		"				 	WHERE { " +	
+		"						BIND( '' AS ?default_class) " +
+		"			 	 		?subject ?property ?object ." +	
+		"			           	OPTIONAL { ?subject rdf:type ?subjectClass } " +
+		"						BIND(COALESCE(?subjectClass, ?default_class) as ?class) " +
+		"						FILTER ( !STRSTARTS(str(?property),\"" + dsp + "\") && " + 
+		"		 				?property NOT IN ( <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#first>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ) " +
+		"			     		) " +
+		"			 	 	} " +	
+		"				 	ORDER BY ?subject ?property ?class " +
+ 		"				    } " +
+		"				    GROUP BY ?subject " +	
+		"	    		} " +	
+		"	    		} " +		
+		"	 			GROUP BY ?propertyList ?classList " +	
+		"	 			ORDER BY DESC(?usageCount) " +
+		"    		} " +	
+		" 			} " 	+
+		" 			ORDER BY ?propertyList " +
+		" 		} " 	+
+		" 		} " 	+
+		" 		GROUP BY ?propertyList " +
+		"       ORDER BY DESC(?instanceCombinaisonPropertyCount) " 
 		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
@@ -45,6 +78,13 @@ public class MakeTest {
 		return ListResources;
 	}
 }
+
+
+// "SELECT ?p ?o " +
+		// " WHERE { " +
+		// 		" <http://dbkwik.webdatacommons.org/swtor.wikia.com/property/race> ?p ?o ." +	
+		// " } LIMIT 30 "
+		
 
 // "SELECT ?subject " +
 // 		" WHERE { " +
@@ -72,7 +112,7 @@ public class MakeTest {
 // 				" ?s rdf:type ?classSubject ." +	
 // 				" ?o rdf:type ?classObject " +		
 // 				" FILTER EXISTS { " +
-// 				" dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
+// 				" dsp:listMostUsedProperty rdf:rest*/rdf:first ?element ." +
 // 				" ?element dsp:asURI ?property ." +
 // 				" } " +	
 // 				" " +
@@ -95,7 +135,7 @@ public class MakeTest {
 		// 		" ?s rdf:type ?classSubject ." +	
 		// 		" ?o rdf:type ?classObject " +		
 		// 		" FILTER EXISTS { " +
-		// 		" dsp:listPropertyMostUsed rdf:rest*/rdf:first ?element ." +
+		// 		" dsp:listMostUsedProperty rdf:rest*/rdf:first ?element ." +
 		// 		" ?element dsp:asURI ?property ." +
 		// 		" } " +	
 		// 		" " +

@@ -1,14 +1,17 @@
-package profiling.util;
+package Asupprimer;
 
 import java.util.ArrayList;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.ModelFactory;
 
+import profiling.util.ProfilingConf;
+import profiling.util.UriAndUriAndUriAndNumber;
+
 public class MakeDescriptionModelWithoutUnionOF {
 	
 	// Création du modèle de description
-	public static OntModel  makeModel(ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClasses) {
+	public static OntModel  makeModel(ArrayList<UriAndUriAndUriAndNumber> listCombinationPropertiesClassRelationships) {
 		
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 
@@ -19,19 +22,19 @@ public class MakeDescriptionModelWithoutUnionOF {
 		descriptionModel.setNsPrefix("rdf", rdf);
 		descriptionModel.setNsPrefix("skos", skos);
 
-		// ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTemp = new ArrayList<UriAndUriAndUriAndNumber>();
-		// ArrayList<UriAndUriAndUriAndNumber> listOfRelationshipsBetweenNewClassesTemp2 = new ArrayList<UriAndUriAndUriAndNumber>();
+		// ArrayList<UriAndUriAndUriAndNumber> listCombinationPropertiesClassRelationshipsTemp = new ArrayList<UriAndUriAndUriAndNumber>();
+		// ArrayList<UriAndUriAndUriAndNumber> listCombinationPropertiesClassRelationshipsTemp2 = new ArrayList<UriAndUriAndUriAndNumber>();
 		
 		// Integer n = 0;
 
 		// Instant start0 = Instant.now();	
 	    
-		// listOfRelationshipsBetweenNewClassesTemp.addAll(listOfRelationshipsBetweenNewClasses);
+		// listCombinationPropertiesClassRelationshipsTemp.addAll(listCombinationPropertiesClassRelationships);
 
-		// for (UriAndUriAndUriAndNumber resource : listOfRelationshipsBetweenNewClasses) {
+		// for (UriAndUriAndUriAndNumber resource : listCombinationPropertiesClassRelationships) {
 		// 	String uriProperty = resource.getUri2();
 		// 	n = 0;
-		// 	for (UriAndUriAndUriAndNumber resourceTemp : listOfRelationshipsBetweenNewClassesTemp) {
+		// 	for (UriAndUriAndUriAndNumber resourceTemp : listCombinationPropertiesClassRelationshipsTemp) {
 		// 		if (resourceTemp.getUri2() == uriProperty) {
 		// 			n++;
 		// 			if (n == 1) {
@@ -40,7 +43,7 @@ public class MakeDescriptionModelWithoutUnionOF {
 		// 				uriAndUriAndUriAndNumber.setUri1(resourceTemp.getUri1());
 		// 				uriAndUriAndUriAndNumber.setUri3(resourceTemp.getUri3());
 		// 				uriAndUriAndUriAndNumber.setNumber(resourceTemp.getNumber());
-		// 				listOfRelationshipsBetweenNewClassesTemp2.add(uriAndUriAndUriAndNumber);
+		// 				listCombinationPropertiesClassRelationshipsTemp2.add(uriAndUriAndUriAndNumber);
 		// 			} else {
 		// 				descriptionModel.createObjectProperty(uriProperty).addSubProperty(descriptionModel.createObjectProperty(uriProperty + "__" + n));
 		// 				UriAndUriAndUriAndNumber uriAndUriAndUriAndNumber = new UriAndUriAndUriAndNumber();
@@ -48,14 +51,14 @@ public class MakeDescriptionModelWithoutUnionOF {
 		// 				uriAndUriAndUriAndNumber.setUri1(resourceTemp.getUri1());
 		// 				uriAndUriAndUriAndNumber.setUri3(resourceTemp.getUri3());
 		// 				uriAndUriAndUriAndNumber.setNumber(resourceTemp.getNumber());
-		// 				listOfRelationshipsBetweenNewClassesTemp2.add(uriAndUriAndUriAndNumber);
+		// 				listCombinationPropertiesClassRelationshipsTemp2.add(uriAndUriAndUriAndNumber);
 		// 			}
 		// 		}
 		// 	}
 		// }
 		
-		// for (UriAndUriAndUriAndNumber resource : listOfRelationshipsBetweenNewClassesTemp2) {	
-		for (UriAndUriAndUriAndNumber resource : listOfRelationshipsBetweenNewClasses) {		
+		// for (UriAndUriAndUriAndNumber resource : listCombinationPropertiesClassRelationshipsTemp2) {	
+		for (UriAndUriAndUriAndNumber resource : listCombinationPropertiesClassRelationships) {		
 			descriptionModel.createObjectProperty(resource.getUri2())
 					.addDomain(descriptionModel.createClass(resource.getUri1()));
 			descriptionModel.getObjectProperty(resource.getUri2())

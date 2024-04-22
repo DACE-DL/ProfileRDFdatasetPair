@@ -21,8 +21,6 @@ public class GiveEntitiesMentioned {
 		Query query = QueryFactory.create(prefix + 
 			" SELECT (COUNT(*) AS ?triplesCount) " +
 				" WHERE { " +
-				"dsp:listPropertyUsageCount rdf:rest*/rdf:first ?element ." +
-				"?element dsp:asURI ?property ." +
 				" ?s ?property ?o ." +
 				" FILTER isIRI(?s) " +
 				" FILTER isIRI(?o) " +

@@ -10,7 +10,7 @@ import org.apache.jena.rdf.model.Model;
 
 public class GiveSubclassUsage {
 	
-	// Création d'une liste des propriétés et de leur usage dans un triplet
+	// Extraction de l'usage de la propriété rdfs:subClassOf
 	public static Integer giveUsage(Model model) {
 		Integer nNumber = 0;
 		new ProfilingConf();

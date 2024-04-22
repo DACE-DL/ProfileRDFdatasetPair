@@ -1,25 +1,27 @@
-package profiling.util;
+package Asupprimer;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import org.apache.jena.rdf.model.Literal;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.rdf.model.Property;
 import org.apache.jena.rdf.model.Resource;
 import org.apache.jena.rdf.model.ResourceFactory;
 
-public class MakeListClassAndPropertyOfInterestMostUsed {
+import profiling.util.ProfilingConf;
+import profiling.util.UriAndUriAndUriAndNumber;
+
+public class MakeListUriAndUriAndUriAndNumberMostUsed {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
-	public static ArrayList<UriAndUriAndUriAndNumber> makeList(Model model, ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCount, String nameOfListOut) {
+	public static ArrayList<UriAndUriAndUriAndNumber> makeList(Model model, ArrayList<UriAndUriAndUriAndNumber> listIn, String nameOfListOut, double dQuantile) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
+		// String prefix = ProfilingConf.queryPrefix;
 
 		ArrayList<UriAndUriAndUriAndNumber> ListResources = new ArrayList<UriAndUriAndUriAndNumber>();
 	
-		Integer i = 0;
 		Integer n = 0;
 		Resource s = model.createResource(dsp + "sujet");
 		Property p = model.createProperty(dsp + "predicat");
@@ -34,15 +36,43 @@ public class MakeListClassAndPropertyOfInterestMostUsed {
 		Property pu3 = model.createProperty(dsp + "asURI3");
 		Property pv = model.createProperty(dsp + "asValue");
 
-		Collections.sort(listClassAndPropertyOfInterestCount, new UriAndUriAndUriAndNumberComparator());
-
-		for (UriAndUriAndUriAndNumber classAndPropertyOfInterestCount : listClassAndPropertyOfInterestCount) {
-			ListResources.add(new UriAndUriAndUriAndNumber(classAndPropertyOfInterestCount.getUri1(), classAndPropertyOfInterestCount.getUri2(), classAndPropertyOfInterestCount.getUri3(), classAndPropertyOfInterestCount.getNumber()));		
-			i++;
-			if ( i > 99 ) break;
-		};	
-
+		//System.out.println("Quantile : " + dQuantile);
 		
+		//Instant start3 = Instant.now();
+		
+		// Query query = QueryFactory.create(prefix + 
+		// 	"SELECT (?uri1 AS ?class1) (?uri2 AS ?property) (?uri3 AS ?class2) (?val AS ?usage) " +
+		// 	" WHERE { dsp:" + nameOfListIn + " rdf:rest*/rdf:first ?element ." +
+		// 	" ?element dsp:asURI1 ?uri1 ." +
+		// 	" ?element dsp:asURI2 ?uri2 ." +
+		// 	" ?element dsp:asURI3 ?uri3 ." +
+		// 	" ?element dsp:asValue ?val ." +
+		// 	"FILTER (?val > " + dQuantile + ") " +
+		// 	" } ORDER BY DESC (?usage)"
+		// );			
+ 		// QueryExecution qe = QueryExecutionFactory.create(query, model);		
+		// ResultSet result = qe.execSelect();
+		// if (result.hasNext()) {
+		// 	while( result.hasNext() ) {
+		// 		QuerySolution querySolution = result.next() ;
+		// 		ListResources.add(new UriAndUriAndUriAndNumber(querySolution.getResource("class1").toString(),
+		// 		querySolution.getResource("property").toString(),
+		// 		querySolution.getResource("class2").toString(),
+		// 		querySolution.getLiteral("usage").getInt())) ;
+		// 	}
+		// }
+		
+		// Instant end3 = Instant.now();
+		// System.out.println("Running time: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
+
+		// Collections.sort(ListResources, new UriAndUriAndUriAndNumberComparator());
+
+		for (UriAndUriAndUriAndNumber resource : listIn) {
+			if (resource.getNumber() > dQuantile) {
+				ListResources.add(new UriAndUriAndUriAndNumber(resource.getUri1(), resource.getUri2(), resource.getUri3(), resource.getNumber()));		
+			}	
+		}
+
 
 		for (UriAndUriAndUriAndNumber resource : ListResources) {
 			if (n == 0) {
@@ -112,7 +142,7 @@ public class MakeListClassAndPropertyOfInterestMostUsed {
 		}
 		return ListResources;
 	}
-	
+
 	static class UriAndUriAndUriAndNumberComparator implements java.util.Comparator<UriAndUriAndUriAndNumber> {
 		@Override
 		public int compare(UriAndUriAndUriAndNumber a, UriAndUriAndUriAndNumber b) {
