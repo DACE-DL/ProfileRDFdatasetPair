@@ -38,17 +38,12 @@ public class ProfilingPostProcessing{
 		String nameOfListClassDefined = "listClassDefined";
 		String nameOfListClassNotDefined = "listClassNotDefined";
 		String nameOfListClassMostUsed = "listClassMostUsed";
-		String nameOfListClassAndPropertyOfInterestCount = "listClassAndPropertyOfInterestCount";
 		String nameOfListDatatypesOfInterest = "listMostUsedPropertyDatatypes";
 		String nameOfListCombinationPropertiesWithNewClass = "listCombinationPropertiesWithNewClass";
-		String nameOfListCombinationPropertiesMostImportantClasses = "listCombinationPropertiesMostImportantClasses";
-		String nameOfListCombinationPropertiesMostImportantRelationships = "listCombinationPropertiesMostImportantRelationships";
-		String nameOfListCombinationPropertiesMostImportantPropertiesOfClasses = "listCombinationPropertiesMostImportantPropertiesOfClasses";
+		String nameOfListCombinationPropertiesClassRelationshipsClasses = "listCombinationPropertiesClassRelationshipsClasses";
+		String nameOfListCombinationPropertiesClassRelationshipsRelationships = "listCombinationPropertiesClassRelationshipsRelationships";
+		String nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses = "listCombinationPropertiesClassRelationshipsPropertiesOfClasses";
 		String nameOfListClassAndSubclass = "listClassAndSubclass";
-		
-		
-		
-		
 		
 		////////////////////////////////////////////////////////////////////
 		// Récupération des résultats et listes générés lors du profilage //
@@ -339,20 +334,20 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCountSource = new ArrayList<UriAndUriAndUriAndNumber>();
-		Path pathNamelistClassAndPropertyOfInterestCountSource = Paths.get(pathForSourceResults, nameOfListClassAndPropertyOfInterestCount + ".json");
-	    try {
-			listClassAndPropertyOfInterestCountSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestCountSource.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCountTarget = new ArrayList<UriAndUriAndUriAndNumber>();
-		Path pathNamelistClassAndPropertyOfInterestCountTarget = Paths.get(pathForTargetResults, nameOfListClassAndPropertyOfInterestCount + ".json");
-	    try {
-			listClassAndPropertyOfInterestCountTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestCountTarget.toString());
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		// ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCountSource = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Path pathNamelistClassAndPropertyOfInterestCountSource = Paths.get(pathForSourceResults, nameOfListClassAndPropertyOfInterestCount + ".json");
+	    // try {
+		// 	listClassAndPropertyOfInterestCountSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestCountSource.toString());
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
+		// ArrayList<UriAndUriAndUriAndNumber> listClassAndPropertyOfInterestCountTarget = new ArrayList<UriAndUriAndUriAndNumber>();
+		// Path pathNamelistClassAndPropertyOfInterestCountTarget = Paths.get(pathForTargetResults, nameOfListClassAndPropertyOfInterestCount + ".json");
+	    // try {
+		// 	listClassAndPropertyOfInterestCountTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNamelistClassAndPropertyOfInterestCountTarget.toString());
+		// } catch (Exception e) {
+		// 	e.printStackTrace();
+		// }
 
 		ArrayList<UriAndUri> listClassAndSubclassSource = new ArrayList<UriAndUri>();
 		Path pathNameListClassAndSubclassSource = Paths.get(pathForSourceResults, nameOfListClassAndSubclass + ".json");
@@ -384,7 +379,7 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 
-		ArrayList<UriListAndUriList2> listCombinationPropertiesWithNewClassSource = new ArrayList<UriListAndUriList2>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClassSource = new ArrayList<UriListAndUriList>();
 		Path pathNamelistCombinationPropertiesWithNewClassSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesWithNewClass + ".json");
 	    try {
 			listCombinationPropertiesWithNewClassSource = ProfilingUtil.makeArrayListUriListAndUriList2(pathNamelistCombinationPropertiesWithNewClassSource.toString());
@@ -392,7 +387,7 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriListAndUriList2> listCombinationPropertiesWithNewClassTarget = new ArrayList<UriListAndUriList2>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClassTarget = new ArrayList<UriListAndUriList>();
 		Path pathNamelistCombinationPropertiesWithNewClassTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesWithNewClass + ".json");
 	    try {
 			listCombinationPropertiesWithNewClassTarget = ProfilingUtil.makeArrayListUriListAndUriList2(pathNamelistCombinationPropertiesWithNewClassTarget.toString());
@@ -448,50 +443,50 @@ public class ProfilingPostProcessing{
 		// 	e.printStackTrace();
 		// }
 
-		ArrayList<String> listCombinationPropertiesMostImportantClassesSource = new ArrayList<String>();
-		Path pathNameListCombinationPropertiesMostImportantClassesSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesMostImportantClasses + ".json");
+		ArrayList<String> listCombinationPropertiesClassRelationshipsClassesSource = new ArrayList<String>();
+		Path pathNameListCombinationPropertiesClassRelationshipsClassesSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesClassRelationshipsClasses + ".json");
 	    try {
-			listCombinationPropertiesMostImportantClassesSource = ProfilingUtil.makeArrayListString2(pathNameListCombinationPropertiesMostImportantClassesSource.toString());
+			listCombinationPropertiesClassRelationshipsClassesSource = ProfilingUtil.makeArrayListString2(pathNameListCombinationPropertiesClassRelationshipsClassesSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ArrayList<String> listCombinationPropertiesMostImportantClassesTarget = new ArrayList<String>();
-		Path pathNameListCombinationPropertiesMostImportantClassesTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesMostImportantClasses + ".json");
+		ArrayList<String> listCombinationPropertiesClassRelationshipsClassesTarget = new ArrayList<String>();
+		Path pathNameListCombinationPropertiesClassRelationshipsClassesTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesClassRelationshipsClasses + ".json");
 	    try {
-			listCombinationPropertiesMostImportantClassesTarget = ProfilingUtil.makeArrayListString2(pathNameListCombinationPropertiesMostImportantClassesTarget.toString());
+			listCombinationPropertiesClassRelationshipsClassesTarget = ProfilingUtil.makeArrayListString2(pathNameListCombinationPropertiesClassRelationshipsClassesTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		ArrayList<UriListAndUriAndUriList> listCombinationPropertiesMostImportantRelationshipsSource = new ArrayList<UriListAndUriAndUriList>();
-		Path pathNameListCombinationPropertiesMostImportantRelationshipsSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesMostImportantRelationships + ".json");
+		ArrayList<UriListAndUriAndUriList> listCombinationPropertiesClassRelationshipsRelationshipsSource = new ArrayList<UriListAndUriAndUriList>();
+		Path pathNameListCombinationPropertiesClassRelationshipsRelationshipsSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesClassRelationshipsRelationships + ".json");
 	    try {
-			listCombinationPropertiesMostImportantRelationshipsSource = ProfilingUtil.makeArrayListUriListAndUriAndUriList(pathNameListCombinationPropertiesMostImportantRelationshipsSource.toString());
+			listCombinationPropertiesClassRelationshipsRelationshipsSource = ProfilingUtil.makeArrayListUriListAndUriAndUriList(pathNameListCombinationPropertiesClassRelationshipsRelationshipsSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriListAndUriAndUriList> listCombinationPropertiesMostImportantRelationshipsTarget = new ArrayList<UriListAndUriAndUriList>();
-		Path pathNameListCombinationPropertiesMostImportantRelationshipsTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesMostImportantRelationships + ".json");
+		ArrayList<UriListAndUriAndUriList> listCombinationPropertiesClassRelationshipsRelationshipsTarget = new ArrayList<UriListAndUriAndUriList>();
+		Path pathNameListCombinationPropertiesClassRelationshipsRelationshipsTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesClassRelationshipsRelationships + ".json");
 	    try {
-			listCombinationPropertiesMostImportantRelationshipsTarget = ProfilingUtil.makeArrayListUriListAndUriAndUriList(pathNameListCombinationPropertiesMostImportantRelationshipsTarget.toString());
+			listCombinationPropertiesClassRelationshipsRelationshipsTarget = ProfilingUtil.makeArrayListUriListAndUriAndUriList(pathNameListCombinationPropertiesClassRelationshipsRelationshipsTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesMostImportantPropertiesOfClassesSource = new ArrayList<UriListAndUriAndUriListList>();
-		Path pathNameListCombinationPropertiesMostImportantPropertiesOfClassesSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesMostImportantPropertiesOfClasses + ".json");
+		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = new ArrayList<UriListAndUriAndUriListList>();
+		Path pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
 	    try {
-			listCombinationPropertiesMostImportantPropertiesOfClassesSource = ProfilingUtil.makeArrayListUriListAndUriAndUriListList(pathNameListCombinationPropertiesMostImportantPropertiesOfClassesSource.toString());
+			listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = ProfilingUtil.makeArrayListUriListAndUriAndUriListList(pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesMostImportantPropertiesOfClassesTarget = new ArrayList<UriListAndUriAndUriListList>();
-		Path pathNameListCombinationPropertiesMostImportantPropertiesOfClassesTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesMostImportantPropertiesOfClasses + ".json");
+		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = new ArrayList<UriListAndUriAndUriListList>();
+		Path pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
 	    try {
-			listCombinationPropertiesMostImportantPropertiesOfClassesTarget = ProfilingUtil.makeArrayListUriListAndUriAndUriListList(pathNameListCombinationPropertiesMostImportantPropertiesOfClassesTarget.toString());
+			listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = ProfilingUtil.makeArrayListUriListAndUriAndUriListList(pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -555,9 +550,9 @@ public class ProfilingPostProcessing{
 		listCombinationPropertiesWithNewClassSource, listCombinationPropertiesWithNewClassTarget,
 		// listOfRelationshipsDomainSource, listOfRelationshipsDomainTarget,
 		// listOfRelationshipsRangeSource, listOfRelationshipsRangeTarget,
-		listCombinationPropertiesMostImportantClassesSource, listCombinationPropertiesMostImportantClassesTarget,
-		listCombinationPropertiesMostImportantRelationshipsSource, listCombinationPropertiesMostImportantRelationshipsTarget,
-		listCombinationPropertiesMostImportantPropertiesOfClassesSource, listCombinationPropertiesMostImportantPropertiesOfClassesTarget,
+		listCombinationPropertiesClassRelationshipsClassesSource, listCombinationPropertiesClassRelationshipsClassesTarget,
+		listCombinationPropertiesClassRelationshipsRelationshipsSource, listCombinationPropertiesClassRelationshipsRelationshipsTarget,
+		listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource, listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget,
 		listMostUsedPropertyUsagePerObjectSource, listMostUsedPropertyUsagePerObjectTarget,
 		listMostUsedPropertyUsagePerSubjectSource, listMostUsedPropertyUsagePerSubjectTarget,
 		listClassAndSubclassSource, listClassAndSubclassTarget,

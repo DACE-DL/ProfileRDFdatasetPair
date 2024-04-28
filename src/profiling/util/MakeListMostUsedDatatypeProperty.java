@@ -12,7 +12,7 @@ public class MakeListMostUsedDatatypeProperty {
 		ArrayList<UriAndNumber> ListResources = new ArrayList<UriAndNumber>();
 
 		for (UriAndUriListAndNumberListAndUriListAndNumberListAndNumber resource : listMostUsedPropertyWithDatatypeAndClassRange) {
-			if (resource.getUriListAndNumberList1().size() > 0 && resource.getUriListAndNumberList2().size() == 0) {
+			if (resource.getUriListAndNumberList1().size() >= 0 && resource.getUriListAndNumberList2().size() == 0) {
 				Boolean annotationProperty = false;
 				for (UriAndUri resource2 : listMostUsedPropertyType) {
 					if (resource2.getUri1().toString().equals(resource.getUri().toString()) && 

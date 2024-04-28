@@ -6,10 +6,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 
-public class MakeListCombinationPropertiesPerSujectCleanedAndReduced {
+public class MakeListCombinationPropertiesPerSubjectCleanedAndReduced {
 	static boolean first = false; 
-	// On nettoie et on réduit listCombinationPropertiesPerSuject
-	public static ArrayList<UriListAndUriListAndNumberListAndNumber> makeList(ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSuject) {
+	// On nettoie et on réduit listCombinationPropertiesPerSubject
+	public static ArrayList<UriListAndUriListAndNumberListAndNumber> makeList(ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubject) {
 		
 		ArrayList<String> listTreatedClassList =  new ArrayList<String>();
 		ArrayList<UriListAndUriListAndNumberListAndNumber> CleanedListResources =  new ArrayList<UriListAndUriListAndNumberListAndNumber>();
@@ -20,11 +20,11 @@ public class MakeListCombinationPropertiesPerSujectCleanedAndReduced {
 		Integer n = 0;
 		
 		Instant start0 = Instant.now();	
-		// On commence par nettoyer listCombinationPropertiesPerSuject en suprimant dans la liste des listes de classes
+		// On commence par nettoyer listCombinationPropertiesPerSubject en suprimant dans la liste des listes de classes
 		//  les listes de classes qui représentes moins de 1% de l'ensemble des instances des classes pour une combinaison données 
-		for (UriListAndUriListAndNumberListAndNumber resource : listCombinationPropertiesPerSuject) {
+		for (UriListAndUriListAndNumberListAndNumber resource : listCombinationPropertiesPerSubject) {
 			ArrayList<UriListAndNumber> ListUriListAndNumberTemp =  new ArrayList<UriListAndNumber>();
-			if (resource.getUriListAndNumberList().size()<= 1) {
+			if (resource.getUriListAndNumberList().size()<= 1) { // Il n'y a qu'une propriété dans la liste donc on sélectione 
         		CleanedListResources.add(resource);
 			} else {
 				ListUriListAndNumber = resource.getUriListAndNumberList();
@@ -144,7 +144,7 @@ public class MakeListCombinationPropertiesPerSujectCleanedAndReduced {
 		Collections.sort(CleanedAndReducedListResources, new UriListAndUriListAndNumberListAndNumberComparator()); 	
 
 		Instant end0 = Instant.now();
-		System.out.println("Running time for ListCombinationPropertiesPerSujectCleanedAndReduced: " + Duration.between(start0, end0).toMillis() + " milliseconds");
+		System.out.println("Running time for ListCombinationPropertiesPerSubjectCleanedAndReduced: " + Duration.between(start0, end0).toMillis() + " milliseconds");
 		return CleanedAndReducedListResources;
 	}
 

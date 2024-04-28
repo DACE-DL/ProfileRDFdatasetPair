@@ -15,20 +15,20 @@ import org.apache.jena.rdf.model.Model;
 
 public class MakelistCombinationPropertiesClassRelationships {
 	// Détermination des relations entre les classes
-	public static ArrayList<UriListAndUriAndUriListAndNumber> makeList(Model model, ArrayList<UriListAndUriList2> listCombinationPropertiesWithNewClass) {
+	public static ArrayList<UriListAndUriAndUriListAndNumber> makeList(Model model, ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass) {
 		
-		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
 
-		ArrayList<UriListAndUriList2> listCombinationPropertiesWithNewClassTemp = new ArrayList<UriListAndUriList2>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClassTemp = new ArrayList<UriListAndUriList>();
 		listCombinationPropertiesWithNewClassTemp.addAll(listCombinationPropertiesWithNewClass);
 		ArrayList<UriListAndUriAndUriListAndNumber> listCombinationPropertiesClassRelationships = new ArrayList<UriListAndUriAndUriListAndNumber>();
 		ArrayList<UriListAndUriAndUriListAndNumber> ReducedListCombinationPropertiesClassRelationships = new ArrayList<UriListAndUriAndUriListAndNumber>();
 		ArrayList<String> listOfUriListAndUriListTreated = new ArrayList<String>();
 		
 		Instant start0 = Instant.now();	
-		for (UriListAndUriList2 resource : listCombinationPropertiesWithNewClass) {
-			for (UriListAndUriList2 resourceTemp : listCombinationPropertiesWithNewClassTemp) {
+		for (UriListAndUriList resource : listCombinationPropertiesWithNewClass) {
+			Instant start1 = Instant.now();	
+			for (UriListAndUriList resourceTemp : listCombinationPropertiesWithNewClassTemp) {
 				String uriListAndUriListTreated = resource.getUriList1().toString() + "|" + resourceTemp.getUriList1().toString();
 				if (!listOfUriListAndUriListTreated.contains(uriListAndUriListTreated)) {
 					listOfUriListAndUriListTreated.add(uriListAndUriListTreated);
@@ -47,6 +47,8 @@ public class MakelistCombinationPropertiesClassRelationships {
 					}
 				}					
 			}
+			Instant end1 = Instant.now();
+			//System.out.println("Running time for one: " + ProfilingUtil.getDurationAsString(Duration.between(start1, end1).toMillis()));
 		}
 		// tri de la liste
 		Collections.sort(listCombinationPropertiesClassRelationships, new UriListAndUriAndUriListAndNumberComparator());
@@ -190,10 +192,57 @@ public class MakelistCombinationPropertiesClassRelationships {
 		queryBuilder.append(" } ");
 		queryBuilder.append(" } ");
 		queryBuilder.append(" ?subject ?relation ?object . ");
-		// queryBuilder.append("?object rdf:type ?typeObject . ");
+		queryBuilder.append("?object rdf:type ?typeObject . ");
+		// for (Uri uriObjectClass : uriList2) {
+		// 	queryBuilder.append("?object rdf:type <").append(uriObjectClass.toString()).append("> ").append(" . ");
+	   	// }
+		queryBuilder.append(" FILTER ( ");
+		Boolean first2 = true;
+		for (Uri uriClass : uriList2) {
+			if (first2) { 
+				first2 = false;
+				queryBuilder.append(" ?typeObject = <").append(uriClass.toString()).append(">");
+			} else {
+				queryBuilder.append(" && ?typeObject = <").append(uriClass.toString()).append(">");
+			}
+		}
+		queryBuilder.append(" ) ");
+		queryBuilder.append(" FILTER ( ");
+		Boolean first3 = true;
+		for (Uri uriProperty : uriList3) {
+			if (first3) { 
+				first3 = false;
+				queryBuilder.append(" ?relation = <").append(uriProperty.toString()).append(">");
+			} else {
+				queryBuilder.append(" || ?relation = <").append(uriProperty.toString()).append(">");
+			}
+		}
+		   queryBuilder.append(" ) ");
+		queryBuilder.append(" } GROUP BY ?relation");
+		
+		// System.out.println(queryBuilder.toString());	
+        // Retourne la requête en tant que chaîne de caractères
+        return queryBuilder.toString();
+    }
+	private static String buildSparqlStringTest2(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
+        StringBuilder queryBuilder = new StringBuilder();
+        queryBuilder.append(" SELECT DISTINCT (?relation AS ?property) (COUNT(?relation) AS ?number) ");
+		queryBuilder.append(" WHERE { ");
+		queryBuilder.append(" { ");
+		queryBuilder.append(" SELECT DISTINCT ?subject WHERE { ");
+		for (Uri uriSubjectClass : uriList1) {
+             queryBuilder.append("?subject rdf:type <").append(uriSubjectClass.toString()).append("> ").append(" . ");
+        }
+		queryBuilder.append(" } ");
+		queryBuilder.append(" } ");
+		queryBuilder.append(" { ");
+		queryBuilder.append(" SELECT DISTINCT ?object WHERE { ");
 		for (Uri uriObjectClass : uriList2) {
-			queryBuilder.append("?object rdf:type <").append(uriObjectClass.toString()).append("> ").append(" . ");
-	   	}
+             queryBuilder.append("?object rdf:type <").append(uriObjectClass.toString()).append("> ").append(" . ");
+        }
+		queryBuilder.append(" } ");
+		queryBuilder.append(" } ");
+		queryBuilder.append(" ?subject ?relation ?object . ");
 		//    queryBuilder.append(" FILTER ( ");
 		//    Boolean first2 = true;
 		//    for (Uri uriClass : uriList2) {
@@ -222,7 +271,7 @@ public class MakelistCombinationPropertiesClassRelationships {
         // Retourne la requête en tant que chaîne de caractères
         return queryBuilder.toString();
     }
-
+	
 	private static String buildSparqlStringTest1(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
         StringBuilder queryBuilder = new StringBuilder();
         queryBuilder.append(" SELECT DISTINCT (?relation AS ?property) (COUNT(?relation) AS ?number) ");

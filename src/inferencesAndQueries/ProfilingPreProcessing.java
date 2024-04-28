@@ -192,6 +192,35 @@ public class ProfilingPreProcessing {
 		ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> listMostUsedPropertyWithDatatypeAndClassRange = new ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber>();
 		listMostUsedPropertyWithDatatypeAndClassRange = MakeListMostUsedPropertyWithDatatypeAndClassRange.makeList(model, listMostUsedProperty);
 
+		///////////
+
+		// Liste des classes et de leur usage.
+		String nameOfListClassUsageCount = "listClassUsageCount";
+		ArrayList<UriAndNumber> listClassUsageCount = new ArrayList<UriAndNumber>();
+		listClassUsageCount = MakeListClassUsageCount.makeList(model);
+
+		// Construction d'un vecteur pour l'usage des classes.
+		String vectorUsageClass = "c(0.0)";
+		vectorUsageClass = MakeVectorWithNumber.makeVector(model, listClassUsageCount);
+		//System.out.println("Vector Usages Classes : " + vectorUsageClass);
+
+		// Calcul quantile pour l'usage des classes.
+		double classUsageQuantile75 = 0.0;
+		classUsageQuantile75 = GiveRQuantile.giveDouble(vectorUsageClass, "c(0.75)");
+		//System.out.println("Class Usage Quantile 75 : " + classUsageQuantile75);
+
+		// Liste des classes les plus utilisées (quartile 75).
+		String nameOfListClassMostUsed = "listClassMostUsed";
+		ArrayList<UriAndNumber> listClassMostUsed = new ArrayList<UriAndNumber>();
+		listClassMostUsed = MakeListClassMostUsed.makeList(listClassUsageCount, classUsageQuantile75);
+
+		///////////
+				
+		// Liste des propriétés les plus utilisées avec classes domain.
+		String nameOfListMostUsedPropertyWithClassDomain = "listMostUsedPropertyWithClassDomain";
+		ArrayList<UriAndUriListAndNumberListAndNumber> listMostUsedPropertyWithClassDomain = new ArrayList<UriAndUriListAndNumberListAndNumber>();
+		listMostUsedPropertyWithClassDomain = MakeListMostUsedPropertyWithClassDomain.makeList(model, listMostUsedProperty, listClassMostUsed);
+
 		// Liste des propriétés object les plus utilisées.
 		String nameOfListMostUsedObjectProperty = "listMostUsedObjectProperty";
 		ArrayList<UriAndNumber> listMostUsedObjectProperty = new ArrayList<UriAndNumber>();
@@ -226,11 +255,6 @@ public class ProfilingPreProcessing {
 		//////////////////////////
 		//// Pour les classes ////
 		//////////////////////////
-
-		// Liste des classes et de leur usage.
-		String nameOfListClassUsageCount = "listClassUsageCount";
-		ArrayList<UriAndNumber> listClassUsageCount = new ArrayList<UriAndNumber>();
-		listClassUsageCount = MakeListClassUsageCount.makeList(model);
 		
 		// Liste of languages class.
 		String nameOfListLanguagesClass = "listClassLanguages";
@@ -257,21 +281,6 @@ public class ProfilingPreProcessing {
 		ClassHierarchyDeepAndLoop = GiveClassHierarchyDeep.giveHierarchyDeepAndLoop(listClassAndSubclass);
 		results.setClassHierarchyDeep(ClassHierarchyDeepAndLoop.getHierarchyDeep());
 		results.setClassHierarchyLoop(ClassHierarchyDeepAndLoop.getLoop());
-
-		// Construction d'un vecteur pour l'usage des classes.
-		String vectorUsageClass = "c(0.0)";
-		vectorUsageClass = MakeVectorWithNumber.makeVector(model, listClassUsageCount);
-		//System.out.println("Vector Usages Classes : " + vectorUsageClass);
-
-		// Calcul quantile pour l'usage des classes.
-		double classUsageQuantile75 = 0.0;
-		classUsageQuantile75 = GiveRQuantile.giveDouble(vectorUsageClass, "c(0.75)");
-		//System.out.println("Class Usage Quantile 75 : " + classUsageQuantile75);
-
-		// Liste des classes les plus utilisées (quartile 75).
-		String nameOfListClassMostUsed = "listClassMostUsed";
-		ArrayList<UriAndNumber> listClassMostUsed = new ArrayList<UriAndNumber>();
-		listClassMostUsed = MakeListClassMostUsed.makeList(listClassUsageCount, classUsageQuantile75);
 		
 		//////////////////////////////////////////////////////////
 		//// Pour la détermination d'un modèle de description ////
@@ -282,52 +291,62 @@ public class ProfilingPreProcessing {
 		//  et <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> sont exclus.
 		// Si aucune classes n'a été trouvée pour une combinaison donnée, un enregistrement est généré avec une liste de 
 		//  classes vide.
-		String nameOfListCombinationPropertiesPerSuject = "listCombinationPropertiesPerSuject";
-		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSuject = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
-		listCombinationPropertiesPerSuject = MakeListCombinationPropertiesPerSuject.makeList(model);
+		String nameOfListCombinationPropertiesPerSubject = "listCombinationPropertiesPerSubject";
+		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubject = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
+		listCombinationPropertiesPerSubject = MakeListCombinationPropertiesPerSubject.makeList(model);
 		
-		// Création de nouvelles classes pour les combinaisons de propriétés (Avec marquage d'instances).
+		// Création de nouvelles classes pour les combinaisons de propriétés sans classes (Avec typage des instances concernées).
 		
 		// On nettoie et réduit au préalable la liste
-		String nameOfListCombinationPropertiesPerSujectCleanedAndReduced = "listCombinationPropertiesPerSujectCleanedAndReduced";
-		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSujectCleanedAndReduced = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
-		listCombinationPropertiesPerSujectCleanedAndReduced = MakeListCombinationPropertiesPerSujectCleanedAndReduced.makeList(listCombinationPropertiesPerSuject);
-		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSujectCleanedAndReducedTemp = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
-		listCombinationPropertiesPerSujectCleanedAndReducedTemp.addAll(listCombinationPropertiesPerSujectCleanedAndReduced);
-
-		// Création de nouvelles classes et marquage d'instances.
+		String nameOfListCombinationPropertiesPerSubjectCleanedAndReduced = "listCombinationPropertiesPerSubjectCleanedAndReduced";
+		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubjectCleanedAndReduced = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
+		listCombinationPropertiesPerSubjectCleanedAndReduced = MakeListCombinationPropertiesPerSubjectCleanedAndReduced.makeList(listCombinationPropertiesPerSubject);
+		
+		// Création de nouvelles classes et marquage d'instances pour les combinaisons de propriétés.
 		String nameOfListCombinationPropertiesWithNewClasses = "listCombinationPropertiesWithNewClass";
-		ArrayList<UriListAndUriList2> listCombinationPropertiesWithNewClass = new ArrayList<UriListAndUriList2>();
-		listCombinationPropertiesWithNewClass = MakeListCombinationPropertiesWithNewClass.makeClasses(model,  listCombinationPropertiesPerSujectCleanedAndReducedTemp);
+		ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass = new ArrayList<UriListAndUriList>();
+		// On créer une version temporaire de listCombinationPropertiesPerSubjectCleanedAndReduced car on modifie son ordre dans le programe suivant
+		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubjectCleanedAndReducedTemp = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
+		listCombinationPropertiesPerSubjectCleanedAndReducedTemp.addAll(listCombinationPropertiesPerSubjectCleanedAndReduced);
+		listCombinationPropertiesWithNewClass = MakeListCombinationPropertiesWithNewClass.makeClasses(model,  listCombinationPropertiesPerSubjectCleanedAndReducedTemp);
 
-		// Liste des relations entre les nouvelles classes.
+		// Liste des relations entre les classes pour les combinaisons de propriétés.
 		String nameOflistCombinationPropertiesClassRelationships = "listCombinationPropertiesClassRelationships";
 		ArrayList<UriListAndUriAndUriListAndNumber> listCombinationPropertiesClassRelationships = new ArrayList<UriListAndUriAndUriListAndNumber>();
 		listCombinationPropertiesClassRelationships = MakelistCombinationPropertiesClassRelationships.makeList(model,  listCombinationPropertiesWithNewClass);
+
+		// Liste des classes les plus importantes pour les combinaisons de propriétés.
+		String nameOfListCombinationPropertiesClassRelationshipsClasses = "listCombinationPropertiesClassRelationshipsClasses";
+		ArrayList<String> listCombinationPropertiesClassRelationshipsClasses = new ArrayList<String>();
+		listCombinationPropertiesClassRelationshipsClasses = MakeListCombinationPropertiesClassRelationshipsClasses.makeList(listCombinationPropertiesClassRelationships);
+
+		// Liste des relation entre classes les plus importantes pour les combinaisons de propriétés.
+		String nameOfListCombinationPropertiesClassRelationshipsRelationships = "listCombinationPropertiesClassRelationshipsRelationships";
+		ArrayList<UriListAndUriAndUriList> listCombinationPropertiesClassRelationshipsRelationships = new ArrayList<UriListAndUriAndUriList>();
+		listCombinationPropertiesClassRelationshipsRelationships = MakeListCombinationPropertiesClassRelationshipsRelationships.makeList(listCombinationPropertiesClassRelationships);
 		
-		// Création d'un model de description.
-		OntModel descriptionModelTemp = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
-		descriptionModelTemp = MakeDescriptionModel.makeModel(listCombinationPropertiesClassRelationships, listCombinationPropertiesWithNewClass);
+		// Liste des propriétés des classes les plus importantes pour les combinaisons de propriétés.
+		String nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses = "listCombinationPropertiesClassRelationshipsPropertiesOfClasses";
+		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses = new ArrayList<UriListAndUriAndUriListList>();
+		listCombinationPropertiesClassRelationshipsPropertiesOfClasses = MakeListCombinationPropertiesClassRelationshipsPropertiesOfClasses.makeList(listCombinationPropertiesClassRelationships, listCombinationPropertiesWithNewClass, listMostUsedPropertyWithDatatypeAndClassRange);
 
-		// Liste des classes les plus importantes.
-		String nameOfListCombinationPropertiesMostImportantClasses = "listCombinationPropertiesMostImportantClasses";
-		ArrayList<String> listCombinationPropertiesMostImportantClasses = new ArrayList<String>();
-		listCombinationPropertiesMostImportantClasses = MakeListCombinationPropertiesMostImportantClasses.makeList(listCombinationPropertiesClassRelationships);
-
-		// Liste des relation entre classes les plus importantes.
-		String nameOfListCombinationPropertiesMostImportantRelationships = "listCombinationPropertiesMostImportantRelationships";
-		ArrayList<UriListAndUriAndUriList> listCombinationPropertiesMostImportantRelationships = new ArrayList<UriListAndUriAndUriList>();
-		listCombinationPropertiesMostImportantRelationships = MakeListCombinationPropertiesMostImportantRelationships.makeList(listCombinationPropertiesClassRelationships);
-		
-		// Liste des propriétés des classes les plus importantes.
-		String nameOfListCombinationPropertiesMostImportantPropertiesOfClasses = "listCombinationPropertiesMostImportantPropertiesOfClasses";
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesMostImportantPropertiesOfClasses = new ArrayList<UriListAndUriAndUriListList>();
-		listCombinationPropertiesMostImportantPropertiesOfClasses = MakeListCombinationPropertiesMostImportantPropertiesOfClasses.makeList(listCombinationPropertiesClassRelationships, listCombinationPropertiesWithNewClass, listMostUsedPropertyWithDatatypeAndClassRange);
-
-		// Ajout au model de description des dataProperties.
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		String nameOfDescriptionModel = "descriptionModel";
-	    descriptionModel = MakeDescriptionModelWithDataProperties.makeModel(descriptionModelTemp, listCombinationPropertiesMostImportantPropertiesOfClasses, listMostUsedPropertyType);
+		// S'il existe des relations entre les différentes classes de combinaison de propriétés, on basera le modèle de description sur les classes et propriétés 
+		//  concernèes par ces relations entre classes.
+		if (listCombinationPropertiesClassRelationships.size()!=0) {
+
+			// Création d'un model de description.
+			descriptionModel = MakeDescriptionModel.makeModel(listCombinationPropertiesClassRelationships, listCombinationPropertiesClassRelationshipsPropertiesOfClasses,listCombinationPropertiesWithNewClass, listMostUsedPropertyWithClassDomain, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedObjectProperty, listMostUsedDatatypeProperty, listMostUsedAnnotationProperty );
+			
+	    }	else {
+		// S'il n'existe pas des relations entre les différentes classes de combinaison de propriétés, on basera le modèle de description sur les classes et propriétés 
+		//  les plus représentée du modèle	
+		
+			// Création d'un model de description.
+			descriptionModel = MakeDescriptionModelWithoutClassRelationships.makeModel(listCombinationPropertiesWithNewClass, listClassMostUsed, listMostUsedPropertyWithClassDomain, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedObjectProperty, listMostUsedDatatypeProperty, listMostUsedAnnotationProperty);
+	
+		}
 
 		// TEST
 		//ArrayList<UriAndUriAndUri> listOfTest = new ArrayList<UriAndUriAndUri>();
@@ -451,6 +470,13 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
+			ProfilingUtil.makeJsonUriAndUriListAndNumberListAndNumberFile(listMostUsedPropertyWithClassDomain, nameOfListMostUsedPropertyWithClassDomain + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		
+		try {
 			ProfilingUtil.makeJsonUriAndNumberFile(listMostUsedObjectProperty, nameOfListMostUsedObjectProperty + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -505,47 +531,17 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriListAndUriListAndNumberListAndNumberFile(listCombinationPropertiesPerSujectCleanedAndReduced, nameOfListCombinationPropertiesPerSujectCleanedAndReduced + ".json");
+			ProfilingUtil.makeJsonUriListAndUriListAndNumberListAndNumberFile(listCombinationPropertiesPerSubjectCleanedAndReduced, nameOfListCombinationPropertiesPerSubjectCleanedAndReduced + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriListAndUriListAndNumberListAndNumberFile(listCombinationPropertiesPerSuject, nameOfListCombinationPropertiesPerSuject + ".json");
+			ProfilingUtil.makeJsonUriListAndUriListAndNumberListAndNumberFile(listCombinationPropertiesPerSubject, nameOfListCombinationPropertiesPerSubject + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		// try {
-		// 	ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listClassAndPropertyOfInterestCount, nameOfListClassAndPropertyOfInterestCount + ".json");
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
-
-		// try {
-		// 	ProfilingUtil.makeJsonUriAndUriAndUriAndNumberFile(listClassAndPropertyOfInterestMostUsed, nameOfListClassAndPropertyOfInterestMostUsed + ".json");
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
-
-		// try {
-		// 	ProfilingUtil.makeJsonUriAndNumberFile(listSubjectClassOfInterest, nameOflistSubjectClassOfInterest + ".json");
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
-
-		// try {
-		// 	ProfilingUtil.makeJsonUriAndNumberFile(listObjectClassOfInterest, nameOflistObjectClassOfInterest + ".json");
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
-
-		// try {
-		// 	ProfilingUtil.makeJsonUriAndNumberFile(listPropertyOfInterest, nameOfListPropertyOfInterest + ".json");
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
-
 		try {
 			ProfilingUtil.makeJsonUriFile(listMostUsedPropertyDatatypes, nameOfListDatatypesMostUsed + ".json");
 		} catch (Exception e) {
@@ -580,19 +576,19 @@ public class ProfilingPreProcessing {
 		}				            	
 
 		try {
-			ProfilingUtil.makeJsonStringFile(listCombinationPropertiesMostImportantClasses, nameOfListCombinationPropertiesMostImportantClasses + ".json");
+			ProfilingUtil.makeJsonStringFile(listCombinationPropertiesClassRelationshipsClasses, nameOfListCombinationPropertiesClassRelationshipsClasses + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriListAndUriAndUriListFile(listCombinationPropertiesMostImportantRelationships, nameOfListCombinationPropertiesMostImportantRelationships + ".json");
+			ProfilingUtil.makeJsonUriListAndUriAndUriListFile(listCombinationPropertiesClassRelationshipsRelationships, nameOfListCombinationPropertiesClassRelationshipsRelationships + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriListAndUriAndUriListListFile(listCombinationPropertiesMostImportantPropertiesOfClasses, nameOfListCombinationPropertiesMostImportantPropertiesOfClasses + ".json");
+			ProfilingUtil.makeJsonUriListAndUriAndUriListListFile(listCombinationPropertiesClassRelationshipsPropertiesOfClasses, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

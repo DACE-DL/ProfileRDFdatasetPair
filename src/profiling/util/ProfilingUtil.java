@@ -337,6 +337,32 @@ public class ProfilingUtil {
 		return listObjects;
 	}
 
+		//  Créé un fichier JSON partir d'un tableau d'objects
+		public static void makeJsonUriAndUriListAndNumberListAndNumberFile(ArrayList<UriAndUriListAndNumberListAndNumber> listObject, String nameJsonObjectFile) throws Exception {
+			// Récupération du chemin du fichier.
+			Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
+			File file  = new File(pathOfTheFile.toString());
+			// System.out.println(pathOfTheFile.toString());
+			ObjectMapper objectMapper = new ObjectMapper();	
+			objectMapper.writeValue(file, listObject);		
+		}
+		// Retourne un tableau d'objects à partir d'un fichier JSON
+		public static ArrayList<UriAndUriListAndNumberListAndNumber> makeArrayListUriAndUriListAndNumberListAndNumber(String nameJsonObjectFile) throws Exception {
+			ArrayList<UriAndUriListAndNumberListAndNumber> listObjects = new ArrayList<UriAndUriListAndNumberListAndNumber>();
+			// Récupération du chemin du fichier.
+			Path pathOfTheFile = Paths.get(nameJsonObjectFile);
+			File file  = new File(pathOfTheFile.toString());
+			if (file.exists()) {
+			   //on récupère les objects à traiter dans le fichier JSON
+				String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
+				ObjectMapper objectMapper = new ObjectMapper();	
+				listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriAndUriListAndNumberListAndNumber>>(){});	 
+			} else {
+				System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
+			}	
+			return listObjects;
+		}
+
 	//  Créé un fichier JSON partir d'un tableau d'objects
 	public static void makeJsonUriAndNumberAndNumberAndNumberFile(ArrayList<UriAndNumberAndNumberAndNumber> listObject, String nameJsonObjectFile) throws Exception {
 		// Récupération du chemin du fichier.
@@ -545,7 +571,7 @@ public class ProfilingUtil {
 		return listObjects;
 	}
 	//  Créé un fichier JSON partir d'un tableau d'objects
-	public static void makeJsonUriListAndUriList2File(ArrayList<UriListAndUriList2> listObject, String nameJsonObjectFile) throws Exception {
+	public static void makeJsonUriListAndUriList2File(ArrayList<UriListAndUriList> listObject, String nameJsonObjectFile) throws Exception {
 		// Récupération du chemin du fichier.
 		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
 		File file  = new File(pathOfTheFile.toString());
@@ -554,8 +580,8 @@ public class ProfilingUtil {
 		objectMapper.writeValue(file, listObject);		
 	}
 	// Retourne un tableau d'objects à partir d'un fichier JSON
-	public static ArrayList<UriListAndUriList2> makeArrayListUriListAndUriList2(String nameJsonObjectFile) throws Exception {
-		ArrayList<UriListAndUriList2> listObjects = new ArrayList<UriListAndUriList2>();
+	public static ArrayList<UriListAndUriList> makeArrayListUriListAndUriList2(String nameJsonObjectFile) throws Exception {
+		ArrayList<UriListAndUriList> listObjects = new ArrayList<UriListAndUriList>();
 		// Récupération du chemin du fichier.
 		Path pathOfTheFile = Paths.get(nameJsonObjectFile);
 		File file  = new File(pathOfTheFile.toString());
@@ -563,7 +589,7 @@ public class ProfilingUtil {
 		   //on récupère les objects à traiter dans le fichier JSON
 			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
 			ObjectMapper objectMapper = new ObjectMapper();	
-			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriListAndUriList2>>(){});	 
+			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriListAndUriList>>(){});	 
 		} else {
 			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
 		}	
@@ -838,33 +864,6 @@ public class ProfilingUtil {
 	}
 
 	//  Créé un fichier JSON partir d'un tableau d'objects
-	public static void makeJsonUriListAndUriListFile(ArrayList<UriListAndUriList> listObject, String nameJsonObjectFile) throws Exception {
-		// Récupération du chemin du fichier.
-		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
-		File file  = new File(pathOfTheFile.toString());
-        //System.out.println(pathOfTheFile.toString());
-		ObjectMapper objectMapper = new ObjectMapper();	
-		objectMapper.writeValue(file, listObject);		
-	}
-	
-	// Retourne un tableau d'objects à partir d'un fichier JSON
-	public static ArrayList<UriListAndUriList> makeArrayListUriListAndUriList(String nameJsonObjectFile) throws Exception {
-		ArrayList<UriListAndUriList> listObjects = new ArrayList<UriListAndUriList>();
-		// Récupération du chemin du fichier.
-		Path pathOfTheFile = Paths.get(nameJsonObjectFile);
-		File file  = new File(pathOfTheFile.toString());
-		if (file.exists()) {
-		   //on récupère les objects à traiter dans le fichier JSON
-			String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
-			ObjectMapper objectMapper = new ObjectMapper();	
-			listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriListAndUriList>>(){});	 
-		} else {
-			System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
-		}	
-		return listObjects;
-	}
-
-	//  Créé un fichier JSON partir d'un tableau d'objects
 	public static void makeJsonUriAndUriAndUriListListFile(ArrayList<UriAndUriAndUriListList> listObject, String nameJsonObjectFile) throws Exception {
 		// Récupération du chemin du fichier.
 		Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
@@ -982,4 +981,504 @@ public class ProfilingUtil {
             return remainingMilliseconds + " milliseconds";
         }
     }
+
+	static String buildTurtleClassString( ArrayList<ArrayList<Uri>> listUriListDomain, ArrayList<ArrayList<Uri>> listUriListRange, ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass, ArrayList<UriAndNumber> listMostUsedAnnotationProperty) {
+        StringBuilder turtleBuilder = new StringBuilder();
+		String dsp = ProfilingConf.dsp;
+
+		for (ArrayList<Uri> uriListDomain : listUriListDomain) {
+			for (Uri uriDomain : uriListDomain) {
+				turtleBuilder.append("<"+ uriDomain.getUri() + "> a owl:Class . ");
+				if (uriDomain.getUri().toString().contains(dsp + "Class-")) {
+					turtleBuilder.append(buildTurtleIntentionClassString(uriDomain.getUri().toString(), listCombinationPropertiesWithNewClass, listMostUsedAnnotationProperty));
+				}
+			}	
+		}
+		for (ArrayList<Uri> uriListRange : listUriListRange) {
+			for (Uri uriRange : uriListRange) {
+				turtleBuilder.append("<"+ uriRange.getUri() + "> a owl:Class . ");
+				if (uriRange.getUri().toString().contains(dsp + "Class-")) {
+					turtleBuilder.append(buildTurtleIntentionClassString(uriRange.getUri().toString(), listCombinationPropertiesWithNewClass, listMostUsedAnnotationProperty));
+				}
+			}	
+		}	
+		// System.out.println(turtleBuilder.toString());	
+        // Retourne le resultat en tant que chaîne de caractères
+        return turtleBuilder.toString();
+    }
+	
+
+	private static String buildTurtleIntentionClassString(String uriClass, ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass, ArrayList<UriAndNumber> listMostUsedAnnotationProperty) {
+        StringBuilder turtleBuilder = new StringBuilder();
+		String dc = ProfilingConf.dc;
+		for (UriListAndUriList combinationPropertiesWithNewClass : listCombinationPropertiesWithNewClass) {
+			if (combinationPropertiesWithNewClass.getUriList1().get(0).toString().equals(uriClass)) {
+				ArrayList<Uri> listCombinaisonPropertiesWithoutAnnotationProperties = new ArrayList<Uri>();
+				ArrayList<Uri> listAllCombinaisonProperties = new ArrayList<Uri>();
+				for (Uri uriProperty : combinationPropertiesWithNewClass.getUriList2()) {
+					listAllCombinaisonProperties.add(uriProperty);
+					Boolean annotationProperty = false;
+					for (UriAndNumber uriAndNumber : listMostUsedAnnotationProperty) {
+						if (uriAndNumber.getUri().toString().equals(uriProperty.toString())) {
+							annotationProperty = true;
+							break;
+						}
+					}	
+					if (!annotationProperty) {
+						listCombinaisonPropertiesWithoutAnnotationProperties.add(uriProperty);
+					}		
+				}	
+				
+				if (listCombinaisonPropertiesWithoutAnnotationProperties.size() > 0) {
+					turtleBuilder.append("<"+ uriClass + "> rdfs:subClassOf ");
+					Boolean first = true;
+					for (Uri uriProperty : listCombinaisonPropertiesWithoutAnnotationProperties) {	
+						if (!first) {
+							turtleBuilder.append(" , ");
+						} else {
+							first = false;
+						}
+						turtleBuilder.append(" [ rdf:type owl:Restriction ; ");
+						turtleBuilder.append(" ; owl:onProperty <"+ uriProperty.getUri() + "> ; ");
+						//turtleBuilder.append(" owl:someValuesFrom owl:Thing ");
+						turtleBuilder.append(" owl:minCardinality 1 ");
+						turtleBuilder.append(" ]  ");    
+						}
+					turtleBuilder.append("  . ");
+				}
+				if (listAllCombinaisonProperties.size() > 0) {
+					turtleBuilder.append("<"+ uriClass + "> <" + dc +"description> ");
+					turtleBuilder.append("\"");
+					turtleBuilder.append( uriClass + " is the class of individuals described with the following characteristics: ");
+					Boolean first = true;
+					for (Uri uriProperty : listAllCombinaisonProperties) {	
+						if (!first) {
+							turtleBuilder.append(", ");
+						} else {
+							first = false;
+						}
+						turtleBuilder.append(uriProperty);
+					}	
+					turtleBuilder.append("\"");
+					turtleBuilder.append("  . ");
+				}
+			}		
+		}
+		
+		// System.out.println(turtleBuilder.toString());	
+        // Retourne le resultat en tant que chaîne de caractères
+        return turtleBuilder.toString();
+    }
+
+	static String buildTurtleObjectPropertyString( ArrayList<UriAndNumber> listMostUsedObjectProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange) {
+        StringBuilder turtleBuilder = new StringBuilder();
+		
+		for (UriAndNumber uriAndNumber : listMostUsedObjectProperty) {
+			String uriProperty = uriAndNumber.getUri().toString();
+			for (UriAndListUriListAndListUriList propertyDomainAndRange : listOfPropertyDomainAndRange) {
+				if (propertyDomainAndRange.getUri().toString().equals(uriProperty)) { 
+					turtleBuilder.append("<" + uriProperty + ">");
+					turtleBuilder.append(" a owl:ObjectProperty ;");
+					turtleBuilder.append(" rdfs:domain ");
+					if (propertyDomainAndRange.getListUriList1().size() == 1) { // il n'y a qu'une liste de classes pour le domaine
+						for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+							if (uriListDomain.size() == 1) { // dans cette unique liste de classes il n'y a qu'une classe.
+								turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
+								turtleBuilder.append(" ; ");	
+							} else {
+								Boolean first = true;
+								for (Uri uriDomain : uriListDomain) {
+									if (!first) {
+										turtleBuilder.append(" , ");
+									} else {
+										first = false;
+									}
+									turtleBuilder.append("<" + uriDomain.getUri() + "> ");
+								}
+								turtleBuilder.append(" ; ");	
+							}	 
+						}	
+					} else {
+						if (propertyDomainAndRange.getListUriList1().size() >= 11) { // il y a un nombre déraisonable de liste pour le domaine
+							turtleBuilder.append(" rdfs:Resource ; ");
+						} else {
+							turtleBuilder.append(" [ rdf:type owl:Class ;");
+							turtleBuilder.append(" owl:unionOf ( ");
+							for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList2()) {
+								if (uriListDomain.size() == 1) {
+									turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
+								} else {
+									turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+									for (Uri uriDomain : uriListDomain) {
+										turtleBuilder.append("<"+ uriDomain.getUri() + "> ");
+									}
+									turtleBuilder.append(" ) ");
+									turtleBuilder.append(" ] ");				
+								}	
+							}
+							turtleBuilder.append(" ) ");	
+							turtleBuilder.append(" ] ; ");	
+
+						}	
+					}
+					// Pour le range
+					turtleBuilder.append("rdfs:range ");
+					if (propertyDomainAndRange.getListUriList2().size() == 1) {
+						for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
+							if (uriListRange.size() == 1) {
+								turtleBuilder.append("<" + uriListRange.get(0).getUri() + "> ");
+								turtleBuilder.append(" . ");	
+							} else {
+								Boolean first = true;
+								for (Uri uriRange : uriListRange) {
+									if (!first) {
+										turtleBuilder.append(" , ");
+									} else {
+										first = false;
+									}
+									turtleBuilder.append("<" + uriRange.getUri() + "> ");
+								}	
+								turtleBuilder.append(" . ");		
+							}	 
+						}
+					} else {
+						turtleBuilder.append(" [ rdf:type owl:Class ;");
+						turtleBuilder.append(" owl:unionOf ( ");
+						for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
+							if (uriListRange.size() == 1) {
+								turtleBuilder.append("<" + uriListRange.get(0).getUri() + "> ");
+							} else {
+								turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+								for (Uri uriRange : uriListRange) {
+									turtleBuilder.append("<"+ uriRange.getUri() + "> ");
+								}
+								turtleBuilder.append(" ) ");
+								turtleBuilder.append(" ] ");
+							}	 
+						}
+						turtleBuilder.append(" ) ");
+						turtleBuilder.append(" ] . ");	
+					}
+					break;
+				}	
+			}				
+		}
+		// System.out.println(turtleBuilder.toString());	
+        // Retourne le resultat en tant que chaîne de caractères
+        return turtleBuilder.toString();
+    }
+
+	static String buildTurtleDatatypePropertyString( ArrayList<UriAndNumber> listMostUsedDatatypeProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange) {
+        StringBuilder turtleBuilder = new StringBuilder();
+		
+		for (UriAndNumber uriAndNumber : listMostUsedDatatypeProperty) {
+			String uriProperty = uriAndNumber.getUri().toString();
+			for (UriAndListUriListAndListUriList propertyDomainAndRange : listOfPropertyDomainAndRange) {
+				if (propertyDomainAndRange.getUri().toString().equals(uriProperty)) { 
+					turtleBuilder.append("<" + uriProperty + ">");
+					turtleBuilder.append(" a owl:DatatypeProperty ;");
+					// Pour le domaine de la datatype propriété 
+					turtleBuilder.append(" rdfs:domain ");
+					if (propertyDomainAndRange.getListUriList1().size() == 1) { // il n'y a qu'une liste de classes pour le domain
+						for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+							if (uriListDomain.size() == 1) { // dans cette unique liste de classes il n'y a qu'une classe.
+								turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
+							} else {
+								Boolean first = true;
+								for (Uri uriDomain : uriListDomain) {
+									if (!first) {
+										turtleBuilder.append(" , ");
+									} else {
+										first = false;
+									}
+									turtleBuilder.append("<" + uriDomain.getUri() + "> ");
+								}
+							}	 
+						}	
+					} else {
+						if (propertyDomainAndRange.getListUriList1().size() >= 11) { // il y a un nombre déraisonable de liste pour le domaine
+							turtleBuilder.append(" rdfs:Resource ; ");
+						} else {
+							turtleBuilder.append(" [ rdf:type owl:Class ;");
+							turtleBuilder.append(" owl:unionOf ( ");
+							for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+								if (uriListDomain.size() == 1) {
+									turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
+								} else {
+									turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+									for (Uri uriDomain : uriListDomain) {
+										turtleBuilder.append("<"+ uriDomain.getUri() + "> ");
+									}
+									turtleBuilder.append(" ) ");
+									turtleBuilder.append(" ] ");				
+								}	 
+							}
+							turtleBuilder.append(" ) ");	
+							turtleBuilder.append(" ]  ");
+						}	
+					}
+						
+					// Pour le range de la datatype propriété 
+					
+					if (propertyDomainAndRange.getListUriList2().size() == 1) {
+						for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
+							if (uriListRange.size() != 0) {
+								if (uriListRange.size() == 1) {
+									turtleBuilder.append("; rdfs:range ");
+									turtleBuilder.append("<" + uriListRange.get(0).getUri() + ">");
+									turtleBuilder.append(" . ");	
+								} else {
+									turtleBuilder.append("; rdfs:range ");
+									Boolean first = true;
+									for (Uri uriRange : uriListRange) {
+										if (!first) {
+											turtleBuilder.append(" , ");
+										} else {
+											first = false;
+										}
+										turtleBuilder.append("<" + uriRange.getUri() + "> ");
+									}	
+									turtleBuilder.append(" . ");
+								}	 
+							} else {
+								turtleBuilder.append(" . ");	
+							}	
+						}
+					} else {
+						turtleBuilder.append("; rdfs:range ");
+						turtleBuilder.append(" [ rdf:type owl:Class ;");
+						turtleBuilder.append(" owl:unionOf ( ");
+						for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
+							if (uriListRange.size() == 1) {
+								turtleBuilder.append("<" + uriListRange.get(0).getUri() + "> ");
+							} else {
+								turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+								for (Uri uriRange : uriListRange) {
+									turtleBuilder.append("<"+ uriRange.getUri() + ">");
+								}
+								turtleBuilder.append(" ) ");
+								turtleBuilder.append(" ] ");
+							}	 
+						}
+						turtleBuilder.append(" ] . ");	
+					}
+					break;	
+				}	
+			}		
+		}
+		//System.out.println(turtleBuilder.toString());	
+        // Retourne le resultat en tant que chaîne de caractères
+        return turtleBuilder.toString();
+    }
+
+
+	static String buildTurtleAnnotationPropertyString( ArrayList<UriAndNumber> listMostUsedAnnotationProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange, Integer maxOfUnion, ArrayList<String> classUnionAndNumberList) {
+        StringBuilder turtleBuilderTemp = new StringBuilder();
+		StringBuilder classUnionTempBuilder = new StringBuilder();
+		StringBuilder turtleBuilder = new StringBuilder();
+		String dsp = ProfilingConf.dsp;
+		ArrayList<String> listUnionNumberString = new ArrayList<String>();
+		
+		for (UriAndNumber uriAndNumber : listMostUsedAnnotationProperty) {
+			String uriProperty = uriAndNumber.getUri().toString();
+			for (UriAndListUriListAndListUriList propertyDomainAndRange : listOfPropertyDomainAndRange) {
+				if (propertyDomainAndRange.getUri().toString().equals(uriProperty)) { 
+					String unionNumberString = "";
+					turtleBuilderTemp.append("<" + uriProperty + ">");
+					turtleBuilderTemp.append(" a owl:AnnotationProperty ");
+					
+					// Pour le domaine de la annotation propriété 
+					if (!(propertyDomainAndRange.getListUriList1().size() == 0)) { 	
+						turtleBuilderTemp.append("; rdfs:domain ");
+						if (propertyDomainAndRange.getListUriList1().size() == 1) { // il n'y a qu'une liste de classes pour le domaine
+							for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+								if (uriListDomain.size() == 1) { // dans cette unique liste de classes il n'y a qu'une classe.
+									turtleBuilderTemp.append("<" + uriListDomain.get(0).getUri() + ">");
+									turtleBuilderTemp.append(" ");	
+								} else {
+									Boolean first = true;
+									for (Uri uriDomain : uriListDomain) {
+										if (!first) {
+											turtleBuilderTemp.append(" , ");
+										} else {
+											first = false;
+										}
+										turtleBuilderTemp.append("<" + uriDomain.getUri() + "> ");
+									}
+								}	 
+							}	
+						} else { // il y a plusieurs listes de classes pour le domaine
+							if (propertyDomainAndRange.getListUriList1().size() >= maxOfUnion) { // il y a un nombre déraisonable de liste pour le domaine
+								turtleBuilderTemp.append(" rdfs:Resource ");
+							} else { // il y a un nombre raisonable de liste pour le domaine
+								// On est obliger de créer une classe équivalente avec l'union des listes
+								StringBuilder classUnionBuilder = new StringBuilder();
+								Integer numberUriList = 0;
+								for (ArrayList<Uri> uriList : propertyDomainAndRange.getListUriList1()) {
+									numberUriList++;
+									if (numberUriList > 1) {
+										classUnionBuilder.append("|");
+									}
+									classUnionBuilder.append(uriList.toString());
+								}
+								String classUnionBuilderString = classUnionBuilder.toString();
+								if (numberUriList > 1) { // Pour eliminer les cas ou il n'y a pas d'union
+									// On recherche dans classUnionAndNumberList si cette union existe et si oui on récupére son numéro
+									for (String classUnionAndNumber : classUnionAndNumberList) {
+										String[] classUnionAndNumberSplit = classUnionAndNumber.split("\\*");
+										if (classUnionBuilderString.equals(classUnionAndNumberSplit[0])) {
+											unionNumberString = classUnionAndNumberSplit[1];
+											break;
+										}
+									}
+								}
+
+								if (!unionNumberString.equals("")) {
+									if (!listUnionNumberString.contains(unionNumberString)) {
+										listUnionNumberString.add(unionNumberString);
+										// System.out.println(propertyDomainAndRange.getUri().toString());
+										// for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+										// System.out.println(uriListDomain.toString());
+										// }
+										// construction de l'union class
+										classUnionTempBuilder.append("<" + dsp + "UnionClass" + unionNumberString + "> rdf:type owl:Class ;");
+										classUnionTempBuilder.append(" owl:equivalentClass ");
+										classUnionTempBuilder.append(" [ rdf:type owl:Class ;");
+										classUnionTempBuilder.append(" owl:unionOf ( ");
+										for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+											if (uriListDomain.size() == 1) {
+												classUnionTempBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
+											} else {
+												classUnionTempBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+												for (Uri uriDomain : uriListDomain) {
+													classUnionTempBuilder.append("<"+ uriDomain.getUri() + "> ");
+												}
+												classUnionTempBuilder.append(" ) ");
+												classUnionTempBuilder.append(" ] ");				
+											}	 
+										}
+										classUnionTempBuilder.append(" ) ");
+										classUnionTempBuilder.append(" ] . ");		
+
+										turtleBuilderTemp.append(" <" + dsp + "UnionClass" + unionNumberString + "> ");		
+									} else {
+										turtleBuilderTemp.append(" <" + dsp + "UnionClass" + unionNumberString + "> ");		
+									}
+								} else {
+									System.out.println("WTF ! Domain");
+									System.out.println( propertyDomainAndRange.getListUriList1().size());
+									System.out.println( propertyDomainAndRange.getListUriList2().size());
+									System.out.println( propertyDomainAndRange.getUri().toString());
+									
+								}	
+							}	
+						}
+					}
+
+
+					// Pour le range de la annotation propriété
+					unionNumberString = "";
+					if (!(propertyDomainAndRange.getListUriList2().size() == 0)) { 	
+						turtleBuilderTemp.append("; rdfs:range ");
+						if (propertyDomainAndRange.getListUriList2().size() == 1) { // il n'y a qu'une liste de classes pour le domain
+							for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList2()) {
+								if (uriListDomain.size() == 1) { // dans cette unique liste de classes il n'y a qu'une classe.
+									turtleBuilderTemp.append("<" + uriListDomain.get(0).getUri() + ">");
+									turtleBuilderTemp.append(" ");
+								} else {
+									Boolean first = true;
+									for (Uri uriDomain : uriListDomain) {
+										if (!first) {
+											turtleBuilderTemp.append(" , ");
+										} else {
+											first = false;
+										}
+										turtleBuilderTemp.append("<" + uriDomain.getUri() + "> ");
+									}
+								}	 
+							}	
+						} else {
+							if (propertyDomainAndRange.getListUriList2().size() >= 11) { // il y a un nombre déraisonable de liste pour le range
+								turtleBuilderTemp.append(" rdfs:Resource ");
+							} else {
+								// On est obliger de créer une classe équivalente avec l'union des listes
+								StringBuilder classUnionBuilder = new StringBuilder();
+								Integer numberUriList = 0;
+								for (ArrayList<Uri> uriList : propertyDomainAndRange.getListUriList2()) {
+									numberUriList++;
+									if (numberUriList > 1) {
+										classUnionBuilder.append("|");
+									}
+									classUnionBuilder.append(uriList.toString());
+								}
+								String classUnionBuilderString = classUnionBuilder.toString();
+								if (numberUriList > 1) { // Pour eliminer les cas ou il n'y a pas d'union
+									// On recherche dans classUnionAndNumberList si cette union existe et si oui on récupére son numéro
+									for (String classUnionAndNumber : classUnionAndNumberList) {
+										String[] classUnionAndNumberSplit = classUnionAndNumber.split("\\*");
+										if (classUnionBuilderString.equals(classUnionAndNumberSplit[0])) {
+											unionNumberString = classUnionAndNumberSplit[1];
+											break;
+										}
+									}
+								}
+
+								if (!unionNumberString.equals("")) {
+									if (!listUnionNumberString.contains(unionNumberString)) {
+										listUnionNumberString.add(unionNumberString);
+										// System.out.println(propertyDomainAndRange.getUri().toString());
+										// for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList2()) {
+										// System.out.println(uriListDomain.toString());
+										// }
+										// construction de l'union class
+										classUnionTempBuilder.append("<" + dsp + "UnionClass" + unionNumberString + "> rdf:type owl:Class ;");
+										classUnionTempBuilder.append(" owl:equivalentClass ");
+										classUnionTempBuilder.append(" [ rdf:type owl:Class ;");
+										classUnionTempBuilder.append(" owl:unionOf ( ");
+										for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
+											if (uriListRange.size() == 1) {
+												classUnionTempBuilder.append("<" + uriListRange.get(0).getUri() + "> ");
+											} else {
+												classUnionTempBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+												for (Uri uriRange : uriListRange) {
+													classUnionTempBuilder.append("<"+ uriRange.getUri() + "> ");
+												}
+												classUnionTempBuilder.append(" ) ");
+												classUnionTempBuilder.append(" ] ");				
+											}	 
+										}
+										classUnionTempBuilder.append(" ) ");
+										classUnionTempBuilder.append(" ] . ");		
+
+										turtleBuilderTemp.append(" <" + dsp + "UnionClass" + unionNumberString + "> ");		
+									} else {
+										turtleBuilderTemp.append(" <" + dsp + "UnionClass" + unionNumberString + "> ");
+									}
+								} else { // La liste d'union n'à pas été trouvée
+									System.out.println("WTF ! Range");
+									System.out.println("uriProperty: " + uriProperty);
+									System.out.println("classUnionBuilderString: " + classUnionBuilderString);
+									System.out.println( propertyDomainAndRange.getListUriList1().size());
+									System.out.println( propertyDomainAndRange.getListUriList2().size());
+									System.out.println( propertyDomainAndRange.getUri().toString());
+									turtleBuilderTemp.append(" rdfs:Resource ");
+								}	
+							}	
+						}
+						turtleBuilderTemp.append(" . ");
+					} else {
+						turtleBuilderTemp.append(" . ");
+					}
+					
+					break;
+				}
+			}	
+		}
+		turtleBuilder.append(classUnionTempBuilder.toString());
+		turtleBuilder.append(turtleBuilderTemp.toString());
+		//System.out.println(turtleBuilder.toString());	
+        // Retourne le resultat en tant que chaîne de caractères
+        return turtleBuilder.toString();
+    }
+
 }

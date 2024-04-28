@@ -13,7 +13,7 @@ import org.apache.jena.query.QuerySolution;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 
-public class MakeListCombinationPropertiesPerSuject {
+public class MakeListCombinationPropertiesPerSubject {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static ArrayList<UriListAndUriListAndNumberListAndNumber> makeList(Model model) {
@@ -21,7 +21,7 @@ public class MakeListCombinationPropertiesPerSuject {
 		String prefix = ProfilingConf.queryPrefix;
 		String dsp = ProfilingConf.dsp;
 
-		ArrayList<UriListAndUriListAndNumberListAndNumber> ListCombinationPropertiesPerSuject = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
+		ArrayList<UriListAndUriListAndNumberListAndNumber> ListCombinationPropertiesPerSubject = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
 
 		Query query = QueryFactory.create(prefix + 
 		" SELECT ?propertyList " +
@@ -48,7 +48,7 @@ public class MakeListCombinationPropertiesPerSuject {
 		"			           	OPTIONAL { ?subject rdf:type ?subjectClass } " +
 		"						BIND(COALESCE(?subjectClass, ?default_class) as ?class) " +
 		"						FILTER ( !STRSTARTS(str(?property),\"" + dsp + "\") && " + 
-		"		 				?property NOT IN ( <http://www.w3.org/1999/02/22-rdf-syntax-ns#type>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#first>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ) " +
+		"		 				?property NOT IN ( <http://www.w3.org/1999/02/22-rdf-syntax-ns#nil>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#first>, <http://www.w3.org/1999/02/22-rdf-syntax-ns#rest> ) " +
 		"			     		) " +
 		"			 	 	} " +	
 		"				 	ORDER BY ?subject ?property ?class " +
@@ -102,13 +102,13 @@ public class MakeListCombinationPropertiesPerSuject {
 					uriListAndUriListAndNumberListAndNumber.setUriList(ListProperty);
 					uriListAndUriListAndNumberListAndNumber.setUriListAndNumberList(ListClass);
 					uriListAndUriListAndNumberListAndNumber.setNumber(querySolution.getLiteral("?instanceCombinaisonPropertyCount").getInt());
-					ListCombinationPropertiesPerSuject.add(uriListAndUriListAndNumberListAndNumber) ;
+					ListCombinationPropertiesPerSubject.add(uriListAndUriListAndNumberListAndNumber) ;
 				}
 			}
 
 		Instant end0 = Instant.now();
-		System.out.println("Running time for ListCombinationPropertiesPerSuject: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
-		return ListCombinationPropertiesPerSuject;
+		System.out.println("Running time for ListCombinationPropertiesPerSubject: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
+		return ListCombinationPropertiesPerSubject;
 	}
 	
 	static class UriComparator implements java.util.Comparator<Uri> {

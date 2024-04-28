@@ -1,4 +1,4 @@
-package profiling.util;
+package Asupprimer;
 
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -7,10 +7,18 @@ import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntModelSpec;
 import org.apache.jena.rdf.model.ModelFactory;
 
+import profiling.util.ProfilingConf;
+import profiling.util.Uri;
+import profiling.util.UriAndListUriListAndListUriList;
+import profiling.util.UriAndUri;
+import profiling.util.UriAndUriAndUriAndNumber;
+import profiling.util.UriAndUriList;
+import profiling.util.UriListAndUriAndUriListList;
+
 public class MakeDescriptionModelWithDataProperties {
 	
 	// Création du modèle de description
-	public static OntModel  makeModel(OntModel descriptionModelTemp, ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesMostImportantPropertiesOfClasses, ArrayList<UriAndUri> listMostUsedPropertyType) {
+	public static OntModel  makeModel(OntModel descriptionModelTemp, ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses, ArrayList<UriAndUri> listMostUsedPropertyType) {
 
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		descriptionModel.add(descriptionModelTemp);
@@ -27,14 +35,14 @@ public class MakeDescriptionModelWithDataProperties {
 		descriptionModel.setNsPrefix("rdfs", rdfs);
 
 		ArrayList<UriAndListUriListAndListUriList> listOfDatatypeProperties = new ArrayList<UriAndListUriListAndListUriList>();
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesMostImportantPropertiesOfClassesTemp = new ArrayList<UriListAndUriAndUriListList>();
+		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp = new ArrayList<UriListAndUriAndUriListList>();
 		ArrayList<String> listOfProperty = new ArrayList<String>();
 
 		// Instant start0 = Instant.now();	
 	    
-		listCombinationPropertiesMostImportantPropertiesOfClassesTemp.addAll(listCombinationPropertiesMostImportantPropertiesOfClasses);
+		listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp.addAll(listCombinationPropertiesClassRelationshipsPropertiesOfClasses);
 
-		for (UriListAndUriAndUriListList resource : listCombinationPropertiesMostImportantPropertiesOfClasses) {
+		for (UriListAndUriAndUriListList resource : listCombinationPropertiesClassRelationshipsPropertiesOfClasses) {
 			for (UriAndUriList resource2 : resource.getUriAndUriListList()) {
 				String uriProperty = resource2.getUri().toString();
 				// Si propriété pas encore traitée
@@ -42,7 +50,7 @@ public class MakeDescriptionModelWithDataProperties {
 					listOfProperty.add(uriProperty);
 					ArrayList<ArrayList<Uri>> listUriListDomain = new ArrayList<ArrayList<Uri>>();
 					ArrayList<ArrayList<Uri>> listUriListRange = new ArrayList<ArrayList<Uri>>();
-					for (UriListAndUriAndUriListList resourceTemp : listCombinationPropertiesMostImportantPropertiesOfClassesTemp) {
+					for (UriListAndUriAndUriListList resourceTemp : listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp) {
 						ArrayList<Uri> uriListDomain = new ArrayList<Uri>();
 						for (int i = 0; i < resourceTemp.getUriList().size(); i++) {
 							uriListDomain.add(new Uri(resourceTemp.getUriList().get(i).getUri()));

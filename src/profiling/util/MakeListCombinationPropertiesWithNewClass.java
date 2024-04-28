@@ -21,7 +21,7 @@ import org.apache.jena.rdf.model.StmtIterator;
 public class MakeListCombinationPropertiesWithNewClass {
 	static boolean alreadyProcessed = false; 
 	// Création de Classes pour chaque combinaison de propriétés
-	public static ArrayList<UriListAndUriList2> makeClasses(Model model, ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSujectCleanedAndReducedTemp) {
+	public static ArrayList<UriListAndUriList> makeClasses(Model model, ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubjectCleanedAndReducedTemp) {
 		
 		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
@@ -36,16 +36,16 @@ public class MakeListCombinationPropertiesWithNewClass {
 		Resource c = model.createResource(rdfs + "Class");
 		
 		ArrayList<Resource> ListInstancesOfCombinaisonProperties =  new ArrayList<Resource>();
-		ArrayList<UriListAndUriList2> ListNewClassesListAndTheirProperties = new ArrayList<UriListAndUriList2>();
+		ArrayList<UriListAndUriList> ListNewClassesListAndTheirProperties = new ArrayList<UriListAndUriList>();
 		
 		Instant start0 = Instant.now();	
 		
 		// Tri de la liste pour que les combinaisons les plus grandes en nombre passe en priorité
 		// Afin de ne pas affecter une nouvelle classe en doublon
-		Collections.sort(listCombinationPropertiesPerSujectCleanedAndReducedTemp, new UriListAndUriListAndNumberListAndNumberComparator()); 	
+		Collections.sort(listCombinationPropertiesPerSubjectCleanedAndReducedTemp, new UriListAndUriListAndNumberListAndNumberComparator()); 	
 		
 		n = 1;
-		for (UriListAndUriListAndNumberListAndNumber resource : listCombinationPropertiesPerSujectCleanedAndReducedTemp) {      	
+		for (UriListAndUriListAndNumberListAndNumber resource : listCombinationPropertiesPerSubjectCleanedAndReducedTemp) {      	
 			ArrayList<Uri> ListCombinaisonProperties = resource.getUriList();
 			ArrayList<UriListAndNumber> ListClassesListForCombinaison = resource.getUriListAndNumberList();
 			for (UriListAndNumber listClass : ListClassesListForCombinaison) {
@@ -64,7 +64,7 @@ public class MakeListCombinationPropertiesWithNewClass {
 						ArrayList<Uri> listClasses = new ArrayList<Uri>();
 						Uri classe = new Uri(o.getURI());
 						listClasses.add(classe);
-						UriListAndUriList2 NewClasseListAndTheseProperties = new UriListAndUriList2(listClasses, ListCombinaisonProperties);
+						UriListAndUriList NewClasseListAndTheseProperties = new UriListAndUriList(listClasses, ListCombinaisonProperties);
 						ListNewClassesListAndTheirProperties.add(NewClasseListAndTheseProperties);
 						ni = 0;
 						while( result.hasNext() ) {
@@ -89,7 +89,7 @@ public class MakeListCombinationPropertiesWithNewClass {
 					}
 
 				} else {
-					UriListAndUriList2 NewClasseListAndTheseProperties = new UriListAndUriList2(listClass.getUriList(), ListCombinaisonProperties);
+					UriListAndUriList NewClasseListAndTheseProperties = new UriListAndUriList(listClass.getUriList(), ListCombinaisonProperties);
 					ListNewClassesListAndTheirProperties.add(NewClasseListAndTheseProperties);
 				}
 			}
