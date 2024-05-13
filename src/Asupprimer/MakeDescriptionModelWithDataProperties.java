@@ -13,12 +13,12 @@ import profiling.util.UriAndListUriListAndListUriList;
 import profiling.util.UriAndUri;
 import profiling.util.UriAndUriAndUriAndNumber;
 import profiling.util.UriAndUriList;
-import profiling.util.UriListAndUriAndUriListList;
+import profiling.util.UriListAndUriList;
 
 public class MakeDescriptionModelWithDataProperties {
 	
 	// Création du modèle de description
-	public static OntModel  makeModel(OntModel descriptionModelTemp, ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses, ArrayList<UriAndUri> listMostUsedPropertyType) {
+	public static OntModel  makeModel(OntModel descriptionModelTemp, ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses, ArrayList<UriAndUri> listMostUsedPropertyType) {
 
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		descriptionModel.add(descriptionModelTemp);
@@ -35,38 +35,39 @@ public class MakeDescriptionModelWithDataProperties {
 		descriptionModel.setNsPrefix("rdfs", rdfs);
 
 		ArrayList<UriAndListUriListAndListUriList> listOfDatatypeProperties = new ArrayList<UriAndListUriListAndListUriList>();
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp = new ArrayList<UriListAndUriAndUriListList>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp = new ArrayList<UriListAndUriList>();
 		ArrayList<String> listOfProperty = new ArrayList<String>();
 
 		// Instant start0 = Instant.now();	
 	    
 		listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp.addAll(listCombinationPropertiesClassRelationshipsPropertiesOfClasses);
 
-		for (UriListAndUriAndUriListList resource : listCombinationPropertiesClassRelationshipsPropertiesOfClasses) {
-			for (UriAndUriList resource2 : resource.getUriAndUriListList()) {
+		for (UriListAndUriList resource : listCombinationPropertiesClassRelationshipsPropertiesOfClasses) {
+			for (Uri resource2 : resource.getUriList2()) {
 				String uriProperty = resource2.getUri().toString();
 				// Si propriété pas encore traitée
 				if (!listOfProperty.contains(uriProperty)) {
 					listOfProperty.add(uriProperty);
 					ArrayList<ArrayList<Uri>> listUriListDomain = new ArrayList<ArrayList<Uri>>();
 					ArrayList<ArrayList<Uri>> listUriListRange = new ArrayList<ArrayList<Uri>>();
-					for (UriListAndUriAndUriListList resourceTemp : listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp) {
+					for (UriListAndUriList resourceTemp : listCombinationPropertiesClassRelationshipsPropertiesOfClassesTemp) {
 						ArrayList<Uri> uriListDomain = new ArrayList<Uri>();
-						for (int i = 0; i < resourceTemp.getUriList().size(); i++) {
-							uriListDomain.add(new Uri(resourceTemp.getUriList().get(i).getUri()));
+						for (int i = 0; i < resourceTemp.getUriList1().size(); i++) {
+							uriListDomain.add(new Uri(resourceTemp.getUriList1().get(i).getUri()));
 						}
-						for (UriAndUriList resourceTemp2 : resourceTemp.getUriAndUriListList()) {
+						for (Uri resourceTemp2 : resourceTemp.getUriList2()) {
 							if (resourceTemp2.getUri().toString() == uriProperty) {
 								if (!listUriListDomain.contains(uriListDomain)) {
 									listUriListDomain.add(uriListDomain);
 								}
-								if (!listUriListRange.contains(resourceTemp2.getUriList())) {
-									listUriListRange.add(resourceTemp2.getUriList());
-								}
+								// if (!listUriListRange.contains(resourceTemp2.getUriList2())) {
+								// 	listUriListRange.add(resourceTemp2.getUriList2());
+								// }
 							}
 						}
 					}
-					UriAndListUriListAndListUriList uriAndUriListAndUriList = new UriAndListUriListAndListUriList(uriProperty, listUriListDomain, listUriListRange);
+					UriAndListUriListAndListUriList uriAndUriListAndUriList = 
+					new UriAndListUriListAndListUriList(uriProperty, listUriListDomain, listUriListRange);
 					listOfDatatypeProperties.add(uriAndUriListAndUriList);
 				}
 			}

@@ -21,7 +21,7 @@ public class TraitResultsForML {
 	// ArrayList<UriListAndUriList> listOfRelationshipsRangeSource, ArrayList<UriListAndUriList> listOfRelationshipsRangeTarget,	
 	ArrayList<String> listCombinationPropertiesClassRelationshipsClassesSource, ArrayList<String> listCombinationPropertiesClassRelationshipsClassesTarget,
 	ArrayList<UriListAndUriAndUriList> listCombinationPropertiesClassRelationshipsRelationshipsSource, ArrayList<UriListAndUriAndUriList> listCombinationPropertiesClassRelationshipsRelationshipsTarget,
-	ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource, ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget,
+	ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource, ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget,
 	ArrayList<UriAndNumberAndNumberAndNumber> listMostUsedPropertyUsagePerObjectSource, ArrayList<UriAndNumberAndNumberAndNumber> listMostUsedPropertyUsagePerObjectTarget,
 	ArrayList<UriAndNumberAndNumberAndNumber> listMostUsedPropertyUsagePerSubjectSource, ArrayList<UriAndNumberAndNumberAndNumber> listMostUsedPropertyUsagePerSubjectTarget,
 	ArrayList<UriAndUri> listClassAndSubclassSource, ArrayList<UriAndUri> listClassAndSubclassTarget,
@@ -159,7 +159,7 @@ public class TraitResultsForML {
 		tableauDeuxD[numberLine + 11][0] = "List of properties of the most important classes";
 		aList.clear();
 		aList = new ArrayList<>();
-		for (UriListAndUriAndUriListList element : listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource) {
+		for (UriListAndUriList element : listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource) {
 			aList.add(element.toString());
 		}
 		tableauDeuxD[numberLine + 11][1] = new ArrayList<>(aList);
@@ -296,7 +296,7 @@ public class TraitResultsForML {
 
 		aList.clear();
 		aList = new ArrayList<>();
-		for (UriListAndUriAndUriListList element : listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget) {
+		for (UriListAndUriList element : listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget) {
 			aList.add(element.toString());
 		}
 		tableauDeuxD[numberLine + 11][2] = new ArrayList<>(aList);

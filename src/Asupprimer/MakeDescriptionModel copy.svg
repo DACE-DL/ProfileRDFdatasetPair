@@ -69,24 +69,21 @@ public class MakeDescriptionModel {
 		relationshipsBuilder.append("@prefix rdf: <" + rdf + "> .");
 		relationshipsBuilder.append("@prefix owl: <" + owl + "> .");
 		relationshipsBuilder.append("@prefix rdfs: <" + rdfs + "> .");
-		// On déclare toutes les classes
+		// On déclare toute les classes
 		for (UriAndListUriListAndListUriList resource : listOfRelationships) {
 			relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleClassString(resource.getListUriList1(), resource.getListUriList2(), listCombinationPropertiesWithNewClass, listMostUsedAnnotationProperty ));
 			//System.out.println("resource.getListUriList1() :" + resource.getListUriList1().toString());
 			//System.out.println("resource.getListUriList2() :" + resource.getListUriList2().toString());
 		}
-		// System.out.println("relationshipsBuilder : " + relationshipsBuilder);
-		// On s'occupe maintenant de toutes les propriétés liées aux classes concernées dans les relations 
+	
+		// On s'occupe de toutes les propriétés liées aux classes concernées dans les relations
 
-		// On récupère les domaines et ranges des propriétés les plus utilisées pour créer la liste listOfPropertyDomainAndRange
+		// On récupère les domaines et ranges des propriétés les plus utilisées
 		for (UriAndUriListAndNumberListAndUriListAndNumberListAndNumber resourcePropertyWithDatatypeAndClassRange : listMostUsedPropertyWithDatatypeAndClassRange) {
 			String uriPropertyDatatypeAndClassRange = resourcePropertyWithDatatypeAndClassRange.getUri().toString();
 			// Si propriété pas encore traitée
 			if (!listOfPropertyString.contains(uriPropertyDatatypeAndClassRange)) {
 				listOfPropertyString.add(uriPropertyDatatypeAndClassRange);
-				// if (uriPropertyDatatypeAndClassRange.equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#rest")) {
-				// 	System.out.println("property Ok ");
-				// }	
 				ArrayList<UriList> listUriListDomainTemp = new ArrayList<UriList>();
 				ArrayList<UriList> listUriListRangeTemp = new ArrayList<UriList>();
 				ArrayList<ArrayList<Uri>> listUriListDomain = new ArrayList<ArrayList<Uri>>();
@@ -96,11 +93,9 @@ public class MakeDescriptionModel {
 						listUriListRangeTemp.add(new UriList(uriListAndNumber.getUriList()));
 					}
 				} else {
-					if (resourcePropertyWithDatatypeAndClassRange.getUriListAndNumberList2().size() > 0) {
-						for (UriListAndNumber uriListAndNumber : resourcePropertyWithDatatypeAndClassRange.getUriListAndNumberList2()) {
-							listUriListRangeTemp.add(new UriList(uriListAndNumber.getUriList()));
-						}
-					} 
+					for (UriListAndNumber uriListAndNumber : resourcePropertyWithDatatypeAndClassRange.getUriListAndNumberList2()) {
+						listUriListRangeTemp.add(new UriList(uriListAndNumber.getUriList()));
+					}
 				}
 
 				for (UriAndUriListAndNumberListAndNumber resourcePropertyWithClassDomain : listMostUsedPropertyWithClassDomain) {
@@ -116,6 +111,7 @@ public class MakeDescriptionModel {
 				}
 				
 				Collections.sort(listUriListDomainTemp, new UriListComparator());
+
 				for(UriList urilist : listUriListDomainTemp) {
 					listUriListDomain.add(urilist.getUriList());
 				}
@@ -138,9 +134,6 @@ public class MakeDescriptionModel {
 			for (UriAndListUriListAndListUriList propertydomainandrange : listOfPropertyDomainAndRange) {
 				String uriProperty = propertydomainandrange.getUri();
 				if (uriProperty.equals(uriRelationship)) {
-					// if (uriProperty.equals("http://www.bbc.co.uk/ontologies/coreconcepts/primaryTopic")) {
-					// 	System.out.println("OK !");
-					// }
 					ArrayList<ArrayList<Uri>> listUriListRange = new ArrayList<ArrayList<Uri>>();
 					ArrayList<ArrayList<Uri>> listUriListDomain = new ArrayList<ArrayList<Uri>>();
 					// on récupère les listes d'origine.
@@ -165,38 +158,8 @@ public class MakeDescriptionModel {
 		
 		}
 
-		// Avec les nouvelles classes ayant été crées pour étudier les relations entre individus définis par une combinaison de caractéristiques,
-		//  on a aussi créer de nouveaux domaines pour les propriétés des classes même celles qui ne sont pas impliquées dans les relations entre 
-		//  classes !
-		// On met à jour la liste listOfPropertyDomainAndRange
-		for (UriListAndUriList uriListAndUriList :listCombinationPropertiesClassRelationshipsPropertiesOfClasses) {
-			for (Uri property : uriListAndUriList.getUriList2()) {
-				String uriPropertyOfClass = property.getUri().toString();
-				for (UriAndListUriListAndListUriList propertydomainandrange : listOfPropertyDomainAndRange) {
-					String uriProperty = propertydomainandrange.getUri();
-					if (uriProperty.equals(uriPropertyOfClass)) {
-						// if (uriProperty.equals("http://www.bbc.co.uk/ontologies/coreconcepts/primaryTopic")) {
-						// 	System.out.println("OK !");
-						// }
-						ArrayList<ArrayList<Uri>> listUriListDomain = new ArrayList<ArrayList<Uri>>();
-						// on récupère les listes d'origine.
-						listUriListDomain.addAll(propertydomainandrange.getListUriList1());
-						ArrayList<Uri> relationshipsDomains = uriListAndUriList.getUriList1(); 
-						if (!listUriListDomain.contains(relationshipsDomains)) {
-							listUriListDomain.add(relationshipsDomains);
-						}
-						// On met à jour la liste
-						propertydomainandrange.setListUriList1(listUriListDomain);
-						break;
-					}
-				}	
-		
-			}
-		}
-
 		// System.out.println("propertydomainandrange :");
 		// for(UriAndListUriListAndListUriList propertydomainandrange : listOfPropertyDomainAndRange) {
-		// 	if (propertydomainandrange.getUri().toString().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#rest")) {
 		// 	System.out.println("property : ");
 		// 	System.out.println(propertydomainandrange.getUri());
 		// 	System.out.println("domain : ");
@@ -207,7 +170,6 @@ public class MakeDescriptionModel {
 		// 	for(ArrayList<Uri> uriListRange : propertydomainandrange.getListUriList2()) {
 		// 		System.out.println(uriListRange.toString());
 		// 	}	
-		// 	}
 		// }
 
 		// On recupère les propriétés des classes concernées par des relations entres classes

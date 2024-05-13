@@ -7,6 +7,7 @@ import java.io.UnsupportedEncodingException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -15,6 +16,7 @@ import org.apache.jena.query.QueryFactory;
 import org.apache.jena.query.ResultSet;
 import org.apache.jena.query.ResultSetFormatter;
 import org.apache.jena.rdf.model.InfModel;
+import org.apache.jena.reasoner.ValidityReport;
 import org.apache.jena.update.UpdateAction;
 import org.apache.jena.update.UpdateFactory;
 import org.apache.jena.update.UpdateRequest;
@@ -38,7 +40,10 @@ public class QueryInferedModel {
 		ArrayList<ProfilingQueryObject> listQueries = new ArrayList<ProfilingQueryObject>();
 		ArrayList<ProfilingQueryObject> listQueriesTemp;	
 		ArrayList<ProfilingQueryOutputObject> listQueriesOutputs = new ArrayList<ProfilingQueryOutputObject>();
-		
+
+		//on verifie le modèle
+		VerifyInferedModel.verifyInferedModel(infModel);
+
 		// On recupére les fichiers de requêtes sur le serveur
 		// et on charge listQueries
 		ObjectMapper objectMapper = new ObjectMapper();

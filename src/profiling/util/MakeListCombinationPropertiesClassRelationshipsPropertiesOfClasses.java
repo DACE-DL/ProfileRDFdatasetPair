@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.jena.sparql.pfunction.library.bag;
+
+import com.github.andrewoma.dexx.collection.internal.base.Break;
+
 public class MakeListCombinationPropertiesClassRelationshipsPropertiesOfClasses {
 	
-	// Création du modèle de description
-	public static ArrayList<UriListAndUriAndUriListList>  makeList(ArrayList<UriListAndUriAndUriListAndNumber> listCombinationPropertiesClassRelationships,ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass, ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> listMostUsedPropertyWithDatatypeAndClassRange) {
+	// Création 
+	public static ArrayList<UriListAndUriList>  makeList(ArrayList<UriListAndUriAndUriListAndNumber> listCombinationPropertiesClassRelationships,ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass, ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> listMostUsedPropertyWithDatatypeAndClassRange) {
 		//Instant start0 = Instant.now();	
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses = new ArrayList<UriListAndUriAndUriListList>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses = new ArrayList<UriListAndUriList>();
 		// On recupére toutes les combinaisons de classes qui sont en relation
 		Set<UriList> setListClassesInvolvedInRelationships = new HashSet<>();
 		for (UriListAndUriAndUriListAndNumber uriListAndUriAndUriListAndNumber : listCombinationPropertiesClassRelationships) {
@@ -18,66 +22,39 @@ public class MakeListCombinationPropertiesClassRelationshipsPropertiesOfClasses 
 		}
 		ArrayList<UriList> listListClassesInvolvedInRelationships = new ArrayList<>(setListClassesInvolvedInRelationships);	
 		
+		// System.out.println("listListClassesInvolvedInRelationships");
+		// for (UriList treatedListClasses : listListClassesInvolvedInRelationships) {
+		//  	System.out.println(treatedListClasses.toString());
+		// }	
+
+		
 		for (UriList treatedListClasses : listListClassesInvolvedInRelationships) {
-			ArrayList<UriAndUriList> uriAndUriListList = new ArrayList<UriAndUriList>();
+			ArrayList<Uri> urilist1 = new ArrayList<Uri>();
+			ArrayList<Uri> urilist2 = new ArrayList<Uri>();
 			// Pour rappel la liste listCombinationPropertiesWithNewClass à été nettoyée pour obtenir les propriétés communes !  
-			// En effet quand plusieurs combinaisons de propriétés conrespondait à une même combinaison de classes seulles les propriétés
+			// En effet quand plusieurs combinaisons de propriétés corespondait à une même combinaison de classes seules les propriétés
 			//  communes ont été retenues.
 			for (UriListAndUriList propertiesOfClass : listCombinationPropertiesWithNewClass) {
 				if(propertiesOfClass.getUriList1().toString().equals(treatedListClasses.toString()) ) {
+					// if (treatedListClasses.toString().equals("[http://www.inrae.fr/DatasetProfiling/Class-4]")) {
+					// 	System.out.println("OK ***********");
+					// }	
 					for (Uri property : propertiesOfClass.getUriList2()) {
-						for (UriAndUriListAndNumberListAndUriListAndNumberListAndNumber propertyWithDatatypeAndClassRange : listMostUsedPropertyWithDatatypeAndClassRange) {
-							if(propertyWithDatatypeAndClassRange.getUri().equals(property)) {
-								UriAndUriList uriAndUriList = new UriAndUriList();
-								uriAndUriList.setUri(property.getUri());
-								ArrayList<Uri> uriList = new ArrayList<Uri>();
-								for (UriListAndNumber datatypeListAndNumber : propertyWithDatatypeAndClassRange.getUriListAndNumberList1()) {
-									// Pour les datatypes on considère qu'il ne peux y avoir q'un seul datatype dans la liste
-									Uri datatype = new Uri(datatypeListAndNumber.getUriList().get(0).getUri());	
-									uriList.add(datatype);
-								}
-								if (uriList.size() > 0) {
-									// On s'assure contre les mauvaises suprises : cas ou dans le range de la propriété on ais
-									//  à la fois des datatypes et des classes 
-									Boolean objectProperty = false;
-									for (UriListAndUriAndUriListAndNumber uriListAndUriAndUriListAndNumber : listCombinationPropertiesClassRelationships) {
-										if (uriListAndUriAndUriListAndNumber.getUri().toString().equals(uriAndUriList.getUri().toString())) {
-											objectProperty = true;
-											break;
-										}
-									}	
-									if (!objectProperty) {
-										uriAndUriList.setUriList(uriList);
-										uriAndUriListList.add(uriAndUriList);
-									}
-								} else {
-									// Si la liste est vide on ne selectionne la propriété que si aucune classe
-									//  n'est declarée dans le domaine.
-									if (propertyWithDatatypeAndClassRange.getUriListAndNumberList2().size() == 0) {
-										// on s'assure aussi que la relation n'à pas été utilisé pour une object property
-										// dans le cas de la création de nouvelle classes 
-										Boolean objectProperty = false;
-										for (UriListAndUriAndUriListAndNumber uriListAndUriAndUriListAndNumber : listCombinationPropertiesClassRelationships) {
-											if (uriListAndUriAndUriListAndNumber.getUri().toString().equals(uriAndUriList.getUri().toString())) {
-												objectProperty = true;
-												break;
-											}
-										}	
-										if (!objectProperty) {
-											uriAndUriList.setUriList(uriList);
-											uriAndUriListList.add(uriAndUriList);
-										}
-									}
-								}
-								
-							}	
+						if (treatedListClasses.toString().equals("[http://www.inrae.fr/DatasetProfiling/Class-4]")) {
+							System.out.println(property.toString());
 						}
+						urilist2.add(property);
+						
 					}
 
-					UriListAndUriAndUriListList uriListAndUriAndUriListList = new UriListAndUriAndUriListList();
-					uriListAndUriAndUriListList.setUriList(treatedListClasses);
-					uriListAndUriAndUriListList.setUriAndUriListList(uriAndUriListList);
-					listCombinationPropertiesClassRelationshipsPropertiesOfClasses.add(uriListAndUriAndUriListList);
+					UriListAndUriList uriListAndUriList = new UriListAndUriList();
+					uriListAndUriList.setUriList1(urilist1);
+					for (int i = 0; i < treatedListClasses.size(); i++) {
+						urilist1.add(treatedListClasses.get(i));
+					}	
+					uriListAndUriList.setUriList2(urilist2);
+					listCombinationPropertiesClassRelationshipsPropertiesOfClasses.add(uriListAndUriList);
+					break;
 				}
 			}
 		}

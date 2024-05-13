@@ -1,6 +1,9 @@
-package profiling.util;
+package Asupprimer;
 
 import java.util.ArrayList;
+
+import profiling.util.UriAndUriList;
+import profiling.util.UriList;
 
 public class UriListAndUriAndUriListList {
 	

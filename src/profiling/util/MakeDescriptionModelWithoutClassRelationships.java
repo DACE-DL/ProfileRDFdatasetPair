@@ -143,10 +143,10 @@ public class MakeDescriptionModelWithoutClassRelationships {
 		relationshipsBuilder.append(buildTurtleClassString(listClassMostUsed));
 	
 		// On s'occupe maintenant des object properties
-		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleObjectPropertyString(listMostUsedObjectProperty, listOfPropertyDomainAndRange));
+		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleObjectPropertyString(listMostUsedObjectProperty, listOfPropertyDomainAndRange, maxOfUnion));
 
 		// On s'occupe maintenant des datatype properties
-		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleDatatypePropertyString(listMostUsedDatatypeProperty, listOfPropertyDomainAndRange));  
+		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleDatatypePropertyString(listMostUsedDatatypeProperty, listOfPropertyDomainAndRange, maxOfUnion));  
 
 		// On s'occupe maintenant des annotation properties
 

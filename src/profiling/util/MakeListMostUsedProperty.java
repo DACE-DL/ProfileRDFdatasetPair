@@ -13,12 +13,19 @@ public class MakeListMostUsedProperty {
 		Integer n = 0;
 
 		for (UriAndNumber resource : listPropertyUsageCount) {
-			if (n < 100) {
-				ListResources.add(resource) ;
-				n++;
-			} else {
-				break;
-			}
+			// On se débarasse de certaines propriétés de RDF pour les listes...
+			if (! resource.getUri().toString().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#rest")
+			&& ! resource.getUri().toString().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#nil")
+			&& ! resource.getUri().toString().equals("http://www.w3.org/1999/02/22-rdf-syntax-ns#first")
+			&& ! resource.getUri().toString().equals("http://www.w3.org/2002/07/owl#oneOf")
+			) {
+				if (n < 100) {
+					ListResources.add(resource) ;
+					n++;
+				} else {
+					break;
+				}
+			}	
 		}
 		
 		Collections.sort(ListResources, new UriAndNumberComparator());

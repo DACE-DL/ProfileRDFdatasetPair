@@ -475,18 +475,18 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = new ArrayList<UriListAndUriAndUriListList>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = new ArrayList<UriListAndUriList>();
 		Path pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
 	    try {
-			listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = ProfilingUtil.makeArrayListUriListAndUriAndUriListList(pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesSource.toString());
+			listCombinationPropertiesClassRelationshipsPropertiesOfClassesSource = ProfilingUtil.makeArrayListUriListAndUriList(pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesSource.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = new ArrayList<UriListAndUriAndUriListList>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = new ArrayList<UriListAndUriList>();
 		Path pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
 	    try {
-			listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = ProfilingUtil.makeArrayListUriListAndUriAndUriListList(pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget.toString());
+			listCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget = ProfilingUtil.makeArrayListUriListAndUriList(pathNameListCombinationPropertiesClassRelationshipsPropertiesOfClassesTarget.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

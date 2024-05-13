@@ -305,10 +305,7 @@ public class ProfilingPreProcessing {
 		// Création de nouvelles classes et marquage d'instances pour les combinaisons de propriétés.
 		String nameOfListCombinationPropertiesWithNewClasses = "listCombinationPropertiesWithNewClass";
 		ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass = new ArrayList<UriListAndUriList>();
-		// On créer une version temporaire de listCombinationPropertiesPerSubjectCleanedAndReduced car on modifie son ordre dans le programe suivant
-		ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubjectCleanedAndReducedTemp = new ArrayList<UriListAndUriListAndNumberListAndNumber>();
-		listCombinationPropertiesPerSubjectCleanedAndReducedTemp.addAll(listCombinationPropertiesPerSubjectCleanedAndReduced);
-		listCombinationPropertiesWithNewClass = MakeListCombinationPropertiesWithNewClass.makeClasses(model,  listCombinationPropertiesPerSubjectCleanedAndReducedTemp);
+		listCombinationPropertiesWithNewClass = MakeListCombinationPropertiesWithNewClass.makeClasses(model,  listCombinationPropertiesPerSubjectCleanedAndReduced);
 
 		// Liste des relations entre les classes pour les combinaisons de propriétés.
 		String nameOflistCombinationPropertiesClassRelationships = "listCombinationPropertiesClassRelationships";
@@ -327,7 +324,7 @@ public class ProfilingPreProcessing {
 		
 		// Liste des propriétés des classes les plus importantes pour les combinaisons de propriétés.
 		String nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses = "listCombinationPropertiesClassRelationshipsPropertiesOfClasses";
-		ArrayList<UriListAndUriAndUriListList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses = new ArrayList<UriListAndUriAndUriListList>();
+		ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses = new ArrayList<UriListAndUriList>();
 		listCombinationPropertiesClassRelationshipsPropertiesOfClasses = MakeListCombinationPropertiesClassRelationshipsPropertiesOfClasses.makeList(listCombinationPropertiesClassRelationships, listCombinationPropertiesWithNewClass, listMostUsedPropertyWithDatatypeAndClassRange);
 
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
@@ -588,7 +585,7 @@ public class ProfilingPreProcessing {
 		}
 
 		try {
-			ProfilingUtil.makeJsonUriListAndUriAndUriListListFile(listCombinationPropertiesClassRelationshipsPropertiesOfClasses, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
+			ProfilingUtil.makeJsonUriListAndUriListFile(listCombinationPropertiesClassRelationshipsPropertiesOfClasses, nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

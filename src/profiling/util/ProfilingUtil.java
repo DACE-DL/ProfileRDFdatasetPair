@@ -891,7 +891,7 @@ public class ProfilingUtil {
 	}
 	
 		//  Créé un fichier JSON partir d'un tableau d'objects
-		public static void makeJsonUriListAndUriAndUriListListFile(ArrayList<UriListAndUriAndUriListList> listObject, String nameJsonObjectFile) throws Exception {
+		public static void makeJsonUriListAndUriListFile(ArrayList<UriListAndUriList> listObject, String nameJsonObjectFile) throws Exception {
 			// Récupération du chemin du fichier.
 			Path pathOfTheFile = Paths.get(ProfilingConf.folderForTmp, nameJsonObjectFile);
 			File file  = new File(pathOfTheFile.toString());
@@ -901,8 +901,8 @@ public class ProfilingUtil {
 		}
 		
 		// Retourne un tableau d'objects à partir d'un fichier JSON
-		public static ArrayList<UriListAndUriAndUriListList> makeArrayListUriListAndUriAndUriListList(String nameJsonObjectFile) throws Exception {
-			ArrayList<UriListAndUriAndUriListList> listObjects = new ArrayList<UriListAndUriAndUriListList>();
+		public static ArrayList<UriListAndUriList> makeArrayListUriListAndUriList(String nameJsonObjectFile) throws Exception {
+			ArrayList<UriListAndUriList> listObjects = new ArrayList<UriListAndUriList>();
 			// Récupération du chemin du fichier.
 			Path pathOfTheFile = Paths.get(nameJsonObjectFile);
 			File file  = new File(pathOfTheFile.toString());
@@ -910,7 +910,7 @@ public class ProfilingUtil {
 			   //on récupère les objects à traiter dans le fichier JSON
 				String jsonArray = ProfilingUtil.readFileAsString(pathOfTheFile.toString());
 				ObjectMapper objectMapper = new ObjectMapper();	
-				listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriListAndUriAndUriListList>>(){});	 
+				listObjects = objectMapper.readValue(jsonArray, new TypeReference<ArrayList<UriListAndUriList>>(){});	 
 			} else {
 				System.out.println("Le fichier " + nameJsonObjectFile +  " est inexistant !"); 
 			}	
@@ -1029,6 +1029,7 @@ public class ProfilingUtil {
 					}		
 				}	
 				
+				// On ne peut mettre des annotations properties dans une restriction
 				if (listCombinaisonPropertiesWithoutAnnotationProperties.size() > 0) {
 					turtleBuilder.append("<"+ uriClass + "> rdfs:subClassOf ");
 					Boolean first = true;
@@ -1046,6 +1047,7 @@ public class ProfilingUtil {
 						}
 					turtleBuilder.append("  . ");
 				}
+				// Par contre on les places tous dans la description de la classe
 				if (listAllCombinaisonProperties.size() > 0) {
 					turtleBuilder.append("<"+ uriClass + "> <" + dc +"description> ");
 					turtleBuilder.append("\"");
@@ -1070,7 +1072,7 @@ public class ProfilingUtil {
         return turtleBuilder.toString();
     }
 
-	static String buildTurtleObjectPropertyString( ArrayList<UriAndNumber> listMostUsedObjectProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange) {
+	static String buildTurtleObjectPropertyString( ArrayList<UriAndNumber> listMostUsedObjectProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange, Integer maxOfUnion) {
         StringBuilder turtleBuilder = new StringBuilder();
 		
 		for (UriAndNumber uriAndNumber : listMostUsedObjectProperty) {
@@ -1099,7 +1101,7 @@ public class ProfilingUtil {
 							}	 
 						}	
 					} else {
-						if (propertyDomainAndRange.getListUriList1().size() >= 11) { // il y a un nombre déraisonable de liste pour le domaine
+						if (propertyDomainAndRange.getListUriList1().size() >= maxOfUnion) { // il y a un nombre déraisonable de liste pour le domaine
 							turtleBuilder.append(" rdfs:Resource ; ");
 						} else {
 							turtleBuilder.append(" [ rdf:type owl:Class ;");
@@ -1168,7 +1170,7 @@ public class ProfilingUtil {
         return turtleBuilder.toString();
     }
 
-	static String buildTurtleDatatypePropertyString( ArrayList<UriAndNumber> listMostUsedDatatypeProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange) {
+	static String buildTurtleDatatypePropertyString( ArrayList<UriAndNumber> listMostUsedDatatypeProperty , ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange, Integer maxOfUnion) {
         StringBuilder turtleBuilder = new StringBuilder();
 		
 		for (UriAndNumber uriAndNumber : listMostUsedDatatypeProperty) {
@@ -1176,10 +1178,11 @@ public class ProfilingUtil {
 			for (UriAndListUriListAndListUriList propertyDomainAndRange : listOfPropertyDomainAndRange) {
 				if (propertyDomainAndRange.getUri().toString().equals(uriProperty)) { 
 					turtleBuilder.append("<" + uriProperty + ">");
-					turtleBuilder.append(" a owl:DatatypeProperty ;");
+					turtleBuilder.append(" a owl:DatatypeProperty ");
 					// Pour le domaine de la datatype propriété 
-					turtleBuilder.append(" rdfs:domain ");
+					
 					if (propertyDomainAndRange.getListUriList1().size() == 1) { // il n'y a qu'une liste de classes pour le domain
+					    turtleBuilder.append("; rdfs:domain ");
 						for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
 							if (uriListDomain.size() == 1) { // dans cette unique liste de classes il n'y a qu'une classe.
 								turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
@@ -1196,26 +1199,30 @@ public class ProfilingUtil {
 							}	 
 						}	
 					} else {
-						if (propertyDomainAndRange.getListUriList1().size() >= 11) { // il y a un nombre déraisonable de liste pour le domaine
-							turtleBuilder.append(" rdfs:Resource ; ");
-						} else {
-							turtleBuilder.append(" [ rdf:type owl:Class ;");
-							turtleBuilder.append(" owl:unionOf ( ");
-							for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
-								if (uriListDomain.size() == 1) {
-									turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
-								} else {
-									turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
-									for (Uri uriDomain : uriListDomain) {
-										turtleBuilder.append("<"+ uriDomain.getUri() + "> ");
-									}
-									turtleBuilder.append(" ) ");
-									turtleBuilder.append(" ] ");				
-								}	 
+						if (propertyDomainAndRange.getListUriList1().size() > 1) {
+							if (propertyDomainAndRange.getListUriList1().size() >= maxOfUnion) { // il y a un nombre déraisonable de liste pour le domaine
+								turtleBuilder.append("; rdfs:domain ");
+								turtleBuilder.append(" rdfs:Resource ");
+							} else {
+								turtleBuilder.append("; rdfs:domain ");
+								turtleBuilder.append(" [ rdf:type owl:Class ;");
+								turtleBuilder.append(" owl:unionOf ( ");
+								for (ArrayList<Uri> uriListDomain : propertyDomainAndRange.getListUriList1()) {
+									if (uriListDomain.size() == 1) {
+										turtleBuilder.append("<" + uriListDomain.get(0).getUri() + "> ");
+									} else {
+										turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+										for (Uri uriDomain : uriListDomain) {
+											turtleBuilder.append("<"+ uriDomain.getUri() + "> ");
+										}
+										turtleBuilder.append(" ) ");
+										turtleBuilder.append(" ] ");				
+									}	 
+								}
+								turtleBuilder.append(" ) ");	
+								turtleBuilder.append(" ]  ");
 							}
-							turtleBuilder.append(" ) ");	
-							turtleBuilder.append(" ]  ");
-						}	
+						}		
 					}
 						
 					// Pour le range de la datatype propriété 
@@ -1245,22 +1252,26 @@ public class ProfilingUtil {
 							}	
 						}
 					} else {
-						turtleBuilder.append("; rdfs:range ");
-						turtleBuilder.append(" [ rdf:type owl:Class ;");
-						turtleBuilder.append(" owl:unionOf ( ");
-						for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
-							if (uriListRange.size() == 1) {
-								turtleBuilder.append("<" + uriListRange.get(0).getUri() + "> ");
-							} else {
-								turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
-								for (Uri uriRange : uriListRange) {
-									turtleBuilder.append("<"+ uriRange.getUri() + ">");
-								}
-								turtleBuilder.append(" ) ");
-								turtleBuilder.append(" ] ");
-							}	 
+						if (propertyDomainAndRange.getListUriList2().size() > 1) {
+							turtleBuilder.append("; rdfs:range ");
+							turtleBuilder.append(" [ rdf:type owl:Class ;");
+							turtleBuilder.append(" owl:unionOf ( ");
+							for (ArrayList<Uri> uriListRange : propertyDomainAndRange.getListUriList2()) {
+								if (uriListRange.size() == 1) {
+									turtleBuilder.append("<" + uriListRange.get(0).getUri() + "> ");
+								} else {
+									turtleBuilder.append(" [ rdf:type owl:Class ; owl:intersectionOf ( ");
+									for (Uri uriRange : uriListRange) {
+										turtleBuilder.append("<"+ uriRange.getUri() + ">");
+									}
+									turtleBuilder.append(" ) ");
+									turtleBuilder.append(" ] ");
+								}	 
+							}
+							turtleBuilder.append(" ] . ");	
+						} else {
+							turtleBuilder.append(" . ");	
 						}
-						turtleBuilder.append(" ] . ");	
 					}
 					break;	
 				}	

@@ -1,6 +1,7 @@
 package profiling.util;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class UriListAndNumber {
 	
@@ -13,6 +14,11 @@ public class UriListAndNumber {
 	public UriListAndNumber(ArrayList<Uri> uriList, Integer number) {
 		this.uriList = uriList;
 		this.number = number;
+	}
+
+	public UriListAndNumber(UriListAndNumber other) {
+		this.uriList = other.uriList;
+		this.number = other.number;
 	}
 
 	public ArrayList<Uri> getUriList() {
@@ -28,5 +34,19 @@ public class UriListAndNumber {
 	}
 	public void setNumber(Integer number) {
 		this.number = number;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		UriListAndNumber that = (UriListAndNumber) o;
+		return Objects.equals(uriList, that.uriList) &&
+		       Objects.equals(number, that.number);
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(uriList, number);
 	}
 }
