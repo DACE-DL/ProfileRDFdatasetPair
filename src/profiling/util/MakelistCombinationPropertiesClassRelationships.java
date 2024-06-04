@@ -26,6 +26,7 @@ public class MakelistCombinationPropertiesClassRelationships {
 		ArrayList<String> listOfUriListAndUriListTreated = new ArrayList<String>();
 		
 		Instant start0 = Instant.now();	
+		// System.out.println("listCombinationPropertiesWithNewClass size: " + listCombinationPropertiesWithNewClass.size());	
 		for (UriListAndUriList resource : listCombinationPropertiesWithNewClass) {
 			Instant start1 = Instant.now();	
 			for (UriListAndUriList resourceTemp : listCombinationPropertiesWithNewClassTemp) {
@@ -33,7 +34,7 @@ public class MakelistCombinationPropertiesClassRelationships {
 				if (!listOfUriListAndUriListTreated.contains(uriListAndUriListTreated)) {
 					listOfUriListAndUriListTreated.add(uriListAndUriListTreated);
 					// String queryString = buildSparqlString(resource.getUriList1(), resourceTemp.getUriList1(), resource.getUriList2());
-					String queryString = buildSparqlStringTest(resource.getUriList1(), resourceTemp.getUriList1(), resource.getUriList2(), resourceTemp.getUriList2());
+					String queryString = buildSparqlString(resource.getUriList1(), resourceTemp.getUriList1(), resource.getUriList2(), resourceTemp.getUriList2());
 					Query query = QueryFactory.create(prefix + queryString);
 					// System.out.println(queryString);	
 					QueryExecution qe = QueryExecutionFactory.create(query, model);	
@@ -82,244 +83,59 @@ public class MakelistCombinationPropertiesClassRelationships {
 			return b.getNumber() - a.getNumber();
 		}
 	}
-	private static String buildSparqlString(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3) {
+	
+
+	private static String buildSparqlString(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(" SELECT DISTINCT ?property (COUNT(?property) AS ?number) WHERE { ");
-		queryBuilder.append("?subject ?property ?object . ");
-		queryBuilder.append("?subject rdf:type ?typeSubject . ");
-		queryBuilder.append("?object rdf:type ?typeObject . ");
+        queryBuilder.append(" SELECT (?relation AS ?property) (COUNT(?relation) AS ?number) ");
+		queryBuilder.append(" WHERE { ");
+		queryBuilder.append(" ?subject ?relation ?object . ");
+		queryBuilder.append(" ?object rdf:type ?typeObject . ");
+		queryBuilder.append(" ?subject rdf:type ?typeSubject . ");
 		queryBuilder.append(" FILTER ( ");
+		queryBuilder.append(" ?relation IN ( ");
 		Boolean first1 = true;
-		for (Uri uriClass : uriList1) {
+		for (Uri uriProperty : uriList3) {
 			if (first1) { 
 				first1 = false;
-				queryBuilder.append(" ?typeSubject = <").append(uriClass.toString()).append(">");
+				queryBuilder.append(" <").append(uriProperty.toString()).append(">");
 			} else {
-            	queryBuilder.append(" && ?typeSubject = <").append(uriClass.toString()).append(">");
+				queryBuilder.append(" , <").append(uriProperty.toString()).append(">");
 			}
-        }
+		}
+		queryBuilder.append(" ) ");
 		queryBuilder.append(" ) ");
 		queryBuilder.append(" FILTER ( ");
 		Boolean first2 = true;
-		for (Uri uriClass : uriList2) {
+		for (Uri uriClass : uriList1) {
 			if (first2) { 
 				first2 = false;
-				queryBuilder.append(" ?typeObject = <").append(uriClass.toString()).append(">");
+				queryBuilder.append(" ?typeSubject = <").append(uriClass.toString()).append(">");
 			} else {
-            	queryBuilder.append(" && ?typeObject = <").append(uriClass.toString()).append(">");
+				queryBuilder.append(" && ?typeSubject = <").append(uriClass.toString()).append(">");
 			}
-        }
-		queryBuilder.append(" ) ");
-		// for (Uri uriClass : uriList1) {
-        //     queryBuilder.append("?subject rdf:type <").append(uriClass.toString()).append(">").append(" . ");
-        // }
-		// for (Uri uriClass : uriList2) {
-        //     queryBuilder.append("?object rdf:type <").append(uriClass.toString()).append(">").append(" . ");
-        // }
-		queryBuilder.append(" FILTER ( ");
+		}
+		queryBuilder.append(" && ");
+		// queryBuilder.append(" ) ");
+		// queryBuilder.append(" FILTER ( ");
 		Boolean first3 = true;
-		for (Uri uriProperty : uriList3) {
+		for (Uri uriClass : uriList2) {
 			if (first3) { 
 				first3 = false;
-				queryBuilder.append(" ?property = <").append(uriProperty.toString()).append(">");
-			} else {
-            	queryBuilder.append(" || ?property = <").append(uriProperty.toString()).append(">");
-			}
-        }
-        queryBuilder.append(" ) ");
-		queryBuilder.append("} GROUP BY ?property ");
-        // Retourne la requête en tant que chaîne de caractères
-        return queryBuilder.toString();
-    }
-
-	private static String buildSparqlStringTest0(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(" SELECT DISTINCT (?relation AS ?property) (COUNT(?relation) AS ?number) WHERE { ");
-		Integer n3 = 0;
-		for (Uri uriSubjectProperty : uriList3) {
-             queryBuilder.append("?subject <").append(uriSubjectProperty.toString()).append("> ?objectS").append(n3).append(" . ");
-			 n3++;
-        }
-		Integer n4 = 0;
-		for (Uri uriObjectProperty : uriList4) {
-             queryBuilder.append("?object <").append(uriObjectProperty.toString()).append("> ?objectO").append(n3).append(" . ");
-			 n4++;
-        }
-		queryBuilder.append("?subject ?relation ?object . ");
-		queryBuilder.append("?subject rdf:type ?typeSubject . ");
-		queryBuilder.append("?object rdf:type ?typeObject . ");
-		queryBuilder.append(" FILTER ( ");
-		Boolean first1 = true;
-		for (Uri uriClass : uriList1) {
-			if (first1) { 
-				first1 = false;
-				queryBuilder.append(" ?typeSubject = <").append(uriClass.toString()).append(">");
-			} else {
-            	queryBuilder.append(" && ?typeSubject = <").append(uriClass.toString()).append(">");
-			}
-        }
-		queryBuilder.append(" ) ");
-		queryBuilder.append(" FILTER ( ");
-		Boolean first2 = true;
-		for (Uri uriClass : uriList2) {
-			if (first2) { 
-				first2 = false;
-				queryBuilder.append(" ?typeObject = <").append(uriClass.toString()).append(">");
-			} else {
-            	queryBuilder.append(" && ?typeObject = <").append(uriClass.toString()).append(">");
-			}
-        }
-		queryBuilder.append(" ) ");
-
-		queryBuilder.append(" } GROUP BY ?relation ");
-
-
-		System.out.println(queryBuilder.toString());	
-        // Retourne la requête en tant que chaîne de caractères
-        return queryBuilder.toString();
-    }
-
-
-	private static String buildSparqlStringTest(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(" SELECT DISTINCT (?relation AS ?property) (COUNT(?relation) AS ?number) ");
-		queryBuilder.append(" WHERE { ");
-		queryBuilder.append(" { ");
-		queryBuilder.append(" SELECT DISTINCT ?subject WHERE { ");
-		for (Uri uriSubjectClass : uriList1) {
-             queryBuilder.append("?subject rdf:type <").append(uriSubjectClass.toString()).append("> ").append(" . ");
-        }
-		queryBuilder.append(" } ");
-		queryBuilder.append(" } ");
-		queryBuilder.append(" ?subject ?relation ?object . ");
-		queryBuilder.append("?object rdf:type ?typeObject . ");
-		// for (Uri uriObjectClass : uriList2) {
-		// 	queryBuilder.append("?object rdf:type <").append(uriObjectClass.toString()).append("> ").append(" . ");
-	   	// }
-		queryBuilder.append(" FILTER ( ");
-		Boolean first2 = true;
-		for (Uri uriClass : uriList2) {
-			if (first2) { 
-				first2 = false;
 				queryBuilder.append(" ?typeObject = <").append(uriClass.toString()).append(">");
 			} else {
 				queryBuilder.append(" && ?typeObject = <").append(uriClass.toString()).append(">");
 			}
 		}
 		queryBuilder.append(" ) ");
-		queryBuilder.append(" FILTER ( ");
-		Boolean first3 = true;
-		for (Uri uriProperty : uriList3) {
-			if (first3) { 
-				first3 = false;
-				queryBuilder.append(" ?relation = <").append(uriProperty.toString()).append(">");
-			} else {
-				queryBuilder.append(" || ?relation = <").append(uriProperty.toString()).append(">");
-			}
-		}
-		   queryBuilder.append(" ) ");
+		
 		queryBuilder.append(" } GROUP BY ?relation");
 		
-		// System.out.println(queryBuilder.toString());	
+	    // System.out.println(queryBuilder.toString());	
         // Retourne la requête en tant que chaîne de caractères
         return queryBuilder.toString();
     }
-	private static String buildSparqlStringTest2(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(" SELECT DISTINCT (?relation AS ?property) (COUNT(?relation) AS ?number) ");
-		queryBuilder.append(" WHERE { ");
-		queryBuilder.append(" { ");
-		queryBuilder.append(" SELECT DISTINCT ?subject WHERE { ");
-		for (Uri uriSubjectClass : uriList1) {
-             queryBuilder.append("?subject rdf:type <").append(uriSubjectClass.toString()).append("> ").append(" . ");
-        }
-		queryBuilder.append(" } ");
-		queryBuilder.append(" } ");
-		queryBuilder.append(" { ");
-		queryBuilder.append(" SELECT DISTINCT ?object WHERE { ");
-		for (Uri uriObjectClass : uriList2) {
-             queryBuilder.append("?object rdf:type <").append(uriObjectClass.toString()).append("> ").append(" . ");
-        }
-		queryBuilder.append(" } ");
-		queryBuilder.append(" } ");
-		queryBuilder.append(" ?subject ?relation ?object . ");
-		//    queryBuilder.append(" FILTER ( ");
-		//    Boolean first2 = true;
-		//    for (Uri uriClass : uriList2) {
-		// 	   if (first2) { 
-		// 		   first2 = false;
-		// 		   queryBuilder.append(" ?typeObject = <").append(uriClass.toString()).append(">");
-		// 	   } else {
-		// 		   queryBuilder.append(" && ?typeObject = <").append(uriClass.toString()).append(">");
-		// 	   }
-		//    }
-		//    queryBuilder.append(" ) ");
-		queryBuilder.append(" FILTER ( ");
-		Boolean first3 = true;
-		for (Uri uriProperty : uriList3) {
-			if (first3) { 
-				first3 = false;
-				queryBuilder.append(" ?relation = <").append(uriProperty.toString()).append(">");
-			} else {
-				queryBuilder.append(" || ?relation = <").append(uriProperty.toString()).append(">");
-			}
-		}
-		   queryBuilder.append(" ) ");
-		queryBuilder.append(" } GROUP BY ?relation");
-		
-		// System.out.println(queryBuilder.toString());	
-        // Retourne la requête en tant que chaîne de caractères
-        return queryBuilder.toString();
-    }
+
 	
-	private static String buildSparqlStringTest1(ArrayList<Uri> uriList1, ArrayList<Uri> uriList2 , ArrayList<Uri> uriList3, ArrayList<Uri> uriList4) {
-        StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append(" SELECT DISTINCT (?relation AS ?property) (COUNT(?relation) AS ?number) ");
-		queryBuilder.append(" WHERE { ");
-		queryBuilder.append(" 	{ ");
-		queryBuilder.append(" 	SELECT DISTINCT ?subject WHERE { ");
-									Integer n3 = 0;
-									for (Uri uriSubjectProperty : uriList3) {
-             							queryBuilder.append("?subject <").append(uriSubjectProperty.toString()).append("> ?objectS").append(n3).append(" . ");
-			 							n3++;
-        							}
-									queryBuilder.append("?subject rdf:type ?typeSubject . ");
-		queryBuilder.append(" 	FILTER ( ");
-									Boolean first1 = true;
-									for (Uri uriClass : uriList1) {
-										if (first1) { 
-											first1 = false;
-											queryBuilder.append(" ?typeSubject = <").append(uriClass.toString()).append(">");
-										} else {
-											queryBuilder.append(" && ?typeSubject = <").append(uriClass.toString()).append(">");
-										}
-									}
-		queryBuilder.append(" 	) ");
-		queryBuilder.append(" 	} ");
-		queryBuilder.append(" 	} ");
-		queryBuilder.append(" 	?subject ?relation ?object . ");
-									Integer n4 = 0;
-									for (Uri uriObjectProperty : uriList4) {
-             							queryBuilder.append("?object <").append(uriObjectProperty.toString()).append("> ?objectO").append(n3).append(" . ");
-			 							n4++;
-        							}
-		queryBuilder.append(" 	?object rdf:type ?typeObject . ");
-		queryBuilder.append(" 	FILTER ( ");
-									Boolean first2 = true;
-									for (Uri uriClass : uriList2) {
-										if (first2) { 
-											first2 = false;
-											queryBuilder.append(" ?typeObject = <").append(uriClass.toString()).append(">");
-										} else {
-											queryBuilder.append(" && ?typeObject = <").append(uriClass.toString()).append(">");
-										}
-									}
-		queryBuilder.append("   ) ");
-		queryBuilder.append("   } GROUP BY ?relation");
-		
-		System.out.println(queryBuilder.toString());	
-        // Retourne la requête en tant que chaîne de caractères
-        return queryBuilder.toString();
-    }
 }
 

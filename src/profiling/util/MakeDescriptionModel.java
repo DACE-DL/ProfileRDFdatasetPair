@@ -15,7 +15,8 @@ public class MakeDescriptionModel {
 	 ArrayList<UriListAndUriList> listCombinationPropertiesClassRelationshipsPropertiesOfClasses,
 	 ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass, ArrayList<UriAndUriListAndNumberListAndNumber> listMostUsedPropertyWithClassDomain,
 	 ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> listMostUsedPropertyWithDatatypeAndClassRange,
-	 ArrayList<UriAndNumber> listMostUsedObjectProperty, ArrayList<UriAndNumber>listMostUsedDatatypeProperty, ArrayList<UriAndNumber> listMostUsedAnnotationProperty) {
+	 ArrayList<UriAndNumber> listMostUsedObjectProperty, ArrayList<UriAndNumber>listMostUsedDatatypeProperty,
+	 ArrayList<UriAndNumber> listMostUsedAnnotationProperty, ArrayList<UriAndNumber> listMostUsedRDFproperty) {
 		
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 
@@ -35,9 +36,10 @@ public class MakeDescriptionModel {
 		ArrayList<String> listOfProperty = new ArrayList<String>();
 		ArrayList<UriAndListUriListAndListUriList> listOfPropertyDomainAndRange = new ArrayList<UriAndListUriListAndListUriList>();
 		ArrayList<String> listOfPropertyString = new ArrayList<String>();
-		Integer maxOfUnion = 50;
+		Integer maxOfUnion = 20;
 
 		// Instant start0 = Instant.now();	
+		System.out.println("MakeDescriptionModel !");
 	    
 		listCombinationPropertiesClassRelationshipsTemp.addAll(listCombinationPropertiesClassRelationships);
 
@@ -214,6 +216,7 @@ public class MakeDescriptionModel {
 		ArrayList<UriAndNumber> listObjectProperty = new ArrayList<UriAndNumber>();
 		ArrayList<UriAndNumber> listDatatypeProperty = new ArrayList<UriAndNumber>();
 		ArrayList<UriAndNumber> listAnnotationProperty = new ArrayList<UriAndNumber>();
+		ArrayList<UriAndNumber> listRDFproperty = new ArrayList<UriAndNumber>();
 		ArrayList<String> listOfPropertyString2 = new ArrayList<String>();
 		for (UriListAndUriList ressource : listCombinationPropertiesClassRelationshipsPropertiesOfClasses) {
 			for (Uri ressource2 : ressource.getUriList2()) {
@@ -238,7 +241,13 @@ public class MakeDescriptionModel {
 							listAnnotationProperty.add(ressource5);
 							break;
 						}
-					}	
+					}
+					for (UriAndNumber ressource6 : listMostUsedAnnotationProperty) {
+						if (ressource6.getUri().toString().equals(uriProperty)) {
+							listRDFproperty.add(ressource6);
+							break;
+						}
+					}		
 				}	
 			}
 		}
@@ -248,6 +257,9 @@ public class MakeDescriptionModel {
 
 		// On s'occupe maintenant des datatype properties
 		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleDatatypePropertyString(listMostUsedDatatypeProperty, listOfPropertyDomainAndRange, maxOfUnion));  
+
+		// On s'occupe maintenant des rdfs properties
+		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleRDFpropertyString(listMostUsedRDFproperty, listOfPropertyDomainAndRange, maxOfUnion));  
 
 		// On s'occupe maintenant des annotation properties
 
@@ -267,7 +279,7 @@ public class MakeDescriptionModel {
 				classUnionBuilder.append(uriList.toString());
 			}
 			if (numberUriList > 1) { // Pour eliminer les cas ou il n'y a pas d'union
-				if (numberUriList < maxOfUnion) { // Si trop de listes pour l'union
+				if (numberUriList < maxOfUnion) { // Si pas trop de listes pour l'union
 					if (!classUnionList.contains(classUnionBuilder.toString())) {
 						classUnionList.add(classUnionBuilder.toString());
 						classUnionBuilder.append("*" + UnionNumber);
@@ -287,21 +299,24 @@ public class MakeDescriptionModel {
 				classUnionBuilder2.append(uriList.toString());
 			}
 			if (numberUriList > 1) { // Pour eliminer les cas ou il n'y a pas d'union
-				if (!classUnionList.contains(classUnionBuilder2.toString())) {
-					classUnionList.add(classUnionBuilder2.toString());
-					classUnionBuilder2.append("*" + UnionNumber);
-					classUnionAndNumberList.add(classUnionBuilder2.toString());
-					UnionNumber++;
-				}
+				if (numberUriList < maxOfUnion) { // Si pas trop de listes pour l'union
+					if (!classUnionList.contains(classUnionBuilder2.toString())) {
+						classUnionList.add(classUnionBuilder2.toString());
+						classUnionBuilder2.append("*" + UnionNumber);
+						classUnionAndNumberList.add(classUnionBuilder2.toString());
+						UnionNumber++;
+					}
+				}	
 			}
 		}
 		// System.out.println("classUnionAndNumberList :");
 		// for(String classUnionAndNumber : classUnionAndNumberList) {
 		// 	System.out.println(classUnionAndNumber);
 		// }
-		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleAnnotationPropertyString(listMostUsedAnnotationProperty, listOfPropertyDomainAndRange, maxOfUnion, classUnionAndNumberList));    
+		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleAnnotationPropertyString(listMostUsedAnnotationProperty,
+		 listOfPropertyDomainAndRange, maxOfUnion, classUnionAndNumberList));    
 		
-		// System.out.println(relationshipsBuilder.toString());
+		//System.out.println(relationshipsBuilder.toString());
 		
 		// Lecture de la séquence Turtle depuis la chaîne de caractères
         descriptionModel.read(new StringReader(relationshipsBuilder.toString()), null, "TURTLE");

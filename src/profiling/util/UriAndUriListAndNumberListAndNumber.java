@@ -17,6 +17,16 @@ public class UriAndUriListAndNumberListAndNumber {
 		this.number = number;
 	}
 
+	public UriAndUriListAndNumberListAndNumber(UriAndUriListAndNumberListAndNumber other) {
+		this.uri = other.uri;
+		ArrayList<UriListAndNumber> thisUriListAndNumberList = new ArrayList<UriListAndNumber>();
+		for (UriListAndNumber otherUriListAndNumberList : other.uriListAndNumberList) {
+			thisUriListAndNumberList.add(new UriListAndNumber(otherUriListAndNumberList));
+		}
+		this.uriListAndNumberList = thisUriListAndNumberList;
+		this.number = other.number;
+	}
+
 	public Uri getUri() {
 		return uri;
 	}

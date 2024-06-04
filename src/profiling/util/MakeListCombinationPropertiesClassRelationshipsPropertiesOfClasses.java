@@ -40,9 +40,9 @@ public class MakeListCombinationPropertiesClassRelationshipsPropertiesOfClasses 
 					// 	System.out.println("OK ***********");
 					// }	
 					for (Uri property : propertiesOfClass.getUriList2()) {
-						if (treatedListClasses.toString().equals("[http://www.inrae.fr/DatasetProfiling/Class-4]")) {
-							System.out.println(property.toString());
-						}
+						// if (treatedListClasses.toString().equals("[http://www.inrae.fr/DatasetProfiling/Class-4]")) {
+						// 	System.out.println(property.toString());
+						// }
 						urilist2.add(property);
 						
 					}

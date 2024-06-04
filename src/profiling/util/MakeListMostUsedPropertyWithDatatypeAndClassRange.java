@@ -1,5 +1,7 @@
 package profiling.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
@@ -10,7 +12,7 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 
 public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
-	
+	static boolean first = false; 
 	// Création d'une liste des propriétés les plus utilisées avec datatypes et classes range.
 	public static ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> makeList(Model model, ArrayList<UriAndNumber> listMostUsedProperty) {
 		
@@ -18,6 +20,13 @@ public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
 
 		ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> ListResources = new ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber>();
 		
+		// System.out.println("Nombre de propriétés: " + listMostUsedProperty.size()) ;
+
+		for (UriAndNumber uriAndNumber : listMostUsedProperty) {
+		// Instant start0 = Instant.now();	
+            
+		String property = uriAndNumber.getUri();
+
 		Query query = QueryFactory.create(prefix + 
 		
 		" SELECT ?property " +
@@ -48,7 +57,8 @@ public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
 							" BIND(COALESCE(?objectClass, ?defaultClass) AS ?class) " +
 							" BIND(COALESCE(?objectDatatype, ?defaultDatatype) AS ?datatype) " +
 							" BIND(COALESCE(?objectDatatype, ?objectClass , ?defaultOrder) AS ?order) " +
-							convertToSPARQLFilter(listMostUsedProperty) +
+							" FILTER (?property = <" + property + "> )" +
+							//convertToSPARQLFilter(listMostUsedProperty) +
 						" } ORDER BY ?s ?property ?o ?order" +
 					" } GROUP BY ?s ?property ?o " +
 				" } GROUP BY ?property ?datatypeList ?classList" +
@@ -65,7 +75,7 @@ public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
 				uri.setUri(querySolution.getResource("property").getURI());
 				Integer propertyNumber = querySolution.getLiteral("?propertyCount").getInt();
 
-				ArrayList<UriListAndNumber> datatypeListAndNumberList = new ArrayList<UriListAndNumber>();
+				ArrayList<UriListAndNumber> datatypeListAndNumberListTemp = new ArrayList<UriListAndNumber>();
 				if (!(querySolution.getLiteral("datatypeListAndCountList")==null)) {
 					String[] datatypeListAndCountList = querySolution.getLiteral("datatypeListAndCountList").getString().split("\\*");
 					// En fait pour les datatypes il ne peux y avoir q'un seul datatype dans la liste	
@@ -80,11 +90,11 @@ public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
 								uriList.add(datatypeUri);
 							}
 							UriListAndNumber uriListAndNumber = new UriListAndNumber(uriList, number);
-							datatypeListAndNumberList.add(uriListAndNumber);
+							datatypeListAndNumberListTemp.add(uriListAndNumber);
 						}
 					}	
 				}
-				ArrayList<UriListAndNumber> classListAndNumberList = new ArrayList<UriListAndNumber>();
+				ArrayList<UriListAndNumber> classListAndNumberListTemp = new ArrayList<UriListAndNumber>();
 				if (!(querySolution.getLiteral("classListAndCountList")==null)) {
 					String[] classListAndCountList = querySolution.getLiteral("classListAndCountList").getString().split("\\*");
 						
@@ -99,11 +109,66 @@ public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
 								uriList.add(classUri);
 							}
 							UriListAndNumber uriListAndNumber = new UriListAndNumber(uriList, number);
-							classListAndNumberList.add(uriListAndNumber);	
+							classListAndNumberListTemp.add(uriListAndNumber);	
 						}
 					}
 				}		
 			
+				// on nettoie les listes avec la régle des 1%.
+				ArrayList<UriListAndNumber> datatypeListAndNumberList = new ArrayList<UriListAndNumber>();
+				if (datatypeListAndNumberListTemp.size()<= 1) { // Il n'y a qu'une liste de classes pour la combinaison de propriétés, donc on sélectione 
+				    datatypeListAndNumberList.addAll(datatypeListAndNumberListTemp);
+				} else {
+					first = true;
+					Integer totalNumber = propertyNumber;
+					Integer numberToSubtract = 0;
+					for (UriListAndNumber uriListAndNumber : datatypeListAndNumberListTemp) {
+						if (first) {
+							datatypeListAndNumberList.add(new UriListAndNumber(uriListAndNumber));
+							first = false;
+						} else {
+							// Si le nombre d'instances de la liste de classes suivante représente plus 
+							//  de 1% de l'ensemble des instances des liste de classes déjà selectionnées pour une propriété donnée.
+							if (((uriListAndNumber.getNumber() * 100) / totalNumber) > 1) {
+								datatypeListAndNumberList.add(new UriListAndNumber(uriListAndNumber));
+								totalNumber = totalNumber + uriListAndNumber.getNumber();
+							} else {
+								numberToSubtract = numberToSubtract + uriListAndNumber.getNumber();
+							}
+						}
+					}
+					if (numberToSubtract > 0) {
+						propertyNumber = propertyNumber - numberToSubtract;
+					}	
+				}
+				
+				ArrayList<UriListAndNumber> classListAndNumberList = new ArrayList<UriListAndNumber>();
+				if (classListAndNumberListTemp.size()<= 1) { // Il n'y a qu'une liste de classes pour la combinaison de propriétés, donc on sélectione 
+				    classListAndNumberList.addAll(classListAndNumberListTemp);
+				} else {
+					first = true;
+					Integer totalNumber = propertyNumber;
+					Integer numberToSubtract = 0;
+					for (UriListAndNumber uriListAndNumber : classListAndNumberListTemp) {
+						if (first) {
+							classListAndNumberList.add(new UriListAndNumber(uriListAndNumber));
+							first = false;
+						} else {
+							// Si le nombre d'instances de la liste de classes suivante représente plus 
+							//  de 1% de l'ensemble des instances des liste de classes déjà selectionnées pour une propriété donnée.
+							if (((uriListAndNumber.getNumber() * 100) / totalNumber) > 1) {
+								classListAndNumberList.add(new UriListAndNumber(uriListAndNumber));
+								totalNumber = totalNumber + uriListAndNumber.getNumber();
+							} else {
+								numberToSubtract = numberToSubtract + uriListAndNumber.getNumber();
+							}
+						}
+					}
+					if (numberToSubtract > 0) {
+						propertyNumber = propertyNumber - numberToSubtract;
+					}	
+				}
+				
 				UriAndUriListAndNumberListAndUriListAndNumberListAndNumber UriAndUriListAndNumberListAndUriListAndNumberListAndNumber = new UriAndUriListAndNumberListAndUriListAndNumberListAndNumber();
 				UriAndUriListAndNumberListAndUriListAndNumberListAndNumber.setUri(uri);
 				UriAndUriListAndNumberListAndUriListAndNumberListAndNumber.setUriListAndNumberList1(datatypeListAndNumberList);
@@ -112,6 +177,9 @@ public class MakeListMostUsedPropertyWithDatatypeAndClassRange {
 				ListResources.add(UriAndUriListAndNumberListAndUriListAndNumberListAndNumber) ;	
 				
 			}
+			// Instant end0 = Instant.now();
+        	// System.out.println("Running time for" + property + ": " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
+		}
 		}
 		
 		return ListResources;

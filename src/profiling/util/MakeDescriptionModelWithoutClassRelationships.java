@@ -13,7 +13,8 @@ public class MakeDescriptionModelWithoutClassRelationships {
 	// Création du modèle de description
 	public static OntModel  makeModel(ArrayList<UriListAndUriList> listCombinationPropertiesWithNewClass, ArrayList<UriAndNumber> listClassMostUsed, ArrayList<UriAndUriListAndNumberListAndNumber> listMostUsedPropertyWithClassDomain,
 	 ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> listMostUsedPropertyWithDatatypeAndClassRange,
-	 ArrayList<UriAndNumber> listMostUsedObjectProperty, ArrayList<UriAndNumber>listMostUsedDatatypeProperty, ArrayList<UriAndNumber> listMostUsedAnnotationProperty) {
+	 ArrayList<UriAndNumber> listMostUsedObjectProperty, ArrayList<UriAndNumber>listMostUsedDatatypeProperty,
+	 ArrayList<UriAndNumber> listMostUsedAnnotationProperty, ArrayList<UriAndNumber> listMostUsedRDFproperty) {
 
 		// Instant start0 = Instant.now();	
 		OntModel descriptionModel = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
@@ -38,9 +39,10 @@ public class MakeDescriptionModelWithoutClassRelationships {
 		ArrayList<String> listOfPropertyString = new ArrayList<String>();
 		ArrayList<Uri> listOfClasses = new ArrayList<Uri>();
 		ArrayList<String> listOfClassesString = new ArrayList<String>();
-		Integer maxOfUnion = 11;
+		Integer maxOfUnion = 20;
 
 		// Instant start0 = Instant.now();	
+		System.out.println("MakeDescriptionModelWithoutClassRelationships !");
 
 		// On récupère la liste des classes (y compris les classes créées pour les combinaisons de propriétées pour des ressources sans classes)
 		for (UriListAndUriList combinationPropertiesWithNewClass : listCombinationPropertiesWithNewClass) {
@@ -148,6 +150,9 @@ public class MakeDescriptionModelWithoutClassRelationships {
 		// On s'occupe maintenant des datatype properties
 		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleDatatypePropertyString(listMostUsedDatatypeProperty, listOfPropertyDomainAndRange, maxOfUnion));  
 
+		// On s'occupe maintenant des datatype properties
+		relationshipsBuilder.append(profiling.util.ProfilingUtil.buildTurtleRDFpropertyString(listMostUsedRDFproperty, listOfPropertyDomainAndRange, maxOfUnion));
+
 		// On s'occupe maintenant des annotation properties
 
 		// Pour les annotations propriétés qui ne supportent pas les unions annonymes
@@ -171,6 +176,26 @@ public class MakeDescriptionModelWithoutClassRelationships {
 						classUnionList.add(classUnionBuilder.toString());
 						classUnionBuilder.append("*" + UnionNumber);
 						classUnionAndNumberList.add(classUnionBuilder.toString());
+						UnionNumber++;
+					}
+				}	
+			}
+			// On traite aussi les ranges
+			StringBuilder classUnionBuilder2 = new StringBuilder();
+			numberUriList = 0;
+			for (ArrayList<Uri> uriList : resource.getListUriList2()) {
+				numberUriList++;
+				if (numberUriList > 1) {
+                    classUnionBuilder2.append("|");
+				}
+				classUnionBuilder2.append(uriList.toString());
+			}
+			if (numberUriList > 1) { // Pour eliminer les cas ou il n'y a pas d'union
+				if (numberUriList < maxOfUnion) { // Si pas trop de listes pour l'union
+					if (!classUnionList.contains(classUnionBuilder2.toString())) {
+						classUnionList.add(classUnionBuilder2.toString());
+						classUnionBuilder2.append("*" + UnionNumber);
+						classUnionAndNumberList.add(classUnionBuilder2.toString());
 						UnionNumber++;
 					}
 				}	

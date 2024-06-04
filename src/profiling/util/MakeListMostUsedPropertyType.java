@@ -17,6 +17,7 @@ public class MakeListMostUsedPropertyType {
 		String prefix = ProfilingConf.queryPrefix;
 		String owl = ProfilingConf.owl;
 		String rdfs = ProfilingConf.rdfs;
+		String rdf = ProfilingConf.rdf;
 
 
 		ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();
@@ -24,7 +25,7 @@ public class MakeListMostUsedPropertyType {
 		Query query = QueryFactory.create(prefix + 
 			"SELECT ?property ?type WHERE { " +
 			" ?property rdf:type ?type ." +
-			" FILTER (?type = rdf:property || ?type = owl:ObjectProperty || ?type = owl:DatatypeProperty || ?type = owl:AnnotationProperty) " +
+			" FILTER (?type = rdf:Property || ?type = owl:ObjectProperty || ?type = owl:DatatypeProperty || ?type = owl:AnnotationProperty) " +
 			convertToSPARQLFilter(listMostUsedProperty) +
 			" } ORDER BY ?property "
 		);
@@ -52,6 +53,9 @@ public class MakeListMostUsedPropertyType {
 		ListResources.add(new UriAndUri( rdfs + "isDefinedBy", owl + "AnnotationProperty"));
 		ListResources.add(new UriAndUri( rdfs + "label", owl + "AnnotationProperty"));
 		ListResources.add(new UriAndUri( rdfs + "seeAlso", owl + "AnnotationProperty"));
+		ListResources.add(new UriAndUri( rdfs + "subClassOf", rdf + "Property"));
+		ListResources.add(new UriAndUri( rdfs + "subPropertyOf", rdf + "Property"));
+		ListResources.add(new UriAndUri( rdf + "type", rdf + "Property"));
 		return ListResources;
 	}
 	

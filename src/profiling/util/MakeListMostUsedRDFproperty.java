@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import org.apache.jena.rdf.model.Model;
 
-public class MakeListMostUsedObjectProperty {
+public class MakeListMostUsedRDFproperty {
 	
 	// Création d'une liste des propriétés limité à 100
 	public static ArrayList<UriAndNumber> makeList(Model model, ArrayList<UriAndUriListAndNumberListAndUriListAndNumberListAndNumber> listMostUsedPropertyWithDatatypeAndClassRange, ArrayList<UriAndUri> listMostUsedPropertyType) {
@@ -18,10 +18,10 @@ public class MakeListMostUsedObjectProperty {
 		// Référence : http://www.w3.org/TR/2004/REC-owl-ref-20040210/
 		
 		for (UriAndUriListAndNumberListAndUriListAndNumberListAndNumber resource : listMostUsedPropertyWithDatatypeAndClassRange) {
-			String owl = ProfilingConf.owl;
+			String rdf = ProfilingConf.rdf;
 			Boolean typeFound = false;
 			String type = "";
-			String typeObjectProperty = owl + "ObjectProperty";
+			String typeRDFproperty = rdf + "Property";
 			for (UriAndUri resource2 : listMostUsedPropertyType) {
 				if (resource2.getUri1().toString().equals(resource.getUri().toString())) {
 						typeFound = true;
@@ -30,13 +30,12 @@ public class MakeListMostUsedObjectProperty {
 				}
 			}
 			if (typeFound) { // Le type a été trouvé
-				if (type.equals(typeObjectProperty)) { // et le type est "owl:Objectproperty"
+				if (type.equals(typeRDFproperty)) { // et le type est "rdf:Property"
 					ListResources.add(new UriAndNumber(resource.getUri().toString(), resource.getNumber())) ;
 				}
 			} else { // Le type n'a pas été trouvé
-				if (resource.getUriListAndNumberList1().size() == 0 && resource.getUriListAndNumberList2().size() > 0) {		
-					// On estime que puisque la propriété est liées à une ressource (présence d'une classe), c'est  
-					//  une Objectproperty puisqu'on a vérifier qu'il ne s'agit pas d'une annotationProperty (typeFound = "false").
+				if (resource.getUriListAndNumberList1().size() == 0 && resource.getUriListAndNumberList2().size() == 0) {
+					// C'est une Property puisqu'on a vérifier qu'il ne s'agit pas d'une annotationProperty (typeFound = "false").
 					ListResources.add(new UriAndNumber(resource.getUri().toString(), resource.getNumber())) ; 
 				}	
 			}

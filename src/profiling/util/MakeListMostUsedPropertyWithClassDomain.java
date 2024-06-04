@@ -1,6 +1,10 @@
 package profiling.util;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collections;
+
 import org.apache.jena.query.Query;
 import org.apache.jena.query.QueryExecution;
 import org.apache.jena.query.QueryExecutionFactory;
@@ -10,14 +14,23 @@ import org.apache.jena.query.ResultSet;
 import org.apache.jena.rdf.model.Model;
 
 public class MakeListMostUsedPropertyWithClassDomain {
-	
+	static boolean first = false; 
 	// Création d'une liste des propriétés les plus utilisées avec datatypes et classes range.
 	public static ArrayList<UriAndUriListAndNumberListAndNumber> makeList(Model model, ArrayList<UriAndNumber> listMostUsedProperty, ArrayList<UriAndNumber> listClassMostUsed) {
 		
 		String prefix = ProfilingConf.queryPrefix;
 
-		ArrayList<UriAndUriListAndNumberListAndNumber> ListResources = new ArrayList<UriAndUriListAndNumberListAndNumber>();
+		ArrayList<UriAndUriListAndNumberListAndNumber> listResources = new ArrayList<UriAndUriListAndNumberListAndNumber>();
+		ArrayList<UriAndUriListAndNumberListAndNumber> listResourcesTemp = new ArrayList<UriAndUriListAndNumberListAndNumber>();
+		ArrayList<UriListAndNumber> ListUriListAndNumber =  new ArrayList<UriListAndNumber>();
 		
+		// System.out.println("Nombre de propriétés: " + listMostUsedProperty.size()) ;
+
+		for (UriAndNumber uriAndNumber : listMostUsedProperty) {
+		// Instant start0 = Instant.now();	
+            
+		String property = uriAndNumber.getUri();
+
 		Query query = QueryFactory.create(prefix + 
 		
 		" SELECT ?property " +
@@ -43,7 +56,8 @@ public class MakeListMostUsedPropertyWithClassDomain {
 							" } " +
 							" BIND(COALESCE(?subjectClass, ?defaultClass) AS ?class) " +
 							" BIND(COALESCE(?subjectClass , ?defaultOrder) AS ?order) " +
-							convertToSPARQLFilterProperties(listMostUsedProperty) +
+							" FILTER (?property = <" + property + "> )" +
+							// convertToSPARQLFilterProperties(listMostUsedProperty) +
 							// convertToSPARQLFilterClasses(listClassMostUsed) +
 						" } ORDER BY ?s ?property ?o ?order" +
 					" } GROUP BY ?s ?property ?o " +
@@ -85,12 +99,54 @@ public class MakeListMostUsedPropertyWithClassDomain {
 				UriAndUriListAndNumberListAndNumber.setUri(uri);
 				UriAndUriListAndNumberListAndNumber.setUriListAndNumberList(classListAndNumberList);
 				UriAndUriListAndNumberListAndNumber.setNumber(propertyNumber);
-				ListResources.add(UriAndUriListAndNumberListAndNumber) ;	
+				listResourcesTemp.add(UriAndUriListAndNumberListAndNumber) ;	
 				
 			}
+			// Instant end0 = Instant.now();
+        	// System.out.println("Running for" + property + ": " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 		}
-		
-		return ListResources;
+		}
+
+		// On nettoye la liste en suprimant dans la liste des listes de classes
+		//  les listes de classes qui représentes moins de 1% de l'ensemble des instances des classes pour une propriété donnée 
+		for (UriAndUriListAndNumberListAndNumber resource : listResourcesTemp) {
+			ArrayList<UriListAndNumber> ListUriListAndNumberTemp =  new ArrayList<UriListAndNumber>();
+			if (resource.getUriListAndNumberList().size()<= 1) { // Il n'y a qu'une liste de classes pour la combinaison de propriétés, donc on sélectione 
+			listResources.add(new UriAndUriListAndNumberListAndNumber(resource));
+			} else {
+				ListUriListAndNumber = new ArrayList<UriListAndNumber>(resource.getUriListAndNumberList());
+				first = true;
+				Integer totalNumber = resource.getNumber();
+				Integer numberToSubtract = 0;
+				for (UriListAndNumber uriListAndNumber : ListUriListAndNumber) {
+					if (first) {
+						ListUriListAndNumberTemp.add(new UriListAndNumber(uriListAndNumber));
+						first = false;
+					} else {
+						// Si le nombre d'instances de la liste de classes suivante représente plus 
+						//  de 1% de l'ensemble des instances des liste de classes déjà selectionnées pour une combinaison données.
+						if (((uriListAndNumber.getNumber() * 100) / totalNumber) > 1) {
+							ListUriListAndNumberTemp.add(new UriListAndNumber(uriListAndNumber));
+							totalNumber = totalNumber + uriListAndNumber.getNumber();
+						} else {
+							numberToSubtract = numberToSubtract + uriListAndNumber.getNumber();
+						}
+					}
+				}
+				if (numberToSubtract == 0) {
+					listResources.add(new UriAndUriListAndNumberListAndNumber(resource));
+				} else {
+					UriAndUriListAndNumberListAndNumber resourceTemp = 
+					new UriAndUriListAndNumberListAndNumber(resource.getUri(), ListUriListAndNumberTemp, resource.getNumber() - numberToSubtract);
+					listResources.add(resourceTemp);
+				}	
+			}
+		}
+		// Tri de la liste pour que les combinaisons les plus utilisées en priorité
+		// L'ordre a pu être changé lors de la suppression de certaines classe pour une combinaison donnée
+		Collections.sort(listResources, new UriAndUriListAndNumberListAndNumberComparator()); 
+
+		return listResources;
 	}
 
 	public static String convertToSPARQLFilterProperties(ArrayList<UriAndNumber> listUriAndNumber) {
@@ -128,4 +184,12 @@ public class MakeListMostUsedPropertyWithClassDomain {
 
         return filterClause.toString();
     }
+
+
+	static class UriAndUriListAndNumberListAndNumberComparator implements java.util.Comparator<UriAndUriListAndNumberListAndNumber> {
+		@Override
+		public int compare(UriAndUriListAndNumberListAndNumber a, UriAndUriListAndNumberListAndNumber b) {
+			return b.getNumber() - a.getNumber();
+		}
+	}
 }

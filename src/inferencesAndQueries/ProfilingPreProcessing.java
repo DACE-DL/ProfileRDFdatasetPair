@@ -173,7 +173,7 @@ public class ProfilingPreProcessing {
 
 		// Properties hierarchy deep and loop
 		HierarchyDeepAndLoop hierarchyDeepAndLoop = new HierarchyDeepAndLoop();
-		hierarchyDeepAndLoop = GivePropertyHierarchyDeep.giveHierarchyDeepAndLoop(model, listPropertyAndSubproperty);
+		hierarchyDeepAndLoop = GivePropertyHierarchyDeep.giveHierarchyDeepAndLoop(listPropertyAndSubproperty);
 		results.setPropertyHierarchyDeep(hierarchyDeepAndLoop.getHierarchyDeep());
 		results.setPropertyHierarchyLoop(hierarchyDeepAndLoop.getLoop());
 		
@@ -198,54 +198,59 @@ public class ProfilingPreProcessing {
 		String nameOfListClassUsageCount = "listClassUsageCount";
 		ArrayList<UriAndNumber> listClassUsageCount = new ArrayList<UriAndNumber>();
 		listClassUsageCount = MakeListClassUsageCount.makeList(model);
-
+		
 		// Construction d'un vecteur pour l'usage des classes.
 		String vectorUsageClass = "c(0.0)";
 		vectorUsageClass = MakeVectorWithNumber.makeVector(model, listClassUsageCount);
 		//System.out.println("Vector Usages Classes : " + vectorUsageClass);
-
+		
 		// Calcul quantile pour l'usage des classes.
 		double classUsageQuantile75 = 0.0;
 		classUsageQuantile75 = GiveRQuantile.giveDouble(vectorUsageClass, "c(0.75)");
 		//System.out.println("Class Usage Quantile 75 : " + classUsageQuantile75);
-
+    
 		// Liste des classes les plus utilisées (quartile 75).
 		String nameOfListClassMostUsed = "listClassMostUsed";
 		ArrayList<UriAndNumber> listClassMostUsed = new ArrayList<UriAndNumber>();
 		listClassMostUsed = MakeListClassMostUsed.makeList(listClassUsageCount, classUsageQuantile75);
-
+	
 		///////////
 				
 		// Liste des propriétés les plus utilisées avec classes domain.
 		String nameOfListMostUsedPropertyWithClassDomain = "listMostUsedPropertyWithClassDomain";
 		ArrayList<UriAndUriListAndNumberListAndNumber> listMostUsedPropertyWithClassDomain = new ArrayList<UriAndUriListAndNumberListAndNumber>();
 		listMostUsedPropertyWithClassDomain = MakeListMostUsedPropertyWithClassDomain.makeList(model, listMostUsedProperty, listClassMostUsed);
-
+    
 		// Liste des propriétés object les plus utilisées.
 		String nameOfListMostUsedObjectProperty = "listMostUsedObjectProperty";
 		ArrayList<UriAndNumber> listMostUsedObjectProperty = new ArrayList<UriAndNumber>();
 		listMostUsedObjectProperty = MakeListMostUsedObjectProperty.makeList(model, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedPropertyType);
-
+		
 		// Liste des propriétés de type "datatype properties" les plus utilisées.
 		String nameOflistMostUsedDatatypeProperty = "listMostUsedDatatypeProperty";
 		ArrayList<UriAndNumber> listMostUsedDatatypeProperty = new ArrayList<UriAndNumber>();
 		listMostUsedDatatypeProperty = MakeListMostUsedDatatypeProperty.makeList(model, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedPropertyType);
-
+	
 		// Liste des propriétés de type "annotation properties" les plus utilisées.
 		String nameOflistMostUsedAnnotationProperty = "listMostUsedAnnotationProperty";
 		ArrayList<UriAndNumber> listMostUsedAnnotationProperty = new ArrayList<UriAndNumber>();
 		listMostUsedAnnotationProperty = MakeListMostUsedAnnotationProperty.makeList(model, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedPropertyType);
-
+		
+		// Liste des propriétés de type "rdfs properties" les plus utilisées.
+		String nameOflistMostUsedRDFproperty = "listMostUsedRDFproperty";
+		ArrayList<UriAndNumber> listMostUsedRDFproperty = new ArrayList<UriAndNumber>();
+		listMostUsedRDFproperty = MakeListMostUsedRDFproperty.makeList(model, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedPropertyType);
+		
 		// Liste des usages de propriétés par suject les plus utilisés.
 		String nameOfListMostUsedPropertyUsagePerSubject = "listMostUsedPropertyUsagePerSubject";
 		ArrayList<UriAndNumberAndNumberAndNumber> listMostUsedPropertyUsagePerSubject = new ArrayList<UriAndNumberAndNumberAndNumber>();
 		listMostUsedPropertyUsagePerSubject = MakeListMostUsedPropertyUsagePerSubject.makeList(model, listMostUsedProperty);
-
+		
 		// Liste des usages de propriétés par object les plus utilisés.
 		String nameOfListMostUsedPropertyUsagePerObject = "listMostUsedPropertyUsagePerObject";
 		ArrayList<UriAndNumberAndNumberAndNumber> listMostUsedPropertyUsagePerObject = new ArrayList<UriAndNumberAndNumberAndNumber>();
 		listMostUsedPropertyUsagePerObject = MakeListMostUsedPropertyUsagePerObject.makeList(model, listMostUsedProperty);
-
+		
 		// Liste of datatypes des propriétés les plus utilisées .
 		String nameOfListDatatypesMostUsed = "listMostUsedPropertyDatatypes";
 		ArrayList<Uri> listMostUsedPropertyDatatypes = new ArrayList<Uri>();
@@ -260,17 +265,17 @@ public class ProfilingPreProcessing {
 		String nameOfListLanguagesClass = "listClassLanguages";
 		ArrayList<Uri> listClassLanguages = new ArrayList<Uri>();
 		listClassLanguages = MakeListClassLanguages.makeList(model, listClassUsageCount);
-
+        
 		// Liste of classes defined.
 		String nameOfListClassDefined = "listClassDefined";
 		ArrayList<Uri> listOfClassDefined = new ArrayList<Uri>();
 		listOfClassDefined = MakeListClassDefined.makeList(model);
-
+        
 		// Liste of classes not defined.
 		String nameOfListClassNotDefined = "listClassNotDefined";
 		ArrayList<Uri> listOfClassNotDefined = new ArrayList<Uri>();
 		listOfClassNotDefined = MakeListClassNotDefined.makeList(listClassUsageCount, listOfClassDefined);
-
+		
 		// Liste des classes et des sous-classes.
 		String nameOfListClassAndSubclass = "listClassAndSubclass";
 		ArrayList<UriAndUri> listClassAndSubclass = new ArrayList<UriAndUri>();
@@ -334,14 +339,14 @@ public class ProfilingPreProcessing {
 		if (listCombinationPropertiesClassRelationships.size()!=0) {
 
 			// Création d'un model de description.
-			descriptionModel = MakeDescriptionModel.makeModel(listCombinationPropertiesClassRelationships, listCombinationPropertiesClassRelationshipsPropertiesOfClasses,listCombinationPropertiesWithNewClass, listMostUsedPropertyWithClassDomain, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedObjectProperty, listMostUsedDatatypeProperty, listMostUsedAnnotationProperty );
+			descriptionModel = MakeDescriptionModel.makeModel(listCombinationPropertiesClassRelationships, listCombinationPropertiesClassRelationshipsPropertiesOfClasses,listCombinationPropertiesWithNewClass, listMostUsedPropertyWithClassDomain, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedObjectProperty, listMostUsedDatatypeProperty, listMostUsedAnnotationProperty, listMostUsedRDFproperty );
 			
 	    }	else {
 		// S'il n'existe pas des relations entre les différentes classes de combinaison de propriétés, on basera le modèle de description sur les classes et propriétés 
 		//  les plus représentée du modèle	
 		
 			// Création d'un model de description.
-			descriptionModel = MakeDescriptionModelWithoutClassRelationships.makeModel(listCombinationPropertiesWithNewClass, listClassMostUsed, listMostUsedPropertyWithClassDomain, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedObjectProperty, listMostUsedDatatypeProperty, listMostUsedAnnotationProperty);
+			descriptionModel = MakeDescriptionModelWithoutClassRelationships.makeModel(listCombinationPropertiesWithNewClass, listClassMostUsed, listMostUsedPropertyWithClassDomain, listMostUsedPropertyWithDatatypeAndClassRange, listMostUsedObjectProperty, listMostUsedDatatypeProperty, listMostUsedAnnotationProperty, listMostUsedRDFproperty);
 	
 		}
 
@@ -487,6 +492,12 @@ public class ProfilingPreProcessing {
 
 		try {
 			ProfilingUtil.makeJsonUriAndNumberFile(listMostUsedAnnotationProperty, nameOflistMostUsedAnnotationProperty + ".json");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		try {
+			ProfilingUtil.makeJsonUriAndNumberFile(listMostUsedRDFproperty, nameOflistMostUsedRDFproperty + ".json");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
