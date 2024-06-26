@@ -41,6 +41,10 @@ public class ProfilingResultsObject {
 
 	private Integer numberLabeledSubjects;
 
+	private Integer numberLabeledPredicates;
+
+	private Integer numberLabeledObjects;
+
 	private Integer numberSameAs;
 
 	private Integer classHierarchyDeep;
@@ -284,6 +288,23 @@ public class ProfilingResultsObject {
 
 	public void setNumberLabeledSubjects(Integer numberLabeledSubjects) {
 		this.numberLabeledSubjects = numberLabeledSubjects;
+	}
+
+
+	public Integer getNumberLabeledPredicates() {
+		return numberLabeledPredicates;
+	}
+
+	public void setNumberLabeledPredicates(Integer numberLabeledPredicates) {
+		this.numberLabeledPredicates = numberLabeledPredicates;
+	}
+
+	public Integer getNumberLabeledObjects() {
+		return numberLabeledObjects;
+	}
+
+	public void setNumberLabeledObjects(Integer numberLabeledObjects) {
+		this.numberLabeledObjects = numberLabeledObjects;
 	}
 
 	public Integer getNumberSameAs() {

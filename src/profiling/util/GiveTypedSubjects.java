@@ -26,7 +26,8 @@ public class GiveTypedSubjects {
 		StmtIterator stmtIte= model.listStatements(selector);
 		
 		nNumber = IteratorUtils.size(stmtIte);
-		
+
+		stmtIte.close();
 		
 		return nNumber;
 	}	

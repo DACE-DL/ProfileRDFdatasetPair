@@ -35,6 +35,7 @@ public class MakeListLanguagesPredicat {
 					}			
 				}	
 			});
+			stmtIte1.close();
         });
 		return listDistinctLanguages;
 	}

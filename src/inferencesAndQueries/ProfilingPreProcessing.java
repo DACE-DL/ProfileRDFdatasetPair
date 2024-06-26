@@ -92,6 +92,14 @@ public class ProfilingPreProcessing {
 		Integer numberOfLabeledSubjects = GiveLabeledSubjects.giveNumber(model);
 		results.setNumberLabeledSubjects(numberOfLabeledSubjects);
 
+		// Labeled Subjects
+		Integer numberOfLabeledPredicates = GiveLabeledPredicates.giveNumber(model);
+		results.setNumberLabeledPredicates(numberOfLabeledPredicates);
+
+		// Labeled Subjects
+		Integer numberOfLabeledObjects = GiveLabeledObjects.giveNumber(model);
+		results.setNumberLabeledObjects(numberOfLabeledObjects);
+
 		// Same As
 		Integer numberOfSameAs = GiveSameAs.giveNumber(model);
 		results.setNumberSameAs(numberOfSameAs);

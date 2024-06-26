@@ -28,6 +28,7 @@ public class GiveUntypedStringLength {
 			stmtIte1.forEach((stmObj) -> {
 				listObject.add(stmObj.getObject());
 			});
+			stmtIte1.close();
         });
 
 		// Calcul of the length average

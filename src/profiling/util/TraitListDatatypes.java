@@ -31,7 +31,11 @@ public class TraitListDatatypes {
 
 		// Si pas de datatypes pour le jeux source ou target 
 		if (noDatatypesSource || noDatatypesTarget) {
-			
+			// LPT 1.1.3: Predicate value best practice problem
+			// Any problems encountered in the search for similarity due to non-compliance
+			//  with good practice (No tag for languages, missing property value, non-unique
+			//  value for ID properties, ...).
+			listLpts.add(new Lpt("LPT1.1.3"));
 		}
 
 		// Si au moins un datatypes pour les datasets source et target

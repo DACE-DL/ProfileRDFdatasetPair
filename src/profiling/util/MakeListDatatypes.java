@@ -27,6 +27,7 @@ public class MakeListDatatypes {
 			stmtIte1.forEach((stmObj) -> {
 				listObject.add(stmObj.getObject());
 			});
+			stmtIte1.close();
         });
 
 		// Duplicate checking

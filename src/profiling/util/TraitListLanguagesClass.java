@@ -20,9 +20,9 @@ public class TraitListLanguagesClass {
 		}
 
 		// Si pas de tags language pour le jeux source ou target 
-		// 3.1.5: Class terminological data quality
+		// LPT 3.1.5: Class terminological data quality
 		if (noTagSourceLanguage || noTagTargetLanguage) {
-			listLpts.add(new Lpt("LPT3.1.5"));
+			listLpts.add(new Lpt("LPT3.1.5")); // à vérifier !!!
 		}
 
 		// Si au moins une langue pour les datasets source et target

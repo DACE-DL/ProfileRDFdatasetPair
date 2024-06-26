@@ -19,18 +19,27 @@ public class GiveEntitiesMentioned {
 		Integer nNumber = 0;
 		
 		Query query = QueryFactory.create(prefix + 
-			" SELECT (COUNT(*) AS ?triplesCount) " +
-				" WHERE { " +
-				" ?s ?property ?o ." +
-				" FILTER isIRI(?s) " +
-				" FILTER isIRI(?o) " +
-			" } "
+			" SELECT (SUM(?iriCount) AS ?i) " +
+			" WHERE { " +
+				" { " +
+					" SELECT ?iriCount " + 
+					" WHERE { " +
+						" ?s ?p ?o . " +
+						" BIND( " +
+							" (IF(isIRI(?s), 1, 0) + "	+
+							" IF(isIRI(?p), 1, 0) + " +
+							" IF(isIRI(?o), 1, 0)) " +
+							" AS ?iriCount " +
+						" ) " +
+					" } " +
+				" } " +
+			" } " 
 		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			QuerySolution querySolution = result.next() ;
-			nNumber = querySolution.getLiteral("triplesCount").getInt();
+			nNumber = querySolution.getLiteral("i").getInt();
 			
 		}
 		return nNumber;

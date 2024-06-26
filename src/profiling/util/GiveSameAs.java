@@ -24,6 +24,8 @@ public class GiveSameAs {
 		
 		Selector selector = new SimpleSelector(s1, p1, o1) ;
 		StmtIterator stmtIte= model.listStatements(selector);
+
+		stmtIte.close();
 		
 		nNumber = IteratorUtils.size(stmtIte);
 			

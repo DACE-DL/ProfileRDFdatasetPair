@@ -19,19 +19,25 @@ public class GiveDistinctEntities {
 		Integer nNumber = 0;
 		
 		Query query = QueryFactory.create(prefix + 
-			" SELECT  (COUNT(DISTINCT ?s) AS ?subjectCount) " +
-				" WHERE { " +
-				" ?s ?p ?o ." +
-				" FILTER isIRI(?s) " +
-				" FILTER isIRI(?p) " +
-				" FILTER isIRI(?o) " +
+			" SELECT (COUNT(DISTINCT ?iri) AS ?i) " +
+			" WHERE { " +
+			"  { " +
+			"    SELECT ?iri " +
+			"    WHERE { " +
+			"      { SELECT (?s AS ?iri) WHERE { ?s ?p ?o . FILTER(isIRI(?s)) } } " +
+			"      UNION " +
+			"      { SELECT (?p AS ?iri) WHERE { ?s ?p ?o . FILTER(isIRI(?p)) } } " +
+			"      UNION " +
+			"      { SELECT (?o AS ?iri) WHERE { ?s ?p ?o . FILTER(isIRI(?o)) } } " +
+			"    } " +
+			"  } " +
 			" } "
 		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		
 		ResultSet result = qe.execSelect();
 		if (result.hasNext()) {
 			QuerySolution querySolution = result.next() ;
-			nNumber = querySolution.getLiteral("subjectCount").getInt();
+			nNumber = querySolution.getLiteral("i").getInt();
 			
 		}
 		return nNumber;

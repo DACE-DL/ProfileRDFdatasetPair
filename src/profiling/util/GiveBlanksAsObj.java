@@ -19,7 +19,7 @@ public class GiveBlanksAsObj {
 		Integer nNumber = 0;
 		
 		Query query = QueryFactory.create(prefix + 
-			" SELECT (COUNT(?o) AS ?count) " +
+			" SELECT (COUNT(DISTINCT ?p) AS ?count) " +
 				" WHERE { " +
 				" ?s ?p _:b0 ." +
 			" } "

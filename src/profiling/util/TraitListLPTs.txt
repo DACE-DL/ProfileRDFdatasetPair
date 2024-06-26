@@ -1,0 +1,12 @@
+LPT 1.1.1.2: Predicate value format value type
+LPT 1.1.2.4: Predicate value terminological multilingual problem
+LPT 1.1.3: Predicate value best practice problem
+LPT 2.1.4: Predicate terminological multilingual problem
+LPT 2.1.5: Predicate terminological data quality problem
+LPT 2.2.1: Predicate structural intra-aggregation problem
+LPT 3.1.5: Class terminological data quality
+LPT 3.1.4: Class terminological multilingual problem
+LPT 3.2: Class generalization/specialization problem
+LPT 4.2: Subgraph no textual description problem
+LPT 5.7: Graph scalability Problem
+LPT 5.8: Graph lack of domain ontology Problem

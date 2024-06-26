@@ -96,6 +96,7 @@ public class MakeListCombinationPropertiesWithNewClass {
 								if (!stmtIte1.hasNext()) {
 									model.add(s, p, o);
 								}
+								stmtIte1.close();
 							}
 							ListInstancesOfCombinaisonProperties.clear();
 						}

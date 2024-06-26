@@ -21,7 +21,7 @@ public class TraitListLanguagesPredicat {
 
 		// Si pas de tags language pour le jeux source ou target 
 		if (noTagSourceLanguage || noTagTargetLanguage) {
-
+			// LPT 2.1.5: Predicate terminological data quality problem
 		}
 
 		// Si au moins une langue pour les datasets source et target

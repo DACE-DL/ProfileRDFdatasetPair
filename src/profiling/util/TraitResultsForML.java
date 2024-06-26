@@ -28,7 +28,7 @@ public class TraitResultsForML {
 	ArrayList<UriAndUri> listPropertyAndSubpropertySource, ArrayList<UriAndUri> listPropertyAndSubpropertyTarget
 	) {
 		// Déclaration et initialisation d'un tableau en deux dimensions avec des chiffres et des listes
-        Object[][] tableauDeuxD = new Object[46][3];
+        Object[][] tableauDeuxD = new Object[48][3];
 		Integer numberLine = 0;
 		ArrayList<String> characteristics = new ArrayList<>();
         ArrayList<Object> values = new ArrayList<>();

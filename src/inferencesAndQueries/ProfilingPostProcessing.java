@@ -40,6 +40,7 @@ public class ProfilingPostProcessing{
 		String nameOfListClassMostUsed = "listClassMostUsed";
 		String nameOfListDatatypesOfInterest = "listMostUsedPropertyDatatypes";
 		String nameOfListCombinationPropertiesWithNewClass = "listCombinationPropertiesWithNewClass";
+		String nameOfListCombinationPropertiesClassRelationships = "listCombinationPropertiesClassRelationships";
 		String nameOfListCombinationPropertiesClassRelationshipsClasses = "listCombinationPropertiesClassRelationshipsClasses";
 		String nameOfListCombinationPropertiesClassRelationshipsRelationships = "listCombinationPropertiesClassRelationshipsRelationships";
 		String nameOfListCombinationPropertiesClassRelationshipsPropertiesOfClasses = "listCombinationPropertiesClassRelationshipsPropertiesOfClasses";
@@ -395,21 +396,21 @@ public class ProfilingPostProcessing{
 			e.printStackTrace();
 		}
 		
-		// ArrayList<UriAndUriAndUriAndNumber> listCombinationPropertiesClassRelationshipsSource = new ArrayList<UriAndUriAndUriAndNumber>();
-		// Path pathNameListCombinationPropertiesClassRelationshipsSource = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesWithNewClass + ".json");
-	    // try {
-		// 	listCombinationPropertiesClassRelationshipsSource = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListCombinationPropertiesClassRelationshipsSource.toString());
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
+		ArrayList<UriListAndUriAndUriListAndNumber> listCombinationPropertiesClassRelationshipsSource = new ArrayList<UriListAndUriAndUriListAndNumber>();
+		Path pathNameListCombinationPropertiesClassRelationshipsSource = Paths.get(pathForSourceResults, nameOfListCombinationPropertiesClassRelationships + ".json");
+	    try {
+			listCombinationPropertiesClassRelationshipsSource = ProfilingUtil.makeArrayListUriListAndUriAndUriListAndNumber(pathNameListCombinationPropertiesClassRelationshipsSource.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
-		// ArrayList<UriAndUriAndUriAndNumber> listCombinationPropertiesClassRelationshipsTarget = new ArrayList<UriAndUriAndUriAndNumber>();
-		// Path pathNameListCombinationPropertiesClassRelationshipsTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesClassRelationships + ".json");
-	    // try {
-		// 	listCombinationPropertiesClassRelationshipsTarget = ProfilingUtil.makeArrayListUriAndUriAndUriAndNumber(pathNameListCombinationPropertiesClassRelationshipsTarget.toString());
-		// } catch (Exception e) {
-		// 	e.printStackTrace();
-		// }
+		ArrayList<UriListAndUriAndUriListAndNumber> listCombinationPropertiesClassRelationshipsTarget = new ArrayList<UriListAndUriAndUriListAndNumber>();
+		Path pathNameListCombinationPropertiesClassRelationshipsTarget = Paths.get(pathForTargetResults, nameOfListCombinationPropertiesClassRelationships + ".json");
+	    try {
+			listCombinationPropertiesClassRelationshipsTarget = ProfilingUtil.makeArrayListUriListAndUriAndUriListAndNumber(pathNameListCombinationPropertiesClassRelationshipsTarget.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 		// ArrayList<UriListAndUriList> listOfRelationshipsDomainSource = new ArrayList<UriListAndUriList>();
 		// Path pathNameListOfRelationshipsDomainSource = Paths.get(pathForSourceResults, nameOfListOfRelationshipsDomain + ".json");
@@ -516,7 +517,37 @@ public class ProfilingPostProcessing{
 		listLptsTemp = TraitListDatatypes.makeList(listMostUsedPropertyDatatypesSource, listMostUsedPropertyDatatypesTarget);
 		listLpts.addAll(listLptsTemp);
 		
-		
+		///////////////////////////////////////////////////////////////
+		// Recherche de problèmes liés à la scalabilité              //
+		///////////////////////////////////////////////////////////////
+
+		listLptsTemp = TraitScalability.makeList(resultsSource, resultsTarget);
+		listLpts.addAll(listLptsTemp);
+
+		///////////////////////////////////////////////////////////////
+		// Recherche de problèmes liés à la présence de labels       //
+		///////////////////////////////////////////////////////////////
+
+		listLptsTemp = TraitLabels.makeList(resultsSource, resultsTarget);
+		listLpts.addAll(listLptsTemp);
+
+		///////////////////////////////////////////////////////////////
+		// Recherche de problèmes liés à des problèmes de hiérarchie //
+		///////////////////////////////////////////////////////////////
+
+		listLptsTemp = TraitsHierarchiesLoop.makeList(resultsSource, resultsTarget);
+		listLpts.addAll(listLptsTemp);
+
+		listLptsTemp = TraitsHierarchiesDeep.makeList(resultsSource, resultsTarget);
+		listLpts.addAll(listLptsTemp);
+
+		///////////////////////////////////////////////////////////////
+		// Recherche de problèmes liés à l'absence de TBox           //
+		///////////////////////////////////////////////////////////////
+
+		listLptsTemp = TraitsOntologyDomain.makeList(listClassDefinedSource, listClassDefinedTarget, listCombinationPropertiesClassRelationshipsSource, listCombinationPropertiesClassRelationshipsTarget );
+		listLpts.addAll(listLptsTemp);
+
 		///////////////////////////////////////////////////////////////
 		// Transfert de la liste des LPT extrait dans fichers .json  //
 		///////////////////////////////////////////////////////////////
@@ -536,7 +567,7 @@ public class ProfilingPostProcessing{
 		// Création fichier CSV pour ML                              //
 		///////////////////////////////////////////////////////////////
 		
-		Object[][] tableauDeuxD = new Object[46 
+		Object[][] tableauDeuxD = new Object[48 
 		][3];
 		tableauDeuxD = TraitResultsForML.makeResultsForML(idPair, resultsSource, resultsTarget,
 		listOfDatatypesSource, listOfDatatypesTarget,
