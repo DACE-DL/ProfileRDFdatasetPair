@@ -27,8 +27,8 @@ public class AgrovocApiUtil {
 		for (String resource : ListResources) {
 			System.out.println(writer.writeValueAsString(resource));
 		}*/
-		ListResources = resourcesAndDecendants("Juglandaceae");
-		//ListResources = resourcesAndDecendants("Juglans");
+		ListResources = resourcesAndDescendants("Juglandaceae");
+		//ListResources = resourcesAndDescendants("Juglans");
 		System.out.println("Decendants");
 		for (String resource : ListResources) {
 			System.out.println(writer.writeValueAsString(resource));
@@ -39,7 +39,7 @@ public class AgrovocApiUtil {
     	
     	Instant start2 = Instant.now();	
     	ListResources = resourcesAndExactMatch("Juglandaceae");
-		//ListResources = resourcesAndDecendants("Juglans");
+		//ListResources = resourcesAndDescendants("Juglans");
     	System.out.println("ExactMatch");
 		for (String resource : ListResources) {
 			System.out.println(writer.writeValueAsString(resource));
@@ -111,7 +111,7 @@ public class AgrovocApiUtil {
 	}
 
 
-	public static ArrayList<String> resourcesAndDecendants(String term) throws JsonProcessingException {
+	public static ArrayList<String> resourcesAndDescendants(String term) throws JsonProcessingException {
 
 		ArrayList<String> ListResources = new ArrayList<String>();
 		ArrayList<String> ListDescendantsResources = new ArrayList<String>();

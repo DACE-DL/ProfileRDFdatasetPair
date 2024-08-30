@@ -3,6 +3,9 @@ package profiling.util;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import org.apache.jena.rdf.model.RDFList;
+import org.apache.jena.rdf.model.Resource;
+
 public class UriList {
 	
 	
@@ -10,11 +13,21 @@ public class UriList {
 	
 	
 	public UriList() {
+        this.uriList = new ArrayList<>();
 	}
 	
 	public UriList(ArrayList<Uri> uriList) {
 		this.uriList = uriList;
 	}
+
+    // Constructeur pour initialiser UriList à partir de RDFList
+    public UriList(RDFList rdfList) {
+        this.uriList = new ArrayList<>();
+        rdfList.iterator().forEachRemaining(node -> {
+            String resource = node.toString();
+            this.uriList.add(new Uri(resource));
+        });
+    }
 
 	public ArrayList<Uri> getUriList() {
 		return uriList;

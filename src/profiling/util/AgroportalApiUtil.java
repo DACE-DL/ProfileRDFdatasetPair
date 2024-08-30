@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.ObjectWriter;
 
 public class AgroportalApiUtil {
 	
-	static final String REST_URL = "http://data.agroportal.lirmm.fr/";
+	static final String REST_URL = "https://data.agroportal.lirmm.fr/";
     static final String API_KEY = "5592185f-9951-49c4-903a-135e68aaa6f3";
     static final ObjectMapper mapper = new ObjectMapper();
     static final ObjectWriter writer = mapper.writerWithDefaultPrettyPrinter();
@@ -24,9 +24,9 @@ public class AgroportalApiUtil {
     	Instant start0 = Instant.now();	
     	ArrayList<String> ListResources = new ArrayList<String>();
     	// Recherche des ressource par rapport au terme
-    	//ListResources = NcboApiUtil.resourceAndDecendants("Fagales");
-    	//ListResources = AgroportalApiUtil.resourceAndDecendants("river");
-    	ListResources = AgroportalApiUtil.resourceAndDecendants("Juglandaceae");
+    	//ListResources = NcboApiUtil.resourcesAndDescendants("Fagales");
+    	//ListResources = AgroportalApiUtil.resourcesAndDescendants("river");
+    	ListResources = AgroportalApiUtil.resourcesAndDescendants("Juglandaceae");
     	
         
 		for (String resource : ListResources) {
@@ -36,30 +36,16 @@ public class AgroportalApiUtil {
     	System.out.println("Durée d'exécution Totale: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));    
     }
 
-    public static ArrayList<String> resourceAndDecendants(String term) throws JsonProcessingException {
+    public static ArrayList<String> resourcesAndDescendants(String term) throws JsonProcessingException {
     	
     	ArrayList<String> ListResources = new ArrayList<String>();
     	ArrayList<String> ListDescendants = new ArrayList<String>();
     	
     	// Première recherche par rapport au terme
         JsonNode searchResult = jsonToNode(get(REST_URL + "/search?q=" + term));
-            
-            JsonNode searchResultCollection = searchResult.path("collection");
-            if (searchResultCollection.isArray()) {
-               //If this node an Arrray?
-            }
 
-            System.out.println(searchResult);
-            System.out.println(searchResultCollection);
-            if (searchResult.isArray()) {
-               //If this node an Arrray?
-               System.out.println("searchResultArrray");
-            }
-            if (searchResultCollection.isArray()) {
-                //If this node an Arrray?
-            	System.out.println("searchResultCollectionArrray");
-             }
-            
+            JsonNode searchResultCollection = searchResult.path("collection");
+
             for (JsonNode node : searchResultCollection) {
                 String id = node.path("@id").asText();
                 String descendants = "";
@@ -67,9 +53,9 @@ public class AgroportalApiUtil {
                 if (linksNode.isMissingNode()) {
                    //si "links" node manquant
                 } else {
-                   descendants = linksNode.path("parents").asText();
+                   descendants = linksNode.path("descendants").asText();
                    //missing node, just return empty string
-                   System.out.println(descendants);
+                   // System.out.println("descendants : "  + descendants);
                 };
                 if (!ListResources.contains(id)) { 
                 	// Récupération des resources
@@ -82,13 +68,14 @@ public class AgroportalApiUtil {
         
         // On traite chaque lien vers les descendants
         for (String descendant : ListDescendants) {
-        	JsonNode searchResultDescendants = jsonToNode(get(descendant) + "&display_context=false" +
-        			"&display_links=false"	);
-        //System.out.println(writer.writeValueAsString(searchResultDescendants));
-    
+        	JsonNode searchResultDescendants = jsonToNode(get(descendant) + "&display_context=false" + "&display_links=false"	);
+            // System.out.println("Descendant: " + descendant);            
+            // System.out.println("Descendant result: " + writer.writeValueAsString(searchResultDescendants));
+        
         	if (!searchResultDescendants.isEmpty(null)) {
         		// A partir de la page retournée, on obtient le lien hypermédia vers la page suivante
-        		String nextPage = searchResultDescendants.get("links").get("nextPage").asText();
+                String nextPage = "";
+        		nextPage = searchResultDescendants.get("links").get("nextPage").asText();
         		// Itération sur les pages disponibles
         		while (nextPage.length() != 0) {
         			for (JsonNode cls : searchResultDescendants.get("collection")) {

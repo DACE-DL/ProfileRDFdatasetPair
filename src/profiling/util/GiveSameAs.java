@@ -13,7 +13,6 @@ public class GiveSameAs {
 	public static Integer giveNumber(Model model) {
 		Integer nNumber = 0;
 	
-		new ProfilingConf();
 		String owl = ProfilingConf.owl;
 
 		Resource s1 = null;

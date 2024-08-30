@@ -12,10 +12,6 @@ public class ProfilingPostProcessing{
 	// On effectue les post-traitements
 	public static void makeTreatements(String idPair, String pathForSourceResults, String pathForTargetResults) {
 
-		// Initialisation de la configuration
-		// Chemin d'accès, noms fichiers...
-		new ProfilingConf(); 
-
 		ArrayList<Lpt> listLpts = new ArrayList<Lpt>();
 		ArrayList<Lpt> listLptsTemp = new ArrayList<Lpt>();
 

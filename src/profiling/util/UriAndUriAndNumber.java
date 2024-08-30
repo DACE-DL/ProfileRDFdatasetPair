@@ -32,4 +32,8 @@ public class UriAndUriAndNumber {
 	public void setNumber(Integer number) {
 		this.number = number;
 	}
+
+	public void incrementNumber() {
+        this.number++;
+    }
 }

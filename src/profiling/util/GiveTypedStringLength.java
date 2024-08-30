@@ -16,8 +16,6 @@ public class GiveTypedStringLength {
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static double giveLength(Model model, ArrayList<UriAndNumber> listProperty) {
 		double nNumber = 0;
-	
-		new ProfilingConf();
 		
 		List<RDFNode> listObject = new ArrayList<>();
 	

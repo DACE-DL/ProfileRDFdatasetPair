@@ -9,6 +9,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
 
+import org.apache.jena.iri.impl.Main;
+import org.apache.log4j.PropertyConfigurator;
+
 public final class ProfilingConf { 
 	
 	private static Properties prop = null;
@@ -29,6 +32,7 @@ public final class ProfilingConf {
 	public static String fileNameListSourceDatasets = null;
 	public static String fileNameListTargetDatasets = null;
 	public static String fileNameListPairDatasets = null;
+	public static String fileNameListPairDatasetsForChecks = null;
 	public static String fileNameListRules = null;
 	public static String fileNameListQueries = null;
 	public static String fileNameParameters = null;
@@ -38,6 +42,9 @@ public final class ProfilingConf {
 	public static String folderForDatasets = null;
 	public static String folderForRules = null;
 	public static String folderForQueries = null;
+	public static String folderForChecks = null;
+	public static String folderForSourceChecks = null;
+	public static String folderForTargetChecks = null;
 	public static String folderForResults = null;
 	public static String folderForSourceResults = null;
 	public static String folderForTargetResults = null;
@@ -84,6 +91,13 @@ public final class ProfilingConf {
 	*/
 	public ProfilingConf() {
 		
+		// Charger la configuration Log4j
+        ClassLoader classLoader = Main.class.getClassLoader();
+        if (classLoader.getResource("properties") != null) {
+            PropertyConfigurator.configure(classLoader.getResource("properties"));
+        } else {
+            System.err.println("properties file not found in classpath.");
+        }
 		Properties prop = new Properties();
 		InputStream input = null;
 		// InputStream in = null;
@@ -129,6 +143,7 @@ public final class ProfilingConf {
 			fileNameListSourceDatasets = prop.getProperty("fileNameListSourceDatasets");
 			fileNameListTargetDatasets = prop.getProperty("fileNameListTargetDatasets");
 			fileNameListPairDatasets = prop.getProperty("fileNameListPairDatasets");
+			fileNameListPairDatasetsForChecks = prop.getProperty("fileNameListPairDatasetsForChecks");
 			fileNameListRules = prop.getProperty("fileNameListRules");
 			fileNameListQueries = prop.getProperty("fileNameListQueries");
 			fileNameParameters = prop.getProperty("fileNameParameters");
@@ -158,6 +173,18 @@ public final class ProfilingConf {
 			folderForTargetResults = prop.getProperty("folderForTargetResults");
 			Path pathfolderForTargetResults = Paths.get(mainFolderProfiling + folderForTargetResults);
 			folderForTargetResults = pathfolderForTargetResults.toString();
+
+			folderForChecks = prop.getProperty("folderForChecks");
+			Path pathfolderForChecks = Paths.get(mainFolderProfiling + folderForChecks);
+			folderForChecks = pathfolderForChecks.toString();
+			
+			folderForSourceChecks = prop.getProperty("folderForSourceChecks");
+			Path pathfolderForSourceChecks = Paths.get(mainFolderProfiling + folderForSourceChecks);
+			folderForSourceChecks = pathfolderForSourceChecks.toString();
+			
+			folderForTargetChecks = prop.getProperty("folderForTargetChecks");
+			Path pathfolderForTargetChecks = Paths.get(mainFolderProfiling + folderForTargetChecks);
+			folderForTargetChecks = pathfolderForTargetChecks.toString();
 		
 			folderForScriptR = prop.getProperty("folderForScriptR");
 			Path pathfolderForScriptR = Paths.get(mainFolderProfiling + folderForScriptR);

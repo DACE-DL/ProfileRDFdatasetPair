@@ -223,9 +223,7 @@ public class RUtil {
 	}
 	
 	public static double AreaWKTPolygone(String wKTPolygone) {
-		// Initialisation de la configuration
-	    // Chemin d'accès, noms fichiers...
-		new ProfilingConf();
+
 		Path pathLibrarySf = Paths.get(ProfilingConf.folderForScriptR , ProfilingConf.fileNameScriptRSf);
 		String librarylocation = pathLibrarySf.toString().replace("\\","/");
 		//System.out.println(librarylocation);

@@ -13,10 +13,7 @@ public class MakeListPropertyAndSubproperty {
 	
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static ArrayList<UriAndUri> makeList(Model model, String nameOfList) {
-		
-		// new ProfilingConf();
-		// String dsp = ProfilingConf.dsp;
-		// String rdf = ProfilingConf.rdf;
+	
 		String prefix = ProfilingConf.queryPrefix;
 
 		ArrayList<UriAndUri> ListResources = new ArrayList<UriAndUri>();

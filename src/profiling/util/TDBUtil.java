@@ -24,9 +24,7 @@ import org.apache.jena.tdb2.TDB2Factory;
 public class TDBUtil {
 	
 	public static Dataset CreateTDBDataset() throws Exception {
-		// Initialisation de la configuration
-		// Chemin d'accès, noms fichiers...
-		new ProfilingConf();  
+
 		// Create dataset
 		Dataset dataset = null;
 		try {   

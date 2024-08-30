@@ -14,7 +14,6 @@ public class GivePropertyUsageDistinctPerSubject {
 	public static Usage giveUsage(Model model) {
 		Usage usage = new Usage();
 		
-		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
 		
 		int nSubjectCount = 0;

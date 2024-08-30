@@ -8,15 +8,18 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.text.Normalizer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
@@ -121,7 +124,7 @@ public class TDBInitialisation {
 			modifyFile(pathFileDataset.toString()); 
 			
 			String typeOfSerialization = null;
-			// Si le fichier à l'extention .json 
+			// Si le fichier a l'extention .json 
 			if(fileName.matches("^.*json$")) {
 				typeOfSerialization = "JSONLD";
 				Dataset dataset = TDBUtil.CreateTDBDataset();
@@ -136,6 +139,7 @@ public class TDBInitialisation {
 					InputStream is = new FileInputStream(pathFileDataset.toString());
 					Model model = dataset.getNamedModel(idPairForGraphURI + nameForGraphURI);
 					model.enterCriticalSection(Lock.WRITE);
+					model.clearNsPrefixMap();
 					// Read JSON File and put it in model
 					//StringReader in = new StringReader(jsonString);
 					
@@ -157,20 +161,44 @@ public class TDBInitialisation {
 					//dataset.abort();
 					dataset.end(); 
 				}
-			} else
+			} else // Le fichier n'a pas l'extention .json 
 			{
 				Dataset dataset = TDBUtil.CreateTDBDataset();
 				try {  
 					// Effacement des statements contenus dans le graphe TDB
 					dataset.begin(ReadWrite.WRITE);
+					// Iterator<String> listgraph = dataset.listNames();
+					// while(listgraph.hasNext()) {
+					// 	System.out.println("Graph: " + listgraph.next());
+					// };
 					dataset.removeNamedModel(idPairForGraphURI + nameForGraphURI); 
 					Model model = dataset.getNamedModel(idPairForGraphURI + nameForGraphURI);
 					model.enterCriticalSection(Lock.WRITE);
-					// Read JSON File and put it in model
+					model.clearNsPrefixMap();
+					// Vérifier les préfixes avant lecture
+					// System.out.println("Before: ");
+					// model.getNsPrefixMap().forEach((prefix, uri) -> {
+					// 	System.out.println("Prefix: " + prefix + ", URI: " + uri);
+					// });
+					// Read File and put it in model
+					// System.out.println("File: " + pathFileDataset.toString());
 					InputStream is = new FileInputStream(pathFileDataset.toString());
-					// read the RDF/JSON files in model
-					model.read(is, null );
+					// read the files in model
+					model.read(is,"");
+					// // Vérifier les préfixes après lecture
+					// System.out.println("After: ");
+					// model.getNsPrefixMap().forEach((prefix, uri) -> {
+					// 	System.out.println("Prefix: " + prefix + ", URI: " + uri);
+					// });
 					System.out.println("Graph size " + idPairForGraphURI + nameForGraphURI + " : " + model.size());
+					// Path pathOfTheListPairDatasets = Paths.get(ProfilingConf.mainFolderProfiling, "output"+ idPairForGraphURI + nameForGraphURI +".rdf");		
+					// String outputFileName = pathOfTheListPairDatasets.toString();
+					// try (OutputStream out = new FileOutputStream(outputFileName)) {
+					// 	model.write(out, "RDF/XML-ABBREV");
+					// 	System.out.println("Modèle écrit dans le fichier " + outputFileName);
+					// } catch (Exception e) {
+					// 	e.printStackTrace();
+					// }
 					dataset.commit();    
 					dataset.close();
 					model.leaveCriticalSection();
@@ -201,9 +229,12 @@ public class TDBInitialisation {
 				.replaceAll("ns3:CdivAlign", "ns1:divAlign") // dbkwik.webdatacommons.org/marvel.wikia.com
 				.replaceAll("http://www.wikipedia.com:secrets_of_spiderman_revealed", "http://www.wikipedia.com/secrets_of_spiderman_revealed") // dbkwik.webdatacommons.org/marvel.wikia.com
 				.replaceAll("OntologyID\\(Anonymous-2\\)module1", "http://OntologyID/Anonymous_2/module1") // OM-2023-taxrefldPlantae-ncbitaxonPlantae
-				
+				.replaceAll("ِAlRay_AlAam", "AlRay_AlAam") // OM-2022-nell-dbpedia
 				;
-				writer.write(modifiedLine + "\n");
+				// Unicode Normalization Form C
+				// https://stackoverflow.com/questions/5465170/text-run-is-not-in-unicode-normalization-form-c
+				String normalizedLine = Normalizer.normalize(modifiedLine, Normalizer.Form.NFC);
+				writer.write(normalizedLine + "\n");
 			}
 	
 			// Fermeture des flux

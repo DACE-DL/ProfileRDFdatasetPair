@@ -6,6 +6,27 @@
     "configurations": [
         {
             "type": "java",
+            "name": "StartVerification",
+            "request": "launch",
+            "mainClass": "inferencesAndQueries.StartVerification",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
+            "name": "AgrovocApiUtil",
+            "request": "launch",
+            "mainClass": "profiling.util.AgrovocApiUtil",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
+            "name": "AgroportalApiUtil",
+            "request": "launch",
+            "mainClass": "profiling.util.AgroportalApiUtil",
+            "projectName": "ProfilingWebService"
+        },
+        {
+            "type": "java",
             "name": "CommonPartFinder",
             "request": "launch",
             "mainClass": "profiling.util.CommonPartFinder",

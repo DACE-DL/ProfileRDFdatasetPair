@@ -13,7 +13,6 @@ public class GiveEntitiesMentioned {
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static Integer giveNumber(Model model) {
 		
-		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
 		
 		Integer nNumber = 0;

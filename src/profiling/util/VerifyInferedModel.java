@@ -1,4 +1,4 @@
-package inferencesAndQueries;
+package profiling.util;
 
 import java.io.IOException;
 import java.util.Iterator;

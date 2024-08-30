@@ -33,10 +33,6 @@ public class ProfilingPelletInferences {
 	 */
 	public static String MakeInferencesWithPellet(String inData, String inSchema) {
 		
-		// Initialisation de la configuration
-		// Chemin d'accés, noms fichiers...
-		new ProfilingConf(); 
-		
 		String jsonStringOut = null;
 		Model schema = ModelFactory.createDefaultModel();
 		Model data = ModelFactory.createDefaultModel();
@@ -100,10 +96,6 @@ public class ProfilingPelletInferences {
 	 *  et place le résultat dans un modèle en sortie.
 	 */
 	public static OntModel MakeInferencesWithPellet(OntModel modelData, OntModel modelSchema) {
-
-		// Initialisation de la configuration
-		// Chemin d'accés, noms fichiers...
-		new ProfilingConf(); 
 
 		OntModel myOntology = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
 		OntModel myOntologyInfered = ModelFactory.createOntologyModel(OntModelSpec.OWL_DL_MEM);
@@ -239,10 +231,6 @@ public class ProfilingPelletInferences {
 	 */
 	public static OutputStream MakeInferencesWithPellet(InputStream inData, InputStream inSchema) {
 		
-		// Initialisation de la configuration
-		// Chemin d'accés, noms fichiers...
-		new ProfilingConf(); 
-		
 		OutputStream jsonOut = new ByteArrayOutputStream(1024);
 		Model schema = ModelFactory.createDefaultModel();
 		Model data = ModelFactory.createDefaultModel();
@@ -300,10 +288,6 @@ public class ProfilingPelletInferences {
 	 * dans le graphe des inférences
 	 */
 	public static void MakeInferencesWithPellet(String nameOfDataGraph, String nameOfSchemaGraph, String nameOfInferedGraph) {
-		
-		// Initialisation de la configuration
-		// Chemin d'accés, noms fichiers...
-		new ProfilingConf(); 
 		
 		Dataset dataset = null;
 		Model schema = ModelFactory.createDefaultModel();

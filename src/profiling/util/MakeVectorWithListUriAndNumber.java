@@ -24,7 +24,6 @@ public class MakeVectorWithListUriAndNumber {
 		//  les valeurs x, y et z sont les valeurs numériques liés au node
 		//  par une relation (quelle qu'elle soit)
 	
-        new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
 		List<Double> values = new ArrayList<Double>();
 		

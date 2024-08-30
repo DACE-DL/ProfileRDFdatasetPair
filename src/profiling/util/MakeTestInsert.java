@@ -10,7 +10,6 @@ public class MakeTestInsert {
 	// Création d'une liste des propriétés et de leur usage dans un triplet
 	public static void make(Model model) {
 		
-		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;	
 		
 		String queryUpdateString = prefix + 

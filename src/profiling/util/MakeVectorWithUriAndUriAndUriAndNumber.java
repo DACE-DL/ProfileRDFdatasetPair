@@ -15,7 +15,6 @@ public class MakeVectorWithUriAndUriAndUriAndNumber {
 		//  les valeurs x, y et z sont les valeurs numériques liés au node
 		//  par une relation (quelle qu'elle soit)
 	
-        new ProfilingConf();
 		// List<Double> values = new ArrayList<Double>();
 		
 		

@@ -24,7 +24,6 @@ public class MakeListCombinationPropertiesWithNewClass {
 	// Création de Classes pour chaque combinaison de propriétés
 	public static ArrayList<UriListAndUriList> makeClasses(Model model, ArrayList<UriListAndUriListAndNumberListAndNumber> listCombinationPropertiesPerSubjectCleanedAndReduced) {
 		
-		new ProfilingConf();
 		String dsp = ProfilingConf.dsp;
 		String rdf = ProfilingConf.rdf;
 		String rdfs = ProfilingConf.rdfs;

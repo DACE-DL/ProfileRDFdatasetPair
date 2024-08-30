@@ -17,9 +17,15 @@ public class TraitScalability {
 		Long runningTimeTarget = resultsTarget.getRunningTimeInSecond(); 
 		Long runningTimeMax = (long) 1800;
 		Integer scalabilityScoreMin = 2000;
-		Integer scalabilityScoreSource = (int) (numberOfTriplesSource/runningTimeSource);
-		Integer scalabilityScoreTarget = (int) (numberOfTriplesTarget/runningTimeTarget);
-
+		Integer scalabilityScoreSource = 0;
+		Integer scalabilityScoreTarget = 0; 
+		
+		if (runningTimeSource > 0) {
+			scalabilityScoreSource = (int) (numberOfTriplesSource/runningTimeSource);
+		}
+		if (runningTimeTarget > 0) {	
+			scalabilityScoreTarget = (int) (numberOfTriplesTarget/runningTimeTarget);
+		}	
         // System.out.println("scalabilityScoreSource : " + scalabilityScoreSource);
 		// System.out.println("scalabilityScoreTarget : " + scalabilityScoreTarget);
 

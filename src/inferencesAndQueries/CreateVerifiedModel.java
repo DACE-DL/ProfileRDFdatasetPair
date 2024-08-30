@@ -1,5 +1,7 @@
 package inferencesAndQueries;
 
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
@@ -28,7 +30,7 @@ import openllet.jena.PelletReasonerFactory;
 import profiling.util.*;
 
 
-public class CreateInferedModel { 
+public class CreateVerifiedModel { 
 
 	public static InfModel createInferedModel(String idPair, ArrayList<String> listDatasets, ArrayList<String> listRules, String topSpatial) throws Exception {
 
@@ -78,12 +80,21 @@ public class CreateInferedModel {
 		}
 		modelImports.close();
 
+		Path pathOfTheListPairDatasets = Paths.get(ProfilingConf.mainFolderProfiling, "output.rdf");		
+		String outputFileName = pathOfTheListPairDatasets.toString();
+			try (OutputStream out = new FileOutputStream(outputFileName)) {
+    			modelTemp.write(out, "RDF/XML-ABBREV");
+    			System.out.println("Modèle écrit dans le fichier " + outputFileName);
+			} catch (Exception e) {
+    			e.printStackTrace();
+			}
+
 		Instant end0 = Instant.now();
 		System.out.println("Runtime for loading models into memory: " + ProfilingUtil.getDurationAsString(Duration.between(start0, end0).toMillis()));
 		Instant start1 = Instant.now();
 
 		System.out.println("Model size before addtional treatement: " + modelTemp.size() + " triples");
-        ProfilingPreProcessing.makeTreatements(modelTemp);
+        ProfilingVerifyProcessing.makeTreatements(modelTemp);
 		System.out.println("Model size after addtional treatement: " + modelTemp.size() + " triples");	
 		
 		Instant end1 = Instant.now();
@@ -100,65 +111,11 @@ public class CreateInferedModel {
 		
 		// Register custom primitive
 		
-		//BuiltinRegistry.theRegistry.register(new CalcTest());
 		BuiltinRegistry.theRegistry.register(new CalcNumberOfTriples());
-		//BuiltinRegistry.theRegistry.register(new CalcPropertyUsageCount());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsageDistinctPerSubject());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyUsageDistinctPerObject());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeVectorWithListUriAndNumber());
-		//BuiltinRegistry.theRegistry.register(new CalcRQuantile());
-		//BuiltinRegistry.theRegistry.register(new CalcPropertyMostUsed());
-		// BuiltinRegistry.theRegistry.register(new CalcOutDegree());
-		// BuiltinRegistry.theRegistry.register(new CalcInDegree());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyAndSubproperty());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyHierarchyDeep());	
-		// BuiltinRegistry.theRegistry.register(new CalcSubclassUsage());
-		// BuiltinRegistry.theRegistry.register(new CalcEntitiesMentioned());
-		// BuiltinRegistry.theRegistry.register(new CalcDistinctEntities());
-		// BuiltinRegistry.theRegistry.register(new CalcNumberOfLiterals());
-		// BuiltinRegistry.theRegistry.register(new CalcNumberBlanksAsSubj());
-		// BuiltinRegistry.theRegistry.register(new CalcNumberBlanksAsObj());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListDatatypes());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListLanguages());
-		// BuiltinRegistry.theRegistry.register(new CalcTypedStringLength());
-		// BuiltinRegistry.theRegistry.register(new CalcUntypedStringLength());
-		// BuiltinRegistry.theRegistry.register(new CalcTypedSubjects());
-		// BuiltinRegistry.theRegistry.register(new CalcLabeledSubjects());
-		// BuiltinRegistry.theRegistry.register(new CalcSameAs());
-		// BuiltinRegistry.theRegistry.register(new CalcLinks());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListMaxPerProperty());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListPerProperty());
-		// BuiltinRegistry.theRegistry.register(new CalcMakeListSPOvocabularies());
-        // // For the Classes
-		// BuiltinRegistry.theRegistry.register(new CalcClassUsageCount());
-		// BuiltinRegistry.theRegistry.register(new CalcClassDefined());
-		// BuiltinRegistry.theRegistry.register(new CalcClassNotDefined());
-		// BuiltinRegistry.theRegistry.register(new CalcClassAndSubClass());
-		// BuiltinRegistry.theRegistry.register(new CalcClassHierarchyDeep());
-		// BuiltinRegistry.theRegistry.register(new CalcClassMostUsed());
-		// BuiltinRegistry.theRegistry.register(new CalcPropertyWithDomaineAndRange());
 		
-		
-		
-		
-		
-		
-		
-		//BuiltinRegistry.theRegistry.register(new CalcListClassOfInterest());
-		//BuiltinRegistry.theRegistry.register(new CalcMakeListClassOfInterest());
-		//BuiltinRegistry.theRegistry.register(new CalcMakeListPropertyOfInterest());
-		
-		
-		
-
-		//String test = "C:/Users/conde/Documents/GitHub/ProfileRDFdatasetPair/src/profiling/util/CalcPropertyUsage.java";
-		//Builtin impl = BuiltinRegistry.theRegistry.getImplementationByURI(test);
-		//BuiltinRegistry.theRegistry.register(impl);
-
 		// !!!! pour l'instant une seule liste de règles
 		//System.out.println(listRules.get(0).toString());
 		Path pathFileRules = Paths.get(ProfilingConf.folderForRules , listRules.get(0).toString());
-		System.out.println(pathFileRules.toString());
 		Reasoner reasonerRules = new GenericRuleReasoner(Rule.rulesFromURL(pathFileRules.toString()));
 
 		InfModel infModel = ModelFactory.createInfModel(reasonerRules, modelInfered);  

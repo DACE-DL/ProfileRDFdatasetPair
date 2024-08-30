@@ -13,7 +13,6 @@ public class GiveSubclassUsage {
 	// Extraction de l'usage de la propriété rdfs:subClassOf
 	public static Integer giveUsage(Model model) {
 		Integer nNumber = 0;
-		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
 
 		Query query = QueryFactory.create(prefix + 

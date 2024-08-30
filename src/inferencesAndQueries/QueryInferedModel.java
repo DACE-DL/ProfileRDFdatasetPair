@@ -29,6 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import profiling.util.ProfilingConf;
 import profiling.util.ProfilingQueryObject;
 import profiling.util.ProfilingQueryOutputObject;
+import profiling.util.VerifyInferedModel;
 
 public class QueryInferedModel {
 	

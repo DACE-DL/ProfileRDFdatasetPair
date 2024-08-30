@@ -14,7 +14,6 @@ public class GiveInDegree {
 	public static double giveDegree(Model model) {
 		double indegree = 0.0;
 		
-		new ProfilingConf();
 		String prefix = ProfilingConf.queryPrefix;
 
 		Query query = QueryFactory.create(prefix + 
