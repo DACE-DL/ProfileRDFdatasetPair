@@ -230,6 +230,8 @@ public class TDBInitialisation {
 				.replaceAll("http://www.wikipedia.com:secrets_of_spiderman_revealed", "http://www.wikipedia.com/secrets_of_spiderman_revealed") // dbkwik.webdatacommons.org/marvel.wikia.com
 				.replaceAll("OntologyID\\(Anonymous-2\\)module1", "http://OntologyID/Anonymous_2/module1") // OM-2023-taxrefldPlantae-ncbitaxonPlantae
 				.replaceAll("ِAlRay_AlAam", "AlRay_AlAam") // OM-2022-nell-dbpedia
+				.replaceAll("<dcterms:created rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\"></dcterms:created>", "<dcterms:created rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">0001-01-01T00:00:00Z</dcterms:created>" ) // OM-2020-anaeethes-gemet
+				.replaceAll("<dcterms:modified rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\"></dcterms:modified>", "<dcterms:modified rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">0001-01-01T00:00:00Z</dcterms:modified>" ) // OM-2020-anaeethes-gemet
 				;
 				// Unicode Normalization Form C
 				// https://stackoverflow.com/questions/5465170/text-run-is-not-in-unicode-normalization-form-c

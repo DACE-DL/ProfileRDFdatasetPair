@@ -22,7 +22,10 @@ public class MakeListMaxPerProperty {
 			"SELECT ?property ?datatype (Max(?o) AS ?usage) " +
 			" WHERE { " +
 			" ?s ?property ?o ." +
-			" FILTER ( datatype(?o) = xsd:integer || datatype(?o) = xsd:float || datatype(?o) = xsd:double || datatype(?o) = xsd:decimal || datatype(?o) = xsd:dateTime ) " +
+			"  FILTER ( " +
+    		"    (datatype(?o) = xsd:integer || datatype(?o) = xsd:float || datatype(?o) = xsd:double || datatype(?o) = xsd:decimal || datatype(?o) = xsd:dateTime) " +
+    		"    && str(?o) != '' " +  // Ajout de cette condition pour exclure les valeurs vides
+    		"  ) " +
 			" } GROUP BY ?property (datatype(?o) AS ?datatype) ORDER BY DESC (?usage)"
 		);
 			
