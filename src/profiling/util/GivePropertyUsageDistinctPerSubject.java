@@ -23,7 +23,8 @@ public class GivePropertyUsageDistinctPerSubject {
 		int nUsageMin = 0;
 
 		Query query = QueryFactory.create(prefix + 
-			"SELECT DISTINCT (COUNT(?subject) AS ?subjectCount) (SUM(?usage) AS ?usageSum) (MIN(?usage) AS ?usageMin) (MAX(?usage) AS ?usageMax)" +
+			"SELECT DISTINCT (COUNT(?subject) AS ?subjectCount) (SUM(?usage) AS ?usageSum)" +
+			" (MIN(?usage) AS ?usageMin) (MAX(?usage) AS ?usageMax)" +
 				" WHERE { " +
 					"{ SELECT DISTINCT (?s AS ?subject) (COUNT(DISTINCT ?property) AS ?usage) " +
 					" WHERE { " +

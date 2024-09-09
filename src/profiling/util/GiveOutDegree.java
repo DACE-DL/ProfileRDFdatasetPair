@@ -19,9 +19,8 @@ public class GiveOutDegree {
 		Query query = QueryFactory.create(prefix + 
 			"SELECT (COUNT(?s)/COUNT(DISTINCT ?s) AS ?usage) " +
 			" WHERE { " +
-			//" ?p rdf:type <http://www.w3.org/1999/02/22-rdf-syntax-ns#Property> ." +
 			" ?s ?p ?o ." +
-			" FILTER isIRI(?p) " +
+			" FILTER isIRI(?s) " +
 			" } "
 		);			
 		QueryExecution qe = QueryExecutionFactory.create(query, model);		

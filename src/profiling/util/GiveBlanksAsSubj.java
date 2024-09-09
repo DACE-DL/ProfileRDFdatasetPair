@@ -18,7 +18,7 @@ public class GiveBlanksAsSubj {
 		Integer nNumber = 0;
 		
 		Query query = QueryFactory.create(prefix + 
-			" SELECT (COUNT(DISTINCT ?p) AS ?count) " +
+			" SELECT (COUNT(?p) AS ?count) " +
 				" WHERE { " +
 				" _:b0 ?p ?o ." +
 			" } "

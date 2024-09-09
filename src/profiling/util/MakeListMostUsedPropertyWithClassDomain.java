@@ -32,7 +32,6 @@ public class MakeListMostUsedPropertyWithClassDomain {
 		String property = uriAndNumber.getUri();
 
 		Query query = QueryFactory.create(prefix + 
-		
 		" SELECT ?property " +
 		" (GROUP_CONCAT(DISTINCT ?classListAndCount; separator=\"*\") AS ?classListAndCountList)  "	+ 
 		" (SUM(?propertyUsage) AS ?propertyCount) " +
@@ -57,8 +56,6 @@ public class MakeListMostUsedPropertyWithClassDomain {
 							" BIND(COALESCE(?subjectClass, ?defaultClass) AS ?class) " +
 							" BIND(COALESCE(?subjectClass , ?defaultOrder) AS ?order) " +
 							" FILTER (?property = <" + property + "> )" +
-							// convertToSPARQLFilterProperties(listMostUsedProperty) +
-							// convertToSPARQLFilterClasses(listClassMostUsed) +
 						" } ORDER BY ?s ?property ?o ?order" +
 					" } GROUP BY ?s ?property ?o " +
 				" } GROUP BY ?property ?classList" +
