@@ -8,7 +8,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -19,12 +18,11 @@ import java.text.Normalizer;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.apache.jena.query.Dataset;
 import org.apache.jena.query.ReadWrite;
 import org.apache.jena.rdf.model.Model;
 import org.apache.jena.shared.Lock;
+import java.net.URLEncoder;
 
 import profiling.util.FileName;
 import profiling.util.PairOfDatasets;
@@ -106,9 +104,147 @@ public class TDBInitialisation {
 	}
 
 
-
-
 	public static void treatment(String mainDirectoryForDatasets, String idPair, ArrayList<String> listDatasetsFileName) throws Exception {
+		String idPairForGraphURI = idPair.replaceFirst("[.][^.]+$", "");
+		
+		for (String fileName : listDatasetsFileName) {
+			String nameForGraphURI = fileName.replaceFirst("[.][^.]+$", "");
+			Path pathFileDataset = Paths.get(mainDirectoryForDatasets, idPair, fileName);
+			System.out.println("The dataset " + pathFileDataset + " is being loaded");
+	
+			// Correction des erreurs du fichier
+			modifyFile(pathFileDataset.toString());
+	
+			String typeOfSerialization = getFileSerializationType(fileName);
+	
+			Dataset dataset = null;
+			try {
+				dataset = TDBUtil.CreateTDBDataset();
+				dataset.begin(ReadWrite.WRITE);
+	
+				// Effacement des statements contenus dans le graphe TDB
+				dataset.removeNamedModel(idPairForGraphURI + nameForGraphURI);
+	
+				Model model = dataset.getNamedModel(idPairForGraphURI + nameForGraphURI);
+				model.enterCriticalSection(Lock.WRITE);
+				model.clearNsPrefixMap();
+	
+				// Lecture du fichier en fonction du type de sérialisation
+				try (InputStream is = new FileInputStream(pathFileDataset.toString())) {
+					model.read(is, "", typeOfSerialization);
+				}
+	
+				System.out.println("Graph size " + idPairForGraphURI + nameForGraphURI + " : " + model.size());
+				model.leaveCriticalSection();
+				dataset.commit();
+	
+			} catch (FileNotFoundException e) {
+				System.out.println("File not found: " + pathFileDataset + " : " + e);
+			} catch (Exception e) {
+				System.out.println("Error processing dataset: " + e.toString());
+				e.printStackTrace();
+			} finally {
+				if (dataset != null) {
+					dataset.end();
+					dataset.close();
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Détection du type de sérialisation
+	 */
+	private static String getFileSerializationType(String fileName) {
+		if (fileName.matches("^.*json$")) {
+			return "JSONLD";
+		} else if (fileName.matches("^.*ttl$")) {
+			return "TTL";
+		} else {
+			return "RDF/XML";  // Default to RDF/XML if no specific type is detected
+		}
+	}
+	
+	/**
+	 * Correction des problémes de typo du fichier
+	 */
+	public static void modifyFile(String filePath) {
+		try {
+			// Ouverture du fichier d'entrée et du fichier temporaire de sortie
+			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath + ".tmp"), StandardCharsets.UTF_8));
+	
+			// Lecture et modification ligne par ligne
+			String line;
+			while ((line = reader.readLine()) != null) {
+				// Modification des erreurs typographiques
+				String modifiedLine = line.replaceAll("http:///", "http://")
+					.replaceAll("https:///", "https://")
+					.replaceAll("%5D%5(?!D)", "%5D%5D")
+					.replaceAll("xmlns:ns3=\"http://dbkwik.webdatacommons.org/marvel.wikia.com/property/%3\"", "")
+					.replaceAll("ns3:CdivAlign", "ns1:divAlign")
+					.replaceAll("http://www.wikipedia.com:secrets_of_spiderman_revealed", "http://www.wikipedia.com/secrets_of_spiderman_revealed")
+					.replaceAll("OntologyID\\(Anonymous-2\\)module1", "http://OntologyID/Anonymous_2/module1")
+					.replaceAll("ِAlRay_AlAam", "AlRay_AlAam")
+					.replaceAll("<dcterms:created rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\"></dcterms:created>", "<dcterms:created rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">0001-01-01T00:00:00Z</dcterms:created>")
+					.replaceAll("<dcterms:modified rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\"></dcterms:modified>", "<dcterms:modified rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">0001-01-01T00:00:00Z</dcterms:modified>")
+					.replaceAll("http:/php.net", "http://php.net")
+					.replaceAll("http:/www.apple.com/jp/iphone", "http://www.apple.com/jp/iphone")
+					.replaceAll("http:/www.apple.com/safari", "http://www.apple.com/safari")
+					.replaceAll("http:/www.senate.gov", "http://www.senate.gov");
+	
+				// Encodage des caractères illégaux dans les IRIs
+				String encodedLine = encodeInvalidCharactersInIRI(modifiedLine);
+	
+				// Unicode Normalization Form C
+				String normalizedLine = Normalizer.normalize(encodedLine, Normalizer.Form.NFC);
+				writer.write(normalizedLine + "\n");
+			}
+	
+			// Fermeture des flux
+			reader.close();
+			writer.close();
+	
+			// Suppression du fichier d'origine
+			Files.deleteIfExists(Paths.get(filePath));
+	
+			// Renommer le fichier temporaire en fichier d'origine
+			Files.move(Paths.get(filePath + ".tmp"), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
+	
+			System.out.println("Le fichier a été modifié avec succès.");
+		} catch (IOException e) {
+			System.out.println("Une erreur s'est produite lors de la modification du fichier : " + e.getMessage());
+		}
+	}
+	
+	private static String encodeInvalidCharactersInIRI(String iri) {
+		StringBuilder encodedIRI = new StringBuilder();
+		for (char c : iri.toCharArray()) {
+			// Vérifier si le caractère est illégal pour un IRI et doit être encodé
+			if (isIllegalIRICharacter(c)) {
+				try {
+					// Encoder le caractère illégal
+					encodedIRI.append(URLEncoder.encode(String.valueOf(c), StandardCharsets.UTF_8.toString()));
+				} catch (Exception e) {
+					// En cas d'erreur d'encodage
+					encodedIRI.append(c); // Garder le caractère original si l'encodage échoue
+				}
+			} else {
+				encodedIRI.append(c); // Caractère valide, on le garde tel quel
+			}
+		}
+		return encodedIRI.toString();
+	}
+	
+	private static boolean isIllegalIRICharacter(char c) {
+		// Définir les caractères illégaux à encoder
+		return (c >= 0xD800 && c <= 0xDFFF) // Paires de substitution UTF-16
+				//|| c == ' ' // Les espaces sont également illégaux dans un IRI
+				|| !Character.isValidCodePoint(c); // Tout autre caractère non valide
+	}
+
+
+	public static void treatmentSVG(String mainDirectoryForDatasets, String idPair, ArrayList<String> listDatasetsFileName) throws Exception {
 		String idPairForGraphURI = idPair.replaceFirst("[.][^.]+$", "");
 		// Pour touts les datasets
 		for (int i = 0; i < listDatasetsFileName.size(); i++) {
@@ -162,98 +298,89 @@ public class TDBInitialisation {
 					dataset.end(); 
 				}
 			} else // Le fichier n'a pas l'extention .json 
-			{
-				Dataset dataset = TDBUtil.CreateTDBDataset();
-				try {  
-					// Effacement des statements contenus dans le graphe TDB
-					dataset.begin(ReadWrite.WRITE);
-					// Iterator<String> listgraph = dataset.listNames();
-					// while(listgraph.hasNext()) {
-					// 	System.out.println("Graph: " + listgraph.next());
-					// };
-					dataset.removeNamedModel(idPairForGraphURI + nameForGraphURI); 
-					Model model = dataset.getNamedModel(idPairForGraphURI + nameForGraphURI);
-					model.enterCriticalSection(Lock.WRITE);
-					model.clearNsPrefixMap();
-					// Vérifier les préfixes avant lecture
-					// System.out.println("Before: ");
-					// model.getNsPrefixMap().forEach((prefix, uri) -> {
-					// 	System.out.println("Prefix: " + prefix + ", URI: " + uri);
-					// });
-					// Read File and put it in model
-					// System.out.println("File: " + pathFileDataset.toString());
-					InputStream is = new FileInputStream(pathFileDataset.toString());
-					// read the files in model
-					model.read(is,"");
-					// // Vérifier les préfixes après lecture
-					// System.out.println("After: ");
-					// model.getNsPrefixMap().forEach((prefix, uri) -> {
-					// 	System.out.println("Prefix: " + prefix + ", URI: " + uri);
-					// });
-					System.out.println("Graph size " + idPairForGraphURI + nameForGraphURI + " : " + model.size());
-					// Path pathOfTheListPairDatasets = Paths.get(ProfilingConf.mainFolderProfiling, "output"+ idPairForGraphURI + nameForGraphURI +".rdf");		
-					// String outputFileName = pathOfTheListPairDatasets.toString();
-					// try (OutputStream out = new FileOutputStream(outputFileName)) {
-					// 	model.write(out, "RDF/XML-ABBREV");
-					// 	System.out.println("Modèle écrit dans le fichier " + outputFileName);
-					// } catch (Exception e) {
-					// 	e.printStackTrace();
-					// }
-					dataset.commit();    
-					dataset.close();
-					model.leaveCriticalSection();
-					model.close();
+			{   // Si le fichier a l'extention .json 
+				if(fileName.matches("^.*ttl$")) {
+					typeOfSerialization = "TTL";
+					Dataset dataset = TDBUtil.CreateTDBDataset();
+					try {  
+						// Effacement des statements contenus dans le graphe TDB
+						dataset.begin(ReadWrite.WRITE);
+						dataset.removeNamedModel(idPairForGraphURI + nameForGraphURI); 
+						Model model = dataset.getNamedModel(idPairForGraphURI + nameForGraphURI);
+						model.enterCriticalSection(Lock.WRITE);
+						model.clearNsPrefixMap();
+						// Read File and put it in model
+						InputStream is = new FileInputStream(pathFileDataset.toString());
+						// read the files in model
+						model.read(is,"",typeOfSerialization);
+						System.out.println("Graph size " + idPairForGraphURI + nameForGraphURI + " : " + model.size());
+						dataset.commit();    
+						dataset.close();
+						model.leaveCriticalSection();
+						model.close();
+					}
+					catch (FileNotFoundException e) {System.out.println("File not found");}
+					catch (Exception e) {System.out.println("big problem: " + e.toString()); e.printStackTrace();}
+					finally { 
+						//dataset.abort();
+						dataset.end(); 
+					}
+
 				}
-				catch (FileNotFoundException e) {System.out.println("File not found");}
-				catch (Exception e) {System.out.println("big problem: " + e.toString()); e.printStackTrace();}
-				finally { 
-					//dataset.abort();
-					dataset.end(); 
+				else // Le fichier n'a pas l'extention .ttl --> RDF/XML
+				{
+					Dataset dataset = TDBUtil.CreateTDBDataset();
+					try {  
+						// Effacement des statements contenus dans le graphe TDB
+						dataset.begin(ReadWrite.WRITE);
+						// Iterator<String> listgraph = dataset.listNames();
+						// while(listgraph.hasNext()) {
+						// 	System.out.println("Graph: " + listgraph.next());
+						// };
+						dataset.removeNamedModel(idPairForGraphURI + nameForGraphURI); 
+						Model model = dataset.getNamedModel(idPairForGraphURI + nameForGraphURI);
+						model.enterCriticalSection(Lock.WRITE);
+						model.clearNsPrefixMap();
+						// Vérifier les préfixes avant lecture
+						// System.out.println("Before: ");
+						// model.getNsPrefixMap().forEach((prefix, uri) -> {
+						// 	System.out.println("Prefix: " + prefix + ", URI: " + uri);
+						// });
+						// Read File and put it in model
+						// System.out.println("File: " + pathFileDataset.toString());
+						InputStream is = new FileInputStream(pathFileDataset.toString());
+						// read the files in model
+						model.read(is,"");
+						// // Vérifier les préfixes après lecture
+						// System.out.println("After: ");
+						// model.getNsPrefixMap().forEach((prefix, uri) -> {
+						// 	System.out.println("Prefix: " + prefix + ", URI: " + uri);
+						// });
+						System.out.println("Graph size " + idPairForGraphURI + nameForGraphURI + " : " + model.size());
+						// Path pathOfTheListPairDatasets = Paths.get(ProfilingConf.mainFolderProfiling, "output"+ idPairForGraphURI + nameForGraphURI +".rdf");		
+						// String outputFileName = pathOfTheListPairDatasets.toString();
+						// try (OutputStream out = new FileOutputStream(outputFileName)) {
+						// 	model.write(out, "RDF/XML-ABBREV");
+						// 	System.out.println("Modèle écrit dans le fichier " + outputFileName);
+						// } catch (Exception e) {
+						// 	e.printStackTrace();
+						// }
+						dataset.commit();    
+						dataset.close();
+						model.leaveCriticalSection();
+						model.close();
+					}
+					catch (FileNotFoundException e) {System.out.println("File not found");}
+					catch (Exception e) {System.out.println("big problem: " + e.toString()); e.printStackTrace();}
+					finally { 
+						//dataset.abort();
+						dataset.end(); 
+					}
 				}
 			}
 	    }   
 	}	
-	public static void modifyFile(String filePath) {
-		try {
-			// Ouverture du fichier d'entrée et du fichier temporaire de sortie
-			BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath), StandardCharsets.UTF_8));
-			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath + ".tmp"), StandardCharsets.UTF_8));
-	
-			// Lecture et modification ligne par ligne
-			String line;
-			while ((line = reader.readLine()) != null) {
-				String modifiedLine = line.replaceAll("http:///", "http://")
-				.replaceAll("https:///", "https://")
-				.replaceAll("%5D%5(?!D)", "%5D%5D")
-				.replaceAll("xmlns:ns3=\"http://dbkwik.webdatacommons.org/marvel.wikia.com/property/%3\"", "") // dbkwik.webdatacommons.org/marvel.wikia.com
-				.replaceAll("ns3:CdivAlign", "ns1:divAlign") // dbkwik.webdatacommons.org/marvel.wikia.com
-				.replaceAll("http://www.wikipedia.com:secrets_of_spiderman_revealed", "http://www.wikipedia.com/secrets_of_spiderman_revealed") // dbkwik.webdatacommons.org/marvel.wikia.com
-				.replaceAll("OntologyID\\(Anonymous-2\\)module1", "http://OntologyID/Anonymous_2/module1") // OM-2023-taxrefldPlantae-ncbitaxonPlantae
-				.replaceAll("ِAlRay_AlAam", "AlRay_AlAam") // OM-2022-nell-dbpedia
-				.replaceAll("<dcterms:created rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\"></dcterms:created>", "<dcterms:created rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">0001-01-01T00:00:00Z</dcterms:created>" ) // OM-2020-anaeethes-gemet
-				.replaceAll("<dcterms:modified rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\"></dcterms:modified>", "<dcterms:modified rdf:datatype=\"http://www.w3.org/2001/XMLSchema#dateTime\">0001-01-01T00:00:00Z</dcterms:modified>" ) // OM-2020-anaeethes-gemet
-				;
-				// Unicode Normalization Form C
-				// https://stackoverflow.com/questions/5465170/text-run-is-not-in-unicode-normalization-form-c
-				String normalizedLine = Normalizer.normalize(modifiedLine, Normalizer.Form.NFC);
-				writer.write(normalizedLine + "\n");
-			}
-	
-			// Fermeture des flux
-			reader.close();
-			writer.close();
-	
-			// Suppression du fichier d'origine
-            Files.deleteIfExists(Paths.get(filePath));
 
-            // Renommer le fichier temporaire en fichier d'origine
-            Files.move(Paths.get(filePath + ".tmp"), Paths.get(filePath), StandardCopyOption.REPLACE_EXISTING);
-	
-			System.out.println("Le fichier a été modifié avec succès.");
-		} catch (IOException e) {
-			System.out.println("Une erreur s'est produite lors de la modification du fichier : " + e.getMessage());
-		}
-	}
 }
 
 
