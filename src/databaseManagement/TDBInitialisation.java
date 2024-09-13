@@ -239,7 +239,7 @@ public class TDBInitialisation {
 	private static boolean isIllegalIRICharacter(char c) {
 		// Définir les caractères illégaux à encoder
 		return (c >= 0xD800 && c <= 0xDFFF) // Paires de substitution UTF-16
-				//|| c == ' ' // Les espaces sont également illégaux dans un IRI
+				//|| c == ' ' // Les espaces sont également illégaux dans un IRI (mais là nous lisons la ligne entière)
 				|| !Character.isValidCodePoint(c); // Tout autre caractère non valide
 	}
 
